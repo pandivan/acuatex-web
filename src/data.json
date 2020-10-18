@@ -1,0 +1,184 @@
+{
+    "data": [
+        {
+            "id": 1,
+            "categoria": "Niño",
+            "nombre": "Producto 1",
+            "codigo": "0001",
+            "precio": 3,
+            "descripcion": "Desc Producto 1",
+            "cantidad": 0,
+            "talla": ""
+        },
+        {
+            "id": 2,
+            "categoria": "Niño",
+            "nombre": "Producto 2",
+            "codigo": "0002",
+            "precio": 6,
+            "descripcion": "Desc Producto 2",
+            "cantidad": 0,
+            "talla": ""
+        },
+        {
+            "id": 3,
+            "categoria": "Niña",
+            "nombre": "Producto 3",
+            "codigo": "0003",
+            "precio": 9,
+            "descripcion": "Abstract, sculptural, refined and edgy with a modern twist. Its symmetrical, spoked structure generates a clever geometric presence, which works well in a contemporary environment.",
+            "cantidad": 0,
+            "talla": ""
+        },
+        {
+            "id": 4,
+            "categoria": "Niña",
+            "nombre": "Producto 4",
+            "codigo": "0004",
+            "precio": 12,
+            "descripcion": "Desc Producto 4",
+            "cantidad": 0,
+            "talla": ""
+        },
+        {
+            "id": 5,
+            "categoria": "Niña",
+            "nombre": "Producto 5",
+            "codigo": "0005",
+            "precio": 15,
+            "descripcion": "Desc Producto 5",
+            "cantidad": 0,
+            "talla": ""
+        },
+        {
+            "id": 6,
+            "categoria": "Bebe Niño",
+            "nombre": "Producto 6",
+            "codigo": "0006",
+            "precio": 18,
+            "descripcion": "Desc Producto 6",
+            "cantidad": 0,
+            "talla": ""
+        },
+        {
+            "id": 7,
+            "categoria": "Bebe Niño",
+            "nombre": "Producto 7",
+            "codigo": "0007",
+            "precio": 21,
+            "descripcion": "Desc Producto 7",
+            "cantidad": 0,
+            "talla": ""
+        },
+        {
+            "id": 8,
+            "categoria": "Bebe Niño",
+            "nombre": "Producto 8",
+            "codigo": "0008",
+            "precio": 24,
+            "descripcion": "Desc Producto 8",
+            "cantidad": 0,
+            "talla": ""
+        },
+        {
+            "id": 9,
+            "categoria": "Bebe Niña",
+            "nombre": "Producto 9",
+            "codigo": "0009",
+            "precio": 27,
+            "descripcion": "Desc Producto 9",
+            "cantidad": 0,
+            "talla": ""
+        },
+        {
+            "id": 11,
+            "categoria": "Bebe Niña",
+            "nombre": "Producto 11",
+            "codigo": "00011",
+            "precio": 33,
+            "descripcion": "Desc Producto 11",
+            "cantidad": 0,
+            "talla": ""
+        },
+        {
+            "id": 12,
+            "categoria": "Bebe Niña",
+            "nombre": "Producto 12",
+            "codigo": "00012",
+            "precio": 36,
+            "descripcion": "Desc Producto 12",
+            "cantidad": 0,
+            "talla": ""
+        },
+        {
+            "id": 13,
+            "categoria": "Dama",
+            "nombre": "Producto 13",
+            "codigo": "00013",
+            "precio": 39,
+            "descripcion": "Desc Producto 13",
+            "cantidad": 0,
+            "talla": ""
+        },
+        {
+            "id": 14,
+            "categoria": "Dama",
+            "nombre": "Producto 14",
+            "codigo": "00014",
+            "precio": 42,
+            "descripcion": "Desc Producto 14",
+            "cantidad": 0,
+            "talla": ""
+        },
+        {
+            "id": 15,
+            "categoria": "Caballero",
+            "nombre": "Producto 15",
+            "codigo": "00015",
+            "precio": 45,
+            "descripcion": "Desc Producto 15",
+            "cantidad": 0,
+            "talla": ""
+        },
+        {
+            "id": 16,
+            "categoria": "Caballero",
+            "nombre": "Producto 16",
+            "codigo": "00016",
+            "precio": 48,
+            "descripcion": "Desc Producto 16",
+            "cantidad": 0,
+            "talla": ""
+        },
+        {
+            "id": 17,
+            "categoria": "Caballero",
+            "nombre": "Producto 17",
+            "codigo": "00017",
+            "precio": 51,
+            "descripcion": "Desc Producto 17",
+            "cantidad": 0,
+            "talla": ""
+        },
+        {
+            "id": 18,
+            "categoria": "Caballero",
+            "nombre": "Producto 18",
+            "codigo": "00018",
+            "precio": 54,
+            "descripcion": "Desc Producto 18",
+            "cantidad": 0,
+            "talla": ""
+        },
+        {
+            "id": 19,
+            "categoria": "Caballero",
+            "nombre": "Producto 19",
+            "codigo": "00019",
+            "precio": 57,
+            "descripcion": "Desc Producto 19",
+            "cantidad": 0,
+            "talla": ""
+        }
+    ]
+}

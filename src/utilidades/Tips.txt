@@ -1,0 +1,188 @@
+Tipos de Componentes
+
+De Función: 
+Sirven para visualizar o mostrar datos en un componentes (Text)
+
+De Clases: 
+Sirven para manejar propiedades, estados y funcionalidades (Class)
+
+
+States: 
+States son los datos de la vista... (propiedades objetos java)
+
+Props: 
+Son lo que se encargan de enviar los States del componente padre a un componente hijo, también puedo llamar a funciones del padre desde el hijo.
+
+NombreClase.propTypes=
+{
+  esposito: PropTypes.String
+  peso: PropTypes.number
+  edad: PropTypes.number.isRequired
+}
+
+NombreClase.defaultProps=
+{
+  esposito: "ivancito"
+  peso: 100
+  edad: 35
+}
+
+* en la clase padre <Producto producto={producto}/> y en la clase hija <Text>{this.props.producto.name}</Text> es obligatorio colocar la palabra reservada props en la clase hija para poder acceder al parametro enviado... no tiene nada q ver con el constructor(props) y super(props)
+
+* En los componentes de funcion si debo cachar el parametro q envie desde el padre en el metodo 
+
+Padre
+ <ComponenteFuncional esposita = {this.state.esposita} apodo = {this.state.apodo} operacion = {this.state.suma}/>
+
+Hijo Opcion 1
+  export default function ComponenteFuncional(encapsulaParametrosComoAtributosObjeto) 
+
+  <Text>
+    {encapsulaParametrosComoAtributosObjeto.esposita}..cc..{encapsulaParametrosComoAtributosObjeto.apodo}: {encapsulaParametrosComoAtributosObjeto.operacion}
+  </Text
+
+Hijo Opcion 2
+  export default function ComponenteFuncional({esposita, apodo, operacion}) 
+
+  <Text>
+    {esposita}....{apodo}: {operacion}
+  </Text
+
+
+
+Funciones: 
+Las funciones declaradas fuera del render y q se llaman dentro del render se deben enganchar con la palabra this.nombrefuncion ó this.nombrefuncion.bind(this)
+
+
+Node JS: 
+Es el interpretador de java escript en el servidor fisico (como jdk).
+
+
+Express:
+Es un framework de Node JS que permite crear y levantar un servidor(como tomcat) con el fin de que la web o la app Mobil consuma los API-REST por medio de peticiones get, post, put y delete
+
+
+API Rest:
+Es la interfaz q comunica dos software a través del protocolo http son las rutas, get, post, delete, put
+
+
+JavaScript:
+Req.body
+[
+  {
+    nombre: "Pelicula",
+    titulo: "ToyStory,
+    año: 2020
+  }
+]
+
+//se esta pasado todo el objeto req.body q es un json y adicional le asigna el atributo id.
+const newMovie = {...req.body, id};  
+
+newMovie
+[
+  {
+    nombre: "Pelicula",
+    titulo: "ToyStory,
+    año: 2020,
+    id: 1
+  }
+]
+
+
+// se esta asignando cada atributo de req.body a cada una de las constante (titulo, nombre, año)
+
+const {titulo, nombre, año} = req.body 
+
+Hooks
+Los setState en los hooks no actualizan, reemplazan, es decir si tengo un objeto
+const usuario = {nombre:"ivan", edad: "33"}
+ 
+setUsuario( { nombre: "Ranita" } );
+
+El nuevo usuario quedaría solo con usuario = {nombre:"Ranita"} quitaria la edad
+
+
+Si se desea solamente afectar una propiedad del objeto debo hacerlo atravez del parametro prevState 
+que es una propiedad del estado:
+
+setUsuario(prevState => 
+{
+  return { ...prevState, nombre: "Ranita" }
+});
+
+El nuevo usuario quedaría con las dos propiedades const usuario = {nombre:"Ranita", edad: "33"}
+
+
+En los componentes funcionales se usa useEffect como componentDidMount para cargar o recupera datos
+despues del renderizado PERO!!!!!... en este componente cuando se hace un setState dentro de esta 
+funcion vamos a generar un bucle infinito si no colocamos los corchetes... este bucle solo se da 
+si actualizo el state dentro de esta funcion
+
+React.useEffect(() => 
+{
+  setState();
+}, []);
+
+
+
+  //TODO: solo renderiza si el count en este caso a cambiado de lo contraio NO render
+  componentDidUpdate(prevProps, prevState) 
+  {
+    if (prevState.count !== this.state.count) 
+    {
+      document.title = `You clicked ${this.state.count} times`;
+    }
+  }
+
+
+
+JavaScript:
+Cuando necesite algo siempre pensar q hay alguna librería q ya lo hace.
+
+
+
+Modulos para Express:
+Los modelos se deben buscar en el sitio de npm 
+buscar: express http --> morga
+buscar: express autolad --> consign
+
+
+
+Archivos Configuración
+Ppm install: instala todas las dependencias q hayan en el package.json
+
+
+
+Enviar parametro por contexto desde el componente padre App.js
+ContextoAutenticacion.Provider value={{contextoAutenticacion, idTienda: null===state.cliente? "":state.cliente.idCliente}}>
+      <NavigationContainer>
+      </NavigationContainer>
+</ContextoAutenticacion.Provider>
+
+
+Recuperando parametro de contexto desde el componete Hijo 1
+function Login({navigation})
+{
+  const [login, setLogin] = React.useState("e");
+  const [password, setPassword] = React.useState("p");
+  const [isMostrar, setIsMostrar] = React.useState(false);
+  const [tendero, setTendero] = React.useState(false);
+  
+  Forma de obtener (desesctructurado)
+  const { contextoAutenticacion:{iniciarSesion}, idTienda } = React.useContext(ContextoAutenticacion);
+}
+  
+
+Recuperando parametro de contexto desde el componete Hijo 2
+import ContextoAutenticacion from "../../../ContextoAutenticacion";
+
+class HistorialPedidos extends Component 
+{
+
+  Otra forma de obtener 
+  static contextType = ContextoAutenticacion;
+
+  let {success, arrayHistorialPedidos} = await pedidoServices.getAllHistorialPedidos(this.context.idTienda); //este context hace referencia al static contextType de arriba
+
+}

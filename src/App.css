@@ -1,0 +1,171 @@
+/* CSS Carrito */
+
+.titulo_acuatex
+{
+  color: #2d2d40;
+}
+
+.subtitulo_acuatex
+{
+  color: #9f9fae;
+}
+
+/* .acuatex_separacion
+{
+  height: 6px;
+  background-color: #F1F1F1;
+} */
+
+.footer_separacion_acuatex
+{
+  /* width: 1000px; */
+  height: 100px; 
+  border-width: 6px; 
+  border-style: solid; 
+  border-color: #F1F1F1;
+}
+
+.btn_add_acuatex
+{
+  background-color: #9f9fae;
+  border: none;
+  color: white;
+}
+
+.btn_add_acuatex:hover
+{
+  background-color: #2F3E48;
+  color: white;
+}
+
+.btn_delete_acuatex
+{
+  font-size: 42px; 
+  color: #9f9fae;
+}
+
+
+.btn_delete_acuatex:hover
+{
+  color: #2F3E48;
+}
+
+.btn_cantidad_acuatex
+{
+  background-color: #f0f0f0;
+}
+
+.btn_carrito_acuatex
+{
+  width: 245px;
+  height: 80px;
+  /* font-size: larger;
+  font-weight: bolder; */
+}
+
+
+
+/* CSS Productos */
+.btn_categoria_acuatex
+{
+  width: 165px;
+  height: 65px;
+  border: solid;
+  color: #9f9fae;
+  background-color: white;
+  border-width: 3px;
+}
+
+.btn_categoria_acuatex:hover
+{
+  color: black;
+  border-color: black;
+}
+
+.img_producto_acuatex
+{
+  height: 356px; 
+  width: 356px;
+  /* border: solid;
+  color: #9f9fae;
+  background-color: white;
+  border-width: 3px; */
+}
+
+
+.img_producto_acuatex:hover
+{
+  filter: opacity(.5);
+}
+
+.font_size_navbar_acuatex
+{
+  font-size: 20px
+}
+
+
+
+
+/* CSS Ajustes */
+.font_color_link_acuatex 
+{
+  color: #2d2d40;
+}
+
+.font_color_link_acuatex:hover
+{
+  color: black;
+}
+
+
+
+
+
+/* CSS Actualizar Datos */
+.separacion_datos_acuatex
+{
+  /* width: 1000px; */
+  /* height: 200px;  */
+  border-width: 2px; 
+  border-style: solid; 
+  border-color: lightgray;
+}
+
+
+
+
+/* CSS Modal Mensaje */
+.popup-box 
+{
+  position: fixed;
+  background: #00000050;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+ 
+
+
+/* CSS Metodos de Pago */
+.img_border_acuatex
+{
+  /* width: 1000px; */
+  /* height: 200px;  */
+  border-width: 1px; 
+  border-style: solid; 
+  border-color: lightgray;
+}
+
+
+.btn_pagos_acuatex
+{
+  width: 200px;
+  height: 65px
+}
+
+/* body 
+{
+  font-family: "Open Sans", sans-serif;
+} */
+
