@@ -13,6 +13,7 @@ function Header(props)
   // const [nombreCliente, setLogueado] = React.useState("");
 
 
+
   useEffect(() => 
 	{
     console.log("Header");
@@ -61,7 +62,7 @@ function Header(props)
       <div className="mr-3 bgg-dark">
           <Link to="/carrito" className="nav-link text-secondary pt-0 font_size_navbar_acuatex">
             <i className="fa fa-shopping-cart fa-2x"></i>
-            <span className="badge badge-pill badge-danger">{0 === props.cantidad ? null : props.cantidad}</span>
+            <span className="badge badge-pill badge-danger">{0 === JSON.parse(localStorage.getItem("@cantidadBadge")) ? null : JSON.parse(localStorage.getItem("@cantidadBadge"))}</span>
           </Link>
       </div>
     

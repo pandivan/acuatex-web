@@ -13,8 +13,8 @@ import clienteServices from "../../services/ClienteServices";
 function Login(props) 
 {
   const [isTokenValido, setTokenValido] = useState(false);
-  const [email, setEmail] = useState("ivan.hernandez.coral@gmail.com");
-  const [password, setPassword] = useState("Cusito");
+  const [correo, setCorreo] = useState("ivan.hernandez.coral@gmail.com");
+  const [clave, setClave] = useState("Cusito");
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
   // const [isMostrar, setIsMostrar] = useState(false);
@@ -61,7 +61,7 @@ function Login(props)
     {
       try 
       {
-        let {success, cliente} = await clienteServices.validarCliente({ email, password });
+        let {success, cliente} = await clienteServices.validarCliente({ correo, clave });
         
         if(success)
         {
@@ -73,7 +73,7 @@ function Login(props)
         }
         else
         {
-          mensaje = "Lo sentimos. No hay ninguna cuenta de usuario\nque coincida con el Email y Contraseña\nproporcionados.\n\nSi no recuerdas tu contraseña utiliza el enlace\n¿Has olvidado tu contraseña?\n\nSi deseas crear una cuenta de usuario nueva,\nutiliza el botón Crear cuenta.";
+          mensaje = "Lo sentimos. No hay ninguna cuenta de usuario\nque coincida con el Correo y Contraseña\nproporcionados.\n\nSi no recuerdas tu contraseña utiliza el enlace\n¿Has olvidado tu contraseña?\n\nSi deseas crear una cuenta de usuario nueva,\nutiliza el botón Crear cuenta.";
           setMensajePopup(mensaje);
           setMostrarPopup(true);
         }
@@ -112,15 +112,15 @@ function Login(props)
           <h2>INICIA SESIÓN</h2>
           <form className="needs-validation bgg-warning" onSubmit={validarFormulario} noValidate>
             <div className="form-group mt-5">
-              <label htmlFor="email">E-mail:</label>
-              <input type="email" className="form-control" id="email" placeholder="E-mail" name="email" required value={email} onChange={e => setEmail(e.target.value)} />
+              <label htmlFor="correo">E-mail:</label>
+              <input type="correo" className="form-control" id="correo" placeholder="E-mail" name="correo" required value={correo} onChange={e => setCorreo(e.target.value)} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
               </div>
             </div>
             <div className="form-group">
               <label htmlFor="pwd">Contraseña:</label>
-              <input type="password" className="form-control" id="pwd" placeholder="Contraseña" name="pswd" required value={password} onChange={e => setPassword(e.target.value)} />
+              <input type="clave" className="form-control" id="pwd" placeholder="Contraseña" name="pswd" required value={clave} onChange={e => setClave(e.target.value)} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
               </div>

@@ -45,7 +45,7 @@ function Ajustes()
 
           <div className="mt-5 bgg-danger">
             <Link to="/actualizar_datos" className="text-dark"><h5 className="font-weight-bolder m-0">Datos de acceso</h5></Link>
-            <small>Podrás cambiar tus datos de acceso (email y contraseña). Recuerda que la seguridad de tus datos personales es importante, debes utilizar una contraseña segura y cambiarla periódicamente.</small>
+            <small>Podrás cambiar tus datos de acceso (correo y contraseña). Recuerda que la seguridad de tus datos personales es importante, debes utilizar una contraseña segura y cambiarla periódicamente.</small>
           </div>
           
           <div className="mt-5 bgg-danger">

@@ -165,7 +165,7 @@ Recuperando parametro de contexto desde el componete Hijo 1
 function Login({navigation})
 {
   const [login, setLogin] = React.useState("e");
-  const [password, setPassword] = React.useState("p");
+  const [clave, setClave] = React.useState("p");
   const [isMostrar, setIsMostrar] = React.useState(false);
   const [tendero, setTendero] = React.useState(false);
   

@@ -10,19 +10,19 @@ import Header from "../../components/Header";
  */
 function Registro() 
 {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [nombre, setNombre] = useState("");
-  const [cedula, setCedula] = useState("");
-  const [telefono, setTelefono] = useState("");
-  const [direccion, setDireccion] = useState("");
+  const [correo, setCorreo] = useState("ivan.hernandez.coral@gmail.com");
+  const [clave, setClave] = useState("12345");
+  const [nombres, setNombres] = useState("ivan hernandez");
+  const [cedula, setCedula] = useState("13072207");
+  const [telefono, setTelefono] = useState("3014317636");
+  const [direccion, setDireccion] = useState("valle lili");
   const [razonSocial, setRazonSocial] = useState("");
   const [fechaNacimiento, setFechaNacimiento] = useState("");
-  const [sexo, setSexo] = useState("F");
+  const [sexo, setSexo] = useState("M");
   const [politicas, setPoliticas] = useState("");
   const [pais, setPais] = useState("EC");
-  const [provincia, setProvincia] = useState("PROV1");
-  const [ciudad, setCiudad] = useState("Q");
+  const [provincia, setProvincia] = useState("20");
+  const [ciudad, setCiudad] = useState("002");
 
   
 
@@ -33,9 +33,9 @@ function Registro()
 
     if (event.target.checkValidity()) 
     {
-      console.log(email);
-      console.log(password);
-      console.log(nombre);
+      console.log(correo);
+      console.log(clave);
+      console.log(nombres);
       console.log(cedula);
       console.log(telefono);
       console.log(direccion);
@@ -61,15 +61,15 @@ function Registro()
             
             <div className="row form-group">
               <div className="col mt-5 mr-4">
-                <label htmlFor="email">E-mail:</label>
-                <input type="email" className="form-control" id="email" placeholderr="E-mail" name="email" required value={email} onChange={e => setEmail(e.target.value)} />
+                <label htmlFor="correo">E-mail:</label>
+                <input type="correo" className="form-control" id="correo" placeholderr="E-mail" name="correo" required value={correo} onChange={e => setCorreo(e.target.value)} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>
               </div>
               <div className="col mt-5 ml-4">
                 <label htmlFor="pwd">Contraseña:</label>
-                <input type="password" className="form-control" id="pwd" placeholderr="Contraseña" name="pswd" required value={password} onChange={e => setPassword(e.target.value)} />
+                <input type="clave" className="form-control" id="pwd" placeholderr="Contraseña" name="pswd" required value={clave} onChange={e => setClave(e.target.value)} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>
@@ -80,7 +80,7 @@ function Registro()
             <div className="row form-group mt-5">
               <div className="col mr-4">
                 <label htmlFor="nombres">Nombre completo:</label>
-                <input type="text" className="form-control" placeholderr="Enter nombres completos" id="nombres" required value={nombre} onChange={e => setNombre(e.target.value)} />
+                <input type="text" className="form-control" placeholderr="Enter nombres completos" id="nombres" required value={nombres} onChange={e => setNombres(e.target.value)} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>
@@ -139,8 +139,8 @@ function Registro()
               <div className="col ml-4">
                 <label htmlFor="provincia">Provincia:</label>
                 <select className="custom-select" id="provincia" value={provincia} onChange={e => setProvincia(e.target.value)} >
-                    <option value="PROV1">Provincia 1</option>
-                    <option value="PROV2">Provincia 2</option>
+                    <option value="01">AZUAY</option>
+                    <option value="02">BOLIVAR</option>
                   </select>
               </div>
             </div>
@@ -150,9 +150,8 @@ function Registro()
               <div className="col mr-4">
                 <label htmlFor="ciudad">Ciudad:</label>
                 <select className="custom-select" id="ciudad" value={ciudad} onChange={e => setCiudad(e.target.value)} >
-                  <option value="Q">Quito</option>
-                  <option value="I">Ibarra</option>
-                  <option value="G">Guayaquil</option>
+                  <option value="001">CUENCA</option>
+                  <option value="001">GUARANDA</option>
                 </select>
               </div>
               <div className="col ml-4">

@@ -39,6 +39,8 @@ function Carrito()
   // Parece que algo no ha ido bien. Por favor, inténtalo de nuevo más tarde y si el problema persiste ponte en contacto con soporte.
 
 
+
+
   /**
    * Funcion que permite adicionar y eliminar la cantidad de un articulo seleccionado
    */
@@ -60,12 +62,14 @@ function Carrito()
     //Se guarda el articulo en el carrito de compras cuando la cantidad pedida es mayor a cero
     if(articulo.cantidad >= 0)
     {
-      //Se actualiza la nueva cantidad solicitada
-      setArticulosPedido(new Map(mapArticulosPedido.set(articulo.codigo, articulo)));
-
       try
       {
-          localStorage.setItem("@articulosPedido", JSON.stringify(Array.from(mapArticulosPedido.entries())));
+        mapArticulosPedido.set(articulo.codigo, articulo);
+
+        localStorage.setItem("@articulosPedido", JSON.stringify(Array.from(mapArticulosPedido.entries())));
+        
+        //Se actualiza la nueva cantidad solicitada
+        setArticulosPedido(new Map(mapArticulosPedido));
       }
       catch (error) 
       {
@@ -87,8 +91,15 @@ function Carrito()
     try
     {
       mapArticulosPedido.delete(articulo.codigo);
-      setArticulosPedido(new Map(mapArticulosPedido));
+      
       localStorage.setItem("@articulosPedido", JSON.stringify(Array.from(mapArticulosPedido.entries())));
+
+      if(0 === mapArticulosPedido.size)
+      {
+        localStorage.setItem("@cantidadBadge", JSON.stringify(0));
+      }
+
+      setArticulosPedido(new Map(mapArticulosPedido));
     }
     catch (error) 
     {
@@ -106,12 +117,15 @@ function Carrito()
   const calcularTotalPedido = () =>
   {
     let totalPedido = 0;
+    let cantidadBadge = 0;
 
     mapArticulosPedido.forEach((articulo, codigo) => 
     {
-
-      totalPedido += articulo.valor * articulo.cantidad
+      totalPedido += articulo.precio * articulo.cantidad;
+      cantidadBadge += articulo.cantidad;
     });
+
+    localStorage.setItem("@cantidadBadge", JSON.stringify(cantidadBadge));
 
     return totalPedido;
   }
@@ -194,7 +208,7 @@ function Carrito()
 
             <div className="container d-flex justify-content-end align-items-center bgg-warning border-right-0 border-left-0 footer_separacion_acuatex">
               <span className="mr-5 titulo_acuatex">TOTAL</span>
-              <span className="mr-5 titulo_acuatex">${calcularTotalPedido()}</span>
+              <span className="mr-5 titulo_acuatex">${calcularTotalPedido().toFixed(2)}</span>
             </div>
 
             <div className="container d-flex justify-content-end bgg-success mt-4">

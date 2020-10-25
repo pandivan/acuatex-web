@@ -14,11 +14,11 @@ import clienteServices from "../../services/ClienteServices";
  */
 function ActualizarDatos() 
 {
-  const [nuevoEmail, setNuevoEmail] = useState("ivan@gmail.com");
-  const [repetirEmail, setRepetirEmail] = useState("ivan@gmail.com");
-  const [password, setPassword] = useState("123456");
-  const [nuevoPassword, setNuevoPassword] = useState("");
-  const [repetirPassword, setRepetirPassword] = useState("");
+  const [nuevoCorreo, setNuevoCorreo] = useState("ivan@gmail.com");
+  const [repetirCorreo, setRepetirCorreo] = useState("ivan@gmail.com");
+  const [clave, setClave] = useState("123456");
+  const [nuevoClave, setNuevoClave] = useState("");
+  const [repetirClave, setRepetirClave] = useState("");
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
 
@@ -27,10 +27,10 @@ function ActualizarDatos()
   
 
   /**
-   * Función que permite cambiar el email del cliente
+   * Función que permite cambiar el correo del cliente
    * @param event Evento que se genera al enviar el formulario
    */
-  const actualizarEmail = async (event) => 
+  const actualizarCorreo = async (event) => 
   {
     let mensaje = "Las cuentas de correo no coinciden.";
 
@@ -39,11 +39,11 @@ function ActualizarDatos()
 
     if (event.target.checkValidity()) 
     {
-      if(nuevoEmail === repetirEmail)
+      if(nuevoCorreo === repetirCorreo)
       {
         try 
         {
-          let {success, cliente} = await clienteServices.actualizarEmailCliente({ password, nuevoEmail });
+          let {success, cliente} = await clienteServices.actualizarCorreoCliente({ clave, nuevoCorreo });
           
           if(success)
           {
@@ -72,10 +72,10 @@ function ActualizarDatos()
 
 
   /**
-   * Función que permite cambiar el password del cliente
+   * Función que permite cambiar el clave del cliente
    * @param event Evento que se genera al enviar el formulario
    */
-  const actualizarPassword = async (event) => 
+  const actualizarClave = async (event) => 
   {
     let mensaje = "Las contraseñas de correo no coinciden.";
 
@@ -84,11 +84,11 @@ function ActualizarDatos()
 
     if (event.target.checkValidity()) 
     {
-      if(nuevoPassword === repetirPassword)
+      if(nuevoClave === repetirClave)
       {
         try 
         {
-          let {success, cliente} = await clienteServices.actualizarPasswordCliente({ password, nuevoEmail });
+          let {success, cliente} = await clienteServices.actualizarClaveCliente({ clave, nuevoCorreo });
           
           if(success)
           {
@@ -135,14 +135,14 @@ function ActualizarDatos()
             <h5 className="font-weight-bolder">Cambio de dirección de correo electrónico</h5>
               <h6>Si deseas cambiar la dirección de correo electrónico asociada a tu cuenta rellena los campos siguientes. Se solicita tu contraseña por motivos de seguridad.</h6>
               
-              <p>Tu email actual es <span className="font-weight-bold">ivan.hernandez.coral@gmail.com</span></p>
+              <p>Tu correo actual es <span className="font-weight-bold">ivan.hernandez.coral@gmail.com</span></p>
           </div>
 
-          <form className="needs-validation pb-5 bgg-warning" onSubmit={actualizarEmail} style={{width:"66%"}} noValidate>
+          <form className="needs-validation pb-5 bgg-warning" onSubmit={actualizarCorreo} style={{width:"66%"}} noValidate>
             <div className="row form-group">
               <div className="col mt-3">
                 <label htmlFor="pwd">Contraseña Actual</label>
-                <input type="password" className="form-control" id="pwd" placeholderr="Contraseña" name="pswd" required value={password} onChange={e => setPassword(e.target.value)} />
+                <input type="clave" className="form-control" id="pwd" placeholderr="Contraseña" name="pswd" required value={clave} onChange={e => setClave(e.target.value)} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>
@@ -155,15 +155,15 @@ function ActualizarDatos()
 
             <div className="row form-group mt-5 bgg-warning">
               <div className="col mt-3 bgg-success">
-                <label htmlFor="nuevoEmail">Nuevo email</label>
-                <input type="email" className="form-control" id="nuevoEmail" placeholderr="Nuevo email" required value={nuevoEmail} onChange={e => setNuevoEmail(e.target.value)} />
+                <label htmlFor="nuevoCorreo">Nuevo correo</label>
+                <input type="correo" className="form-control" id="nuevoCorreo" placeholderr="Nuevo correo" required value={nuevoCorreo} onChange={e => setNuevoCorreo(e.target.value)} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>
               </div>
               <div className="col mt-3 ml-4 pl-4 pr-0 bgg-info">
-                <label htmlFor="repetirEmail">Repetir email</label>
-                <input type="email" className="form-control" id="repetirEmail" placeholderr="Repetir email" required value={repetirEmail} onChange={e => setRepetirEmail(e.target.value)} />
+                <label htmlFor="repetirCorreo">Repetir correo</label>
+                <input type="correo" className="form-control" id="repetirCorreo" placeholderr="Repetir correo" required value={repetirCorreo} onChange={e => setRepetirCorreo(e.target.value)} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>
@@ -181,13 +181,13 @@ function ActualizarDatos()
           <div className="mt-5 pt-4 separacion_datos_acuatex border-bottom-0 border-right-0 border-left-0 bgg-danger">
             <h5 className="font-weight-bolder mt-5">Cambio de contraseña</h5>
               <h6>Si deseas cambiar la contraseña de acceso a tu cuenta proporciona la siguiente información:</h6>
-              <p>Tu email actual es <span className="font-weight-bold">ivan.hernandez.coral@gmail.com</span></p>    
+              <p>Tu correo actual es <span className="font-weight-bold">ivan.hernandez.coral@gmail.com</span></p>    
           </div>
-          <form className="needs-validation bgg-warning" onSubmit={actualizarPassword} style={{width:"66%"}} noValidate>
+          <form className="needs-validation bgg-warning" onSubmit={actualizarClave} style={{width:"66%"}} noValidate>
             <div className="row form-group">
               <div className="col mt-3">
                 <label htmlFor="pwd">Contraseña Actual</label>
-                <input type="password" className="form-control" id="pwd" placeholderr="Contraseña" name="pswd" required value={password} onChange={e => setPassword(e.target.value)} />
+                <input type="clave" className="form-control" id="pwd" placeholderr="Contraseña" name="pswd" required value={clave} onChange={e => setClave(e.target.value)} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>
@@ -200,15 +200,15 @@ function ActualizarDatos()
 
             <div className="row form-group mt-5 bgg-warning">
               <div className="col mt-3 bgg-success">
-                <label htmlFor="nuevoPassword">Nueva contraseña</label>
-                <input type="nuevoPassword" className="form-control" id="nuevoPassword" placeholderr="Nueva Contraseña" required value={nuevoPassword} onChange={e => setNuevoPassword(e.target.value)} />
+                <label htmlFor="nuevoClave">Nueva contraseña</label>
+                <input type="nuevoClave" className="form-control" id="nuevoClave" placeholderr="Nueva Contraseña" required value={nuevoClave} onChange={e => setNuevoClave(e.target.value)} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>
               </div>
               <div className="col mt-3 ml-4 pl-4 pr-0 bgg-info">
-                <label htmlFor="repetirPassword">Repetir contraseña</label>
-                <input type="repetirPassword" className="form-control" id="repetirPassword" placeholderr="Repetir Contraseña" required value={repetirPassword} onChange={e => setRepetirPassword(e.target.value)} />
+                <label htmlFor="repetirClave">Repetir contraseña</label>
+                <input type="repetirClave" className="form-control" id="repetirClave" placeholderr="Repetir Contraseña" required value={repetirClave} onChange={e => setRepetirClave(e.target.value)} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>

@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Header from "../../components/Header";
 import PopupMensaje from "../../components/PopupMensaje";
 
@@ -13,18 +13,6 @@ function DetalleArticulo(props)
   const [articulo, setArticulo] = useState(props.location.state.articulo);
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
-  const [cantidadBadge, setCantidadBadge] = useState(0);
-
-
-
-  //Este useEffect es temporal mientras llamo desde el api a los articulos y le pongo cantidad = 1
-  // useEffect(() => 
-  // {
-  //   setArticulo(prevState => 
-  //   {
-  //     return {...prevState, cantidad: 1}; 
-  //   });
-  // }, []);
 
 
 
@@ -86,8 +74,19 @@ function DetalleArticulo(props)
       mapArticulosPedido.set(articuloPedido.codigo, articuloPedido);
       localStorage.setItem("@articulosPedido", JSON.stringify(Array.from(mapArticulosPedido.entries())));
 
-      
-      setCantidadBadge(articulo.cantidad + cantidadBadge); 
+
+      //Calculando badges
+      let cantidadBadge = 0;
+
+      mapArticulosPedido.forEach((articulo, codigo) => 
+      {
+        cantidadBadge += articulo.cantidad;
+      });
+
+      localStorage.setItem("@cantidadBadge", JSON.stringify(cantidadBadge));
+
+      //Se actualiza el articulo para pintar el badges
+      setArticulo(prevState => { return {...prevState};});
     } 
     catch (error) 
     {
@@ -111,7 +110,7 @@ function DetalleArticulo(props)
 
   return (
     <div>
-      <Header height={"none"} fondo={""} titulo={"YO AMO ACUATEX"} cantidad={cantidadBadge}/>
+      <Header height={"none"} fondo={""} titulo={"YO AMO ACUATEX"}/>
 
       <div className="container-fluid-sm mt-5 pt-3">
         <div className="container d-flex justify-content-center bgg-success mb-5">

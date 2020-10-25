@@ -1,21 +1,9 @@
 import axios from "axios";
 
 // const BACKEND_URL = "https://api-rest-retail.herokuapp.com/api/cliente/barrio";
-const BACKEND_URL = "http://192.168.1.8:7788/api/cliente/barrio";
+const BACKEND_URL = "http://192.168.1.8:7788/api/cliente";
 
 
-let data = 
-{
-  id: 1010,
-  nombre: "Ivan",
-  cedula: "13072207",
-  email: "ivan.hernandez.coral@gmail.com",
-  razonSocial: "777",
-  dirección: "Calle 45 # 99 39",
-  telefono: "3014317636"
-};
-
-let respuesta = {data};
 
 
 /**
@@ -52,10 +40,8 @@ const actualizarCliente = async (cliente) =>
 {
   try
   {
-    // console.log(JSON.stringify(cliente));
-    // let respuesta = await axios.post(`${BACKEND_URL}`, cliente);
+    let respuesta = await axios.post(`${BACKEND_URL}`, cliente);
     
-
     // console.log("Respuesta API-REST Cliente. ");
     // console.log(JSON.stringify(respuesta));
 
@@ -72,17 +58,17 @@ const actualizarCliente = async (cliente) =>
 
 
 /**
- * Función que permite cambiar el email del cliente
- * @param cliente, Cliente con el email actualizar
+ * Función que permite cambiar el correo del cliente
+ * @param cliente, Cliente con el correo actualizar
  */
-const actualizarEmailCliente = async (cliente) => 
+const actualizarCorreoCliente = async (cliente) => 
 {
   try
   {
     // console.log(JSON.stringify(cliente));
-    // let respuesta = await axios.post(`${BACKEND_URL}`, cliente);
+    let respuesta = await axios.post(`${BACKEND_URL}`, cliente);
 
-    respuesta.data.email = "ivan.hernandez@carvajal.com";
+    respuesta.data.correo = "ivan.hernandez@carvajal.com";
 
     // console.log("Respuesta API-REST Cliente. ");
     // console.log(JSON.stringify(respuesta));
@@ -101,16 +87,16 @@ const actualizarEmailCliente = async (cliente) =>
 
 
 /**
- * Función que permite cambiar el password del cliente
- * @param cliente, Cliente con el password actualizar
+ * Función que permite cambiar el clave del cliente
+ * @param cliente, Cliente con el clave actualizar
  */
-const actualizarPasswordCliente = async (cliente) => 
+const actualizarClaveCliente = async (cliente) => 
 {
   try
   {
     // console.log(JSON.stringify(cliente));
-    // let respuesta = await axios.post(`${BACKEND_URL}`, cliente);
-    respuesta.data.email = "1234";
+    let respuesta = await axios.post(`${BACKEND_URL}`, cliente);
+    respuesta.data.correo = "1234";
 
     // console.log("Respuesta API-REST Cliente. ");
     // console.log(JSON.stringify(respuesta));
@@ -128,14 +114,14 @@ const actualizarPasswordCliente = async (cliente) =>
 
 
 /**
- * Función que permite validar un cliente, según login y password
+ * Función que permite validar un cliente, según login y clave
  * @param cliente, Cliente a consultar
  */
 const validarCliente = async (cliente) => 
 {
   try
   {
-    // let respuesta = await axios.post(`${BACKEND_URL}/validar`, cliente);
+    let respuesta = await axios.post(`${BACKEND_URL}/validar`, cliente);
 
     console.log("Respuesta API-REST Consultar Cliente ");
     console.log(JSON.stringify(respuesta));
@@ -155,7 +141,7 @@ export default
 {
   registrarCliente,
   actualizarCliente,
-  actualizarEmailCliente,
-  actualizarPasswordCliente,
+  actualizarCorreoCliente,
+  actualizarClaveCliente,
   validarCliente,
 };
