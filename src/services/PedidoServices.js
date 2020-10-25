@@ -100,7 +100,7 @@ const getAllPedidos = async () =>
     // console.log(JSON.stringify(pedido));
     let respuesta = await axios.get(`${BACKEND_URL}`);
 
-    // console.log("Respuesta API-REST Productos. ");
+    // console.log("Respuesta API-REST Articulos. ");
     // console.log(JSON.stringify(respuesta));
 
     return { success: ("" !== respuesta.data), arrayPedidos: respuesta.data };

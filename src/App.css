@@ -65,8 +65,8 @@
 
 
 
-/* CSS Productos */
-.btn_categoria_acuatex
+/* CSS Articulos */
+.btn_grupo_acuatex
 {
   width: 165px;
   height: 65px;
@@ -76,13 +76,13 @@
   border-width: 3px;
 }
 
-.btn_categoria_acuatex:hover
+.btn_grupo_acuatex:hover
 {
   color: black;
   border-color: black;
 }
 
-.img_producto_acuatex
+.img_articulo_acuatex
 {
   height: 356px; 
   width: 356px;
@@ -93,7 +93,7 @@
 }
 
 
-.img_producto_acuatex:hover
+.img_articulo_acuatex:hover
 {
   filter: opacity(.5);
 }

@@ -13,7 +13,7 @@ class PlantillaUI extends Component
      super(props);
      this.state = 
      {
-       arrayCategorias: []
+       arrayGrupos: []
      };
   }
 
@@ -30,7 +30,7 @@ class PlantillaUI extends Component
     {
       this.setState(
       {
-        arrayCategorias: responseJson.categories,
+        arrayGrupos: responseJson.categories,
       });
     })
     .catch((error) =>
@@ -47,7 +47,7 @@ class PlantillaUI extends Component
           <Text>
             Esto es una plantilla
             {"\n"}
-            { JSON.stringify(this.state.arrayCategorias) }
+            { JSON.stringify(this.state.arrayGrupos) }
           </Text>
         </View>
     );

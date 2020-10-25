@@ -13,7 +13,7 @@ function MenuTienda()
 {
   return (
     <Tab.Navigator 
-      initialRouteName="Productos" 
+      initialRouteName="Articulos" 
       headerMode ="none"
       screenOptions={({ route }) => (
       {

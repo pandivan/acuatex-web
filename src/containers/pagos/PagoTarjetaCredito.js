@@ -35,11 +35,11 @@ function Pagos()
     {
       try 
       {
-        // let {success, productos} = await productoServices.getAllProductos();
+        // let {success, articulos} = await articuloServices.getAllArticulos();
 
         // if (success) 
         // {
-        //   setProductos(productos);
+        //   setArticulos(articulos);
         //   setLoading(false);
         // }
       } 

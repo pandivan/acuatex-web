@@ -27,7 +27,7 @@ NombreClase.defaultProps=
   edad: 35
 }
 
-* en la clase padre <Producto producto={producto}/> y en la clase hija <Text>{this.props.producto.name}</Text> es obligatorio colocar la palabra reservada props en la clase hija para poder acceder al parametro enviado... no tiene nada q ver con el constructor(props) y super(props)
+* en la clase padre <Articulo articulo={articulo}/> y en la clase hija <Text>{this.props.articulo.name}</Text> es obligatorio colocar la palabra reservada props en la clase hija para poder acceder al parametro enviado... no tiene nada q ver con el constructor(props) y super(props)
 
 * En los componentes de funcion si debo cachar el parametro q envie desde el padre en el metodo 
 

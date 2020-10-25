@@ -43,7 +43,7 @@ function Header(props)
     <nav className="navbar navbar-expand-sm align-items-start py-4 bgg-dark" style={headerStyle}>
       <ul className="navbar-nav mr-auto bgg-success">
         <li className="mr-3">
-          <Link to="/productos" className="nav-link text-secondary font_size_navbar_acuatex">Productos</Link>
+          <Link to="/articulos" className="nav-link text-secondary font_size_navbar_acuatex">Articulos</Link>
         </li>
         <li className="mr-3">
           <Link to="/estilos" className="nav-link text-secondary font_size_navbar_acuatex">Estilos</Link>

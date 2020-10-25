@@ -16,7 +16,7 @@ function MetodosPago()
 
   useEffect(() => 
   {
-    console.log("useEffect Producto");
+    console.log("useEffect Articulo");
 
     /**
      * Metodo que permite visualizar el resumen de la compra
@@ -25,11 +25,11 @@ function MetodosPago()
     {
       try 
       {
-        // let {success, productos} = await productoServices.getAllProductos();
+        // let {success, articulos} = await articuloServices.getAllArticulos();
 
         // if (success) 
         // {
-        //   setProductos(productos);
+        //   setArticulos(articulos);
         //   setLoading(false);
         // }
       } 

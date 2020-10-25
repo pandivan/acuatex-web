@@ -13,7 +13,7 @@ import clienteServices from "../../services/ClienteServices";
 function Login(props) 
 {
   const [isTokenValido, setTokenValido] = useState(false);
-  const [login, setLogin] = useState("ivan.hernandez.coral@gmail.com");
+  const [email, setEmail] = useState("ivan.hernandez.coral@gmail.com");
   const [password, setPassword] = useState("Cusito");
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
@@ -61,7 +61,7 @@ function Login(props)
     {
       try 
       {
-        let {success, cliente} = await clienteServices.validarCliente({ login, password });
+        let {success, cliente} = await clienteServices.validarCliente({ email, password });
         
         if(success)
         {
@@ -102,7 +102,7 @@ function Login(props)
   
   return (
     isTokenValido ?
-    <Redirect to={"/productos"} />  
+    <Redirect to={"/articulos"} />  
     :
     <div className="bgg-success">
       <Header height={"none"} fondo={""} titulo={""}/>
@@ -113,7 +113,7 @@ function Login(props)
           <form className="needs-validation bgg-warning" onSubmit={validarFormulario} noValidate>
             <div className="form-group mt-5">
               <label htmlFor="email">E-mail:</label>
-              <input type="email" className="form-control" id="email" placeholder="E-mail" name="email" required value={login} onChange={e => setLogin(e.target.value)} />
+              <input type="email" className="form-control" id="email" placeholder="E-mail" name="email" required value={email} onChange={e => setEmail(e.target.value)} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
               </div>

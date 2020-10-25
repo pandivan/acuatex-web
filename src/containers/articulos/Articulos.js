@@ -1,37 +1,37 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
-import productoServices from "../../services/ProductoServices";
+import articuloServices from "../../services/ArticuloServices";
 
 
 
 /**
- * Componente de función que permite visualizar todos los productos
+ * Componente de función que permite visualizar todos los articulos
  */
-function Productos() 
+function Articulos() 
 {
   const [loading, setLoading] = useState(true);
-  const [lstProductos, setProductos] = useState([]);
+  const [lstArticulos, setArticulos] = useState([]);
 
 
   
 
   useEffect(() => 
   {
-    console.log("useEffect Producto");
+    console.log("useEffect Articulo");
 
     /**
-     * Metodo que permite cargar los productos desde el API-REST
+     * Metodo que permite cargar los articulos desde el API-REST
      */
-    const cargarProductos = async () => 
+    const cargarArticulos = async () => 
     {
       try 
       {
-        let {success, productos} = await productoServices.getAllProductos();
+        let {success, articulos} = await articuloServices.getAllArticulos();
 
         if (success) 
         {
-          setProductos(productos);
+          setArticulos(articulos);
           setLoading(false);
         }
       } 
@@ -42,7 +42,7 @@ function Productos()
       }
     };
 
-    cargarProductos();
+    cargarArticulos();
   }, []);
   
 
@@ -60,15 +60,15 @@ function Productos()
           :
           <div className="container d-flex flex-wrap p-0 pt-2 bgg-secondary mt-5">
             {
-              lstProductos.map(producto => 
+              lstArticulos.map(articulo => 
               (
-                <Link key={producto.id} to=
+                <Link key={articulo.codigo} to=
                 {{
-                    pathname: "/detalleproducto",
-                    state: { producto }
+                    pathname: "/detallearticulo",
+                    state: { articulo }
                 }}
                 >
-                  <img className="img_producto_acuatex mr-4 mb-4" src={require(`../../assets/${producto.id}.png`)} alt={producto.nombre}/>
+                  <img className="img_articulo_acuatex mr-4 mb-4" src={require(`../../assets/${articulo.codigo}.png`)} alt={articulo.nombre}/>
                 </Link>
               ))
             }
@@ -80,4 +80,4 @@ function Productos()
   );
 }
 
-export default Productos;
+export default Articulos;

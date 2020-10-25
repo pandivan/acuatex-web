@@ -5,11 +5,11 @@ import Login from "./containers/seguridad/Login";
 import Registro from "./containers/seguridad/Registro";
 import Ajustes from "./containers/seguridad/Ajustes";
 import ActualizarDatos from "./containers/seguridad/ActualizarDatos";
-import Menu from "./containers/productos/Menu";
-import Estilos from "./containers/productos/Estilos";
-import Productos from "./containers/productos/Productos";
-import DetalleProducto from "./containers/productos/DetalleProducto";
-import Carrito from "./containers/productos/Carrito";
+import Menu from "./containers/articulos/Menu";
+import Estilos from "./containers/articulos/Estilos";
+import Articulos from "./containers/articulos/Articulos";
+import DetalleArticulo from "./containers/articulos/DetalleArticulo";
+import Carrito from "./containers/articulos/Carrito";
 import MetodosPago from "./containers/pagos/MetodosPago";
 import PagoTarjetaCredito from "./containers/pagos/PagoTarjetaCredito";
 import PagoPSE from "./containers/pagos/PagoPSE";
@@ -37,15 +37,15 @@ function App()
         <Registro />
       </Route>
 
-      <Route path="/productos">
-        <Productos />
+      <Route path="/articulos">
+        <Articulos />
       </Route>
 
       <Route path="/estilos">
         <Estilos />
       </Route>
 
-      <Route path="/detalleproducto" component={DetalleProducto} />
+      <Route path="/detallearticulo" component={DetalleArticulo} />
 
       <Route path="/carrito">
         <Carrito />

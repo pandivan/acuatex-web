@@ -2,8 +2,8 @@ import * as React from "react";
 import { Text, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import Productos from "../containers/productos/Productos";
-import Carrito from "../containers/productos/Carrito";
+import Articulos from "../containers/articulos/Articulos";
+import Carrito from "../containers/articulos/Carrito";
 import MenuHistorialPedido from "../routes/MenuHistorialPedido";
 import Ajustes from "../containers/login/Ajustes";
 
@@ -43,7 +43,7 @@ function MenuCliente()
 {
   return (
     <Tab.Navigator 
-      initialRouteName="Productos" 
+      initialRouteName="Articulos" 
       headerMode ="none"
       screenOptions={({ route }) => (
       {
@@ -51,7 +51,7 @@ function MenuCliente()
           {
             switch (route.name) 
             {
-              case "Productos": 
+              case "Articulos": 
                 return (
                   <Ionicons
                     name={focused ? "ios-restaurant" : "ios-restaurant"}
@@ -102,7 +102,7 @@ function MenuCliente()
             //     />
             //   );
             // } 
-            // else if (route.name === "Productos") 
+            // else if (route.name === "Articulos") 
             // {
             //   return (
             //     <Ionicons
@@ -121,7 +121,7 @@ function MenuCliente()
           labelStyle: {fontSize: 16},
         }}
     >
-      <Tab.Screen name="Productos" component={Productos} />
+      <Tab.Screen name="Articulos" component={Articulos} />
       <Tab.Screen name="Carrito" component={Carrito} />
       <Tab.Screen name="Historial" component={MenuHistorialPedido} />
       <Tab.Screen name="Más" component={Ajustes} />

@@ -7,11 +7,11 @@ import PopupMensaje from "../../components/PopupMensaje";
 
 
 /**
- * Componente funcion que permite renderizar el carrito de compras con los productos seleccionados
+ * Componente funcion que permite renderizar el carrito de compras con los articulos seleccionados
  */
 function Carrito() 
 {
-	const [mapProductosPedido, setProductosPedido] = useState(new Map());
+	const [mapArticulosPedido, setArticulosPedido] = useState(new Map());
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
 	
@@ -24,14 +24,14 @@ function Carrito()
 
 		try
 		{
-			let mapProductosPedidoStorage = new Map(JSON.parse(localStorage.getItem("@productosPedido")));
+			let mapArticulosPedidoStorage = new Map(JSON.parse(localStorage.getItem("@articulosPedido")));
 
-			setProductosPedido(mapProductosPedidoStorage);
+			setArticulosPedido(mapArticulosPedidoStorage);
 		}
 		catch(error)
 		{
 			//TODO: Guardar log del error en BD
-      setMensajePopup("En el momento, no es posible cargar los productos del pedido.");
+      setMensajePopup("En el momento, no es posible cargar los articulos del pedido.");
       setMostrarPopup(true);
 		}
   }, []);
@@ -40,37 +40,37 @@ function Carrito()
 
 
   /**
-   * Funcion que permite adicionar y eliminar la cantidad de un producto seleccionado
+   * Funcion que permite adicionar y eliminar la cantidad de un articulo seleccionado
    */
-  const adicionarEliminarProducto = (producto, isAdicionar) =>
+  const adicionarEliminarArticulo = (articulo, isAdicionar) =>
   {
     if(isAdicionar)
     {
-      producto.cantidad += 1;
+      articulo.cantidad += 1;
     }
     else
     {
-      if(1 !== producto.cantidad)
+      if(1 !== articulo.cantidad)
       {
-          producto.cantidad -= 1;
+          articulo.cantidad -= 1;
       }
     }
 
 
-    //Se guarda el producto en el carrito de compras cuando la cantidad pedida es mayor a cero
-    if(producto.cantidad >= 0)
+    //Se guarda el articulo en el carrito de compras cuando la cantidad pedida es mayor a cero
+    if(articulo.cantidad >= 0)
     {
       //Se actualiza la nueva cantidad solicitada
-      setProductosPedido(new Map(mapProductosPedido.set(producto.id, producto)));
+      setArticulosPedido(new Map(mapArticulosPedido.set(articulo.codigo, articulo)));
 
       try
       {
-          localStorage.setItem("@productosPedido", JSON.stringify(Array.from(mapProductosPedido.entries())));
+          localStorage.setItem("@articulosPedido", JSON.stringify(Array.from(mapArticulosPedido.entries())));
       }
       catch (error) 
       {
           //TODO: Guardar log del error en BD
-          setMensajePopup("En el momento, no es posible adicionar productos.");
+          setMensajePopup("En el momento, no es posible adicionar articulos.");
           setMostrarPopup(true);
       }
     }
@@ -80,22 +80,40 @@ function Carrito()
 
 
   /**
-   * Funcion que permite eliminar del carrito de compras el producto seleccionado
+   * Funcion que permite eliminar del carrito de compras el articulo seleccionado
    */
-  const eliminarProducto = (producto) =>
+  const eliminarArticulo = (articulo) =>
   {
     try
     {
-      mapProductosPedido.delete(producto.id);
-      setProductosPedido(new Map(mapProductosPedido));
-      localStorage.setItem("@productosPedido", JSON.stringify(Array.from(mapProductosPedido.entries())));
+      mapArticulosPedido.delete(articulo.codigo);
+      setArticulosPedido(new Map(mapArticulosPedido));
+      localStorage.setItem("@articulosPedido", JSON.stringify(Array.from(mapArticulosPedido.entries())));
     }
     catch (error) 
     {
       //TODO: Guardar log del error en BD
-      setMensajePopup("En el momento, no es posible eliminar el producto.");
+      setMensajePopup("En el momento, no es posible eliminar el articulo.");
       setMostrarPopup(true);
     }
+  }
+
+
+
+    /**
+   * Funcion que permite calcular el total del pedido
+   */
+  const calcularTotalPedido = () =>
+  {
+    let totalPedido = 0;
+
+    mapArticulosPedido.forEach((articulo, codigo) => 
+    {
+
+      totalPedido += articulo.valor * articulo.cantidad
+    });
+
+    return totalPedido;
   }
 
 
@@ -114,7 +132,7 @@ function Carrito()
    return (
 	 	<div>
 			{
-				0 === mapProductosPedido.size ? 
+				0 === mapArticulosPedido.size ? 
 				<span>No hay data</span>
         :
         <div>
@@ -128,7 +146,7 @@ function Carrito()
             <div className="container d-flex align-items-center bgg-warning border-top-0 border-right-0 border-left-0 footer_separacion_acuatex mb-4">
 
               <div className="p-2 bgg-danger">
-                <span className="subtitulo_acuatex">Producto</span>
+                <span className="subtitulo_acuatex">Articulo</span>
               </div>
 
               <div className="bgg-dark" style={{width:"36%"}} />
@@ -145,29 +163,29 @@ function Carrito()
             </div>
 
             {
-              Array.from(mapProductosPedido.values()).map(producto =>
+              Array.from(mapArticulosPedido.values()).map(articulo =>
               (
-                <div key={producto.id} className="d-flex justify-content-center align-items-center bgg-secondary mb-4">
+                <div key={articulo.codigo} className="d-flex justify-content-center align-items-center bgg-secondary mb-4">
                 <div className="p-2 bgg-info">
-                  <img src={require("../../assets/" + producto.id + ".png")} alt={producto.nombre} style={{height:146, width:146}}/>
+                  <img src={require("../../assets/" + articulo.codigo + ".png")} alt={articulo.nombre} style={{height:146, width:146}}/>
                 </div>
                 <div className="bgg-danger" style={{width:"1%"}}></div>
                 <div className="bgg-warning" style={{width:100}}>
-                  <p style={{color:"#777B7C"}}>{producto.nombre}</p>
+                  <p style={{color:"#777B7C"}}>{articulo.nombre}</p>
                 </div>
                 <div className="bgg-danger" style={{width:"11%"}}></div>
                 <div className="btn-group align-items-center btn_cantidad_acuatex">
-                  <button type="button" className="btn btn_add_acuatex" onClick={() => adicionarEliminarProducto(producto, false)}><i className="fa fa-minus fa-1x"></i></button>
-                  <span className="mx-4">{producto.cantidad}</span>
-                  <button type="button" className="btn btn_add_acuatex" onClick={() => adicionarEliminarProducto(producto, true)}><i className="fa fa-plus fa-1x"></i></button>
+                  <button type="button" className="btn btn_add_acuatex" onClick={() => adicionarEliminarArticulo(articulo, false)}><i className="fa fa-minus fa-1x"></i></button>
+                  <span className="mx-4">{articulo.cantidad}</span>
+                  <button type="button" className="btn btn_add_acuatex" onClick={() => adicionarEliminarArticulo(articulo, true)}><i className="fa fa-plus fa-1x"></i></button>
                 </div>
                 <div className="bgg-danger" style={{width:"8%"}}></div>
                 <div className="p-2 bgg-primary">
-                  <span className="titulo_acuatex">${producto.cantidad * producto.precio}</span>
+                  <span className="titulo_acuatex">${(articulo.cantidad * articulo.precio).toFixed(2)}</span>
                 </div>
                 <div className="bgg-danger" style={{width:"11%"}}></div>
                 <div className="p-2 bgg-primary">
-                  <button type="button" className="btn" onClick={() => eliminarProducto(producto)}><i className="fa fa-times fa-2x btn_delete_acuatex"></i></button>
+                  <button type="button" className="btn" onClick={() => eliminarArticulo(articulo)}><i className="fa fa-times fa-2x btn_delete_acuatex"></i></button>
                 </div>
               </div>
               ))
@@ -176,7 +194,7 @@ function Carrito()
 
             <div className="container d-flex justify-content-end align-items-center bgg-warning border-right-0 border-left-0 footer_separacion_acuatex">
               <span className="mr-5 titulo_acuatex">TOTAL</span>
-              <span className="mr-5 titulo_acuatex">$290</span>
+              <span className="mr-5 titulo_acuatex">${calcularTotalPedido()}</span>
             </div>
 
             <div className="container d-flex justify-content-end bgg-success mt-4">

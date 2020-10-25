@@ -6,27 +6,27 @@ export const Contexto = createContext();
 
 const ContextoProvider = (props) => 
 {
-  const [lstProductos, setLstProductos] = useState([]);
+  const [lstArticulos, setLstArticulos] = useState([]);
   const [loading, setLoading] = useState(true);
 
 
   /**
-   * Función que permite obtener todas los productos segun la categoria seleccionada
+   * Función que permite obtener todas los articulos segun la grupo seleccionada
    */
-  const getAllProductos = async () => 
+  const getAllArticulos = async () => 
   {
     try 
     {
-        console.log("getAllProductos....");
+        console.log("getAllArticulos....");
         // let respuesta = await axios.get(`${BACKEND_URL}`);
 
-        // console.log("Respuesta API-REST Productos. ");
+        // console.log("Respuesta API-REST Articulos. ");
         // console.log(JSON.stringify(respuesta.data));
 
-        setLstProductos(respuesta.data);
+        setLstArticulos(respuesta.data);
         setLoading(false);
 
-        return { success: "" !== respuesta.data, productos: respuesta.data };
+        return { success: "" !== respuesta.data, articulos: respuesta.data };
     } 
     catch (error) 
     {
@@ -38,7 +38,7 @@ const ContextoProvider = (props) =>
 
 
   return (
-    <Contexto.Provider value={{ lstProductos, loading, getAllProductos }}>
+    <Contexto.Provider value={{ lstArticulos, loading, getAllArticulos }}>
       {props.children}
     </Contexto.Provider>
   );
