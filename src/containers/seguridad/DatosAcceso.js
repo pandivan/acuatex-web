@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-
 import Header from "../../components/Header";
 import PopupMensaje from "../../components/PopupMensaje";
 
 import clienteServices from "../../services/ClienteServices"; 
+import Constantes from "../../Constantes";
 
 
 
@@ -12,19 +12,22 @@ import clienteServices from "../../services/ClienteServices";
 /**
  * Componente funcion que permite registrar un nuevo cliente en la plataforma
  */
-function ActualizarDatos() 
+function DatosAcceso() 
 {
   const [nuevoCorreo, setNuevoCorreo] = useState("ivan@gmail.com");
   const [repetirCorreo, setRepetirCorreo] = useState("ivan@gmail.com");
-  const [clave, setClave] = useState("123456");
-  const [nuevoClave, setNuevoClave] = useState("");
+  const [clave, setClave] = useState("12345");
+  const [nuevaClave, setNuevaClave] = useState("");
   const [repetirClave, setRepetirClave] = useState("");
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
+  const [cliente, setCliente] = useState(JSON.parse(localStorage.getItem("@cliente")));
+
 
   
-  //console.log("ActualizarDatos...")
-  
+  console.log("DatosAcceso...")
+
+
 
   /**
    * Función que permite cambiar el correo del cliente
@@ -32,7 +35,7 @@ function ActualizarDatos()
    */
   const actualizarCorreo = async (event) => 
   {
-    let mensaje = "Las cuentas de correo no coinciden.";
+    let mensaje = "Las cuenta de correo no coinciden.";
 
     event.preventDefault();
     event.target.className += " was-validated";
@@ -41,26 +44,31 @@ function ActualizarDatos()
     {
       if(nuevoCorreo === repetirCorreo)
       {
-        try 
+        cliente.claveIngresada = clave;
+        cliente.nuevoCorreo = nuevoCorreo;
+        
+        let { status, clienteBD } = await clienteServices.actualizarCliente(cliente);
+
+        if(Constantes.STATUS_OK === status)
         {
-          let {success, cliente} = await clienteServices.actualizarCorreoCliente({ clave, nuevoCorreo });
-          
-          if(success)
+          if("" === clienteBD)
           {
-            // console.log("Iniciando sesion: ".concat(cliente.tipoCliente));
-            //Gurdando token en AsyncStorage...
-            localStorage.setItem("@cliente", JSON.stringify(cliente));
-            mensaje = "La cuenta de correo fue actualizada correctamente.";
+            //Fallo validando la contraseña actual digitada
+            mensaje = "La contraseña actual no es correcta. Es necesario\nque indiques tu contraseña actual para poder\ncambiar la cuenta de correo.";
           }
           else
           {
-            mensaje = "La contraseña actual no es correcta. Es necesario que indiques tu contraseña actual para poder cambiar la cuenta de correo.";
+            //El cliente se actualizo exitosamente y se guarda token en AsyncStorage
+            localStorage.setItem("@cliente", JSON.stringify(clienteBD));
+            mensaje = "La cuenta de correo fue actualizada correctamente.";
+
+            setCliente(clienteBD);
           }
-        } 
-        catch (error) 
+        }
+        else
         {
-          mensaje = "No es posible en el momento actualizar la cuenta de correo, favor intentarlo más tarde.";
-          //TODO: Guardar log en BD
+          //Valida si hubo un error en el api-rest al validar el cliente
+          mensaje = "No es posible en el momento actualizar la cuenta de correo,\nfavor intentarlo más tarde.";
         }
       }
       
@@ -84,27 +92,31 @@ function ActualizarDatos()
 
     if (event.target.checkValidity()) 
     {
-      if(nuevoClave === repetirClave)
+      if(nuevaClave === repetirClave)
       {
-        try 
+        cliente.claveIngresada = clave;
+        cliente.nuevaClave = nuevaClave;
+
+        let { status, clienteBD } = await clienteServices.actualizarCliente(cliente);
+
+        if(Constantes.STATUS_OK === status)
         {
-          let {success, cliente} = await clienteServices.actualizarClaveCliente({ clave, nuevoCorreo });
-          
-          if(success)
+          if("" === clienteBD)
           {
-            // console.log("Iniciando sesion: ".concat(cliente.tipoCliente));
-            //Gurdando token en AsyncStorage...
-            localStorage.setItem("@cliente", JSON.stringify(cliente));
-            mensaje = "Contraseña actualizada correctamente";
+            //Fallo validando la contraseña actual digitada
+            mensaje = "La contraseña actual no es correcta. Es necesario\nque indiques tu contraseña actual para poder\ncambiarla por una nueva.";
           }
           else
           {
-            mensaje = "La contraseña actual no es correcta. Es necesario que indiques tu contraseña actual para poder cambiarla por una nueva.";
+            //El cliente se actualizo exitosamente y se guarda token en AsyncStorage
+            localStorage.setItem("@cliente", JSON.stringify(clienteBD));
+            mensaje = "Contraseña actualizada correctamente";
           }
-        } 
-        catch (error) 
+        }
+        else
         {
-          mensaje = "En el momento no es posible actualizar la contraseña, favor intentarlo más tarde.";
+          //Valida si hubo un error en el api-rest al validar el cliente
+          mensaje = "En el momento no es posible actualizar la contraseña,\nfavor intentarlo más tarde.";
         }
       }
 
@@ -112,6 +124,9 @@ function ActualizarDatos()
       setMostrarPopup(true);
     }
   };
+
+
+  
 
   
   /**
@@ -135,14 +150,14 @@ function ActualizarDatos()
             <h5 className="font-weight-bolder">Cambio de dirección de correo electrónico</h5>
               <h6>Si deseas cambiar la dirección de correo electrónico asociada a tu cuenta rellena los campos siguientes. Se solicita tu contraseña por motivos de seguridad.</h6>
               
-              <p>Tu correo actual es <span className="font-weight-bold">ivan.hernandez.coral@gmail.com</span></p>
+              <p>Tu correo actual es <span className="font-weight-bold">{cliente.correo}</span></p>
           </div>
 
           <form className="needs-validation pb-5 bgg-warning" onSubmit={actualizarCorreo} style={{width:"66%"}} noValidate>
             <div className="row form-group">
               <div className="col mt-3">
                 <label htmlFor="pwd">Contraseña Actual</label>
-                <input type="clave" className="form-control" id="pwd" placeholderr="Contraseña" name="pswd" required value={clave} onChange={e => setClave(e.target.value)} />
+                <input type="password" className="form-control" id="pwd" placeholderr="Contraseña" name="pswd" required value={clave} onChange={e => setClave(e.target.value)} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>
@@ -181,13 +196,13 @@ function ActualizarDatos()
           <div className="mt-5 pt-4 separacion_datos_acuatex border-bottom-0 border-right-0 border-left-0 bgg-danger">
             <h5 className="font-weight-bolder mt-5">Cambio de contraseña</h5>
               <h6>Si deseas cambiar la contraseña de acceso a tu cuenta proporciona la siguiente información:</h6>
-              <p>Tu correo actual es <span className="font-weight-bold">ivan.hernandez.coral@gmail.com</span></p>    
+              <p>Tu correo actual es <span className="font-weight-bold">{cliente.correo}</span></p>    
           </div>
           <form className="needs-validation bgg-warning" onSubmit={actualizarClave} style={{width:"66%"}} noValidate>
             <div className="row form-group">
               <div className="col mt-3">
                 <label htmlFor="pwd">Contraseña Actual</label>
-                <input type="clave" className="form-control" id="pwd" placeholderr="Contraseña" name="pswd" required value={clave} onChange={e => setClave(e.target.value)} />
+                <input type="password" className="form-control" id="pwd" placeholderr="Contraseña" name="pswd" required value={clave} onChange={e => setClave(e.target.value)} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>
@@ -201,14 +216,14 @@ function ActualizarDatos()
             <div className="row form-group mt-5 bgg-warning">
               <div className="col mt-3 bgg-success">
                 <label htmlFor="nuevoClave">Nueva contraseña</label>
-                <input type="nuevoClave" className="form-control" id="nuevoClave" placeholderr="Nueva Contraseña" required value={nuevoClave} onChange={e => setNuevoClave(e.target.value)} />
+                <input type="password" className="form-control" id="nuevaClave" placeholderr="Nueva Contraseña" required value={nuevaClave} onChange={e => setNuevaClave(e.target.value)} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>
               </div>
               <div className="col mt-3 ml-4 pl-4 pr-0 bgg-info">
                 <label htmlFor="repetirClave">Repetir contraseña</label>
-                <input type="repetirClave" className="form-control" id="repetirClave" placeholderr="Repetir Contraseña" required value={repetirClave} onChange={e => setRepetirClave(e.target.value)} />
+                <input type="password" className="form-control" id="repetirClave" placeholderr="Repetir Contraseña" required value={repetirClave} onChange={e => setRepetirClave(e.target.value)} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>
@@ -238,4 +253,4 @@ function ActualizarDatos()
 
 
 
-export default ActualizarDatos;
+export default DatosAcceso;

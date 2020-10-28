@@ -103,41 +103,20 @@ function Registro({isRegistro})
   }
 
 
-
-  const onChange = (e) => 
+  const onChangeCorreo = (e) => 
   {
-    switch(e.target.id)
-    {
-      case "txtCorreo":
-        setCorreo(e.target.value);
-        break;
-
-      case "txtClave":
-        setClave(e.target.value);
-        break;
-
-      case "txtNombres":
-        setNombres(e.target.value);
-        break;
-
-      case "txtCedula":
-        setCedula(e.target.value);
-        break;
-
-      case "txtTelefono":
-        setTelefono(e.target.value);
-        break;
-      
-      default:
-        
-        break;
-    }
+    console.log(e.target.value);
+    setCorreo(e.target.value)
   }
 
-  const onValor = () => 
+
+  const onChangeClave = (e) => 
   {
-    return nombres;
+    console.log(e.target.value);
+    setClave(e.target.value)
   }
+
+
 
 
   return (
@@ -148,19 +127,39 @@ function Registro({isRegistro})
         <h2>{isRegistro ? "ESCRIBE TUS " : null} DATOS PERSONALES</h2>
         <form className="needs-validation bgg-warning" onSubmit={validarFormulario} noValidate>
 
-          {/* <DatosPersonalesHeader onChange={onChange} valor={correo clave}/> */}
+        <DatosPersonalesHeader onChangeCorreo={onChangeCorreo} valorCorreo={correo} onChangeClave={onChangeClave} valorClave={clave}/>
+          
+          {/* {
+            isRegistro && 
+              <div className="row form-group">
+                <div className="col mt-5 mr-4">
+                  <label htmlFor="correo">E-mail:</label>
+                  <input type="correo" className="form-control" id="correo" placeholderr="E-mail" name="correo" required value={correo} onChange={onChangeCorreo} />
+                  <div className="invalid-feedback">
+                    Este campo es obligatorio.
+                  </div>
+                </div>
+                <div className="col mt-5 ml-4">
+                  <label htmlFor="pwd">Contraseña:</label>
+                  <input type="password" className="form-control" id="pwd" placeholderr="Contraseña" name="pswd" required value={clave} onChange={e => setClave(e.target.value)} />
+                  <div className="invalid-feedback">
+                    Este campo es obligatorio.
+                  </div>
+                </div>
+              </div>
+          } */}
 
           <div className="row form-group mt-5">
             <div className="col mr-4">
               <label htmlFor="nombres">Nombre completo:</label>
-              <input type="text" className="form-control" placeholderr="Enter nombres completos" id="txtNombres" required value={onValor()} onChange={onChange} />
+              <input type="text" className="form-control" placeholderr="Enter nombres completos" id="nombres" required value={nombres} onChange={e => setNombres(e.target.value)} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
               </div>
             </div>
             <div className="col ml-4">
               <label htmlFor="cedula">Cedula:</label>
-              <input type="text" className="form-control" placeholderr="Enter cedula" id="txtCedula" required value={cedula} onChange={onChange} />
+              <input type="text" className="form-control" placeholderr="Enter cedula" id="cedula" required value={cedula} onChange={e => setCedula(e.target.value)} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
               </div>
@@ -171,7 +170,7 @@ function Registro({isRegistro})
           <div className="row form-group mt-5">
             <div className="col mr-4">
               <label htmlFor="telefono">Número de teléfono:</label>
-              <input type="text" className="form-control" placeholderr="Enter teléfono" id="txtTelefono" required value={telefono} onChange={onChange} />
+              <input type="text" className="form-control" placeholderr="Enter teléfono" id="telefono" required value={telefono} onChange={e => setTelefono(e.target.value)} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
               </div>

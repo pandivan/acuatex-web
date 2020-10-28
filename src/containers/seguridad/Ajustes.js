@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import * as React from "react";
+// import React, { useState } from "react";
 
 import { Link, useHistory } from "react-router-dom";
 
@@ -34,17 +35,17 @@ function Ajustes()
           <h3 className="font-weight-bolder">MI CUENTA</h3>
 
           <div className="mt-5 bgg-danger">
-            <Link to="/registro" className="text-dark"><h5 className="font-weight-bolder m-0">Compras</h5></Link>
+            <Link to="/" className="text-dark"><h5 className="font-weight-bolder m-0">Compras</h5></Link>
             <small>Consulta la información y el estado de tus pedidos online. También puedes cancelar el pedido o solicitar una devolución.</small>
           </div>
 
           <div className="mt-5 bgg-danger">
-            <Link to="/registro" className="text-dark"><h5 className="font-weight-bolder m-0">Datos personales</h5></Link>
+            <Link to="/usuario/informacion-personal" className="text-dark"><h5 className="font-weight-bolder m-0">Datos personales</h5></Link>
             <small>Podrás acceder y modificar tus datos personales (nombre, dirección de facturación, teléfono,...) para facilitar tus futuras compras y notificarnos cambios en tus datos de contacto.</small>
           </div>
 
           <div className="mt-5 bgg-danger">
-            <Link to="/actualizar_datos" className="text-dark"><h5 className="font-weight-bolder m-0">Datos de acceso</h5></Link>
+            <Link to="/usuario/cuenta/datos-acceso" className="text-dark"><h5 className="font-weight-bolder m-0">Datos de acceso</h5></Link>
             <small>Podrás cambiar tus datos de acceso (correo y contraseña). Recuerda que la seguridad de tus datos personales es importante, debes utilizar una contraseña segura y cambiarla periódicamente.</small>
           </div>
           

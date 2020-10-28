@@ -4,7 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import Login from "./containers/seguridad/Login";
 import Registro from "./containers/seguridad/Registro";
 import Ajustes from "./containers/seguridad/Ajustes";
-import ActualizarDatos from "./containers/seguridad/ActualizarDatos";
+import DatosAcceso from "./containers/seguridad/DatosAcceso";
 import Menu from "./containers/articulos/Menu";
 import Estilos from "./containers/articulos/Estilos";
 import Articulos from "./containers/articulos/Articulos";
@@ -33,8 +33,8 @@ function App()
         <Login />
       </Route>
 
-      <Route path="/registro">
-        <Registro />
+      <Route path="/registro/">
+        <Registro isRegistro={true} />
       </Route>
 
       <Route path="/articulos">
@@ -45,7 +45,9 @@ function App()
         <Estilos />
       </Route>
 
-      <Route path="/detallearticulo" component={DetalleArticulo} />
+      <Route path="/detallearticulo">
+        <DetalleArticulo />
+      </Route>
 
       <Route path="/carrito">
         <Carrito />
@@ -55,8 +57,12 @@ function App()
         <Ajustes />
       </Route>
 
-      <Route path="/actualizar_datos">
-        <ActualizarDatos />
+      <Route path="/usuario/cuenta/datos-acceso">
+        <DatosAcceso />
+      </Route>
+
+      <Route path="/usuario/informacion-personal">
+        <Registro isRegistro={false}/>
       </Route>
 
       <Route path="/metodos_pago">

@@ -1,7 +1,6 @@
 import axios from "axios";
 
-// const BACKEND_URL = "https://api-rest-retail.herokuapp.com/api/cliente/barrio";
-const BACKEND_URL = "http://192.168.1.8:7788/api/cliente";
+import Constantes from "../Constantes";
 
 
 
@@ -14,19 +13,39 @@ const registrarCliente = async (cliente) =>
 {
   try
   {
-    // console.log(JSON.stringify(cliente));
-    let respuesta = await axios.post(`${BACKEND_URL}`, cliente);
+    let respuesta = await axios.post(`${Constantes.BACKEND_URL}/cliente`, cliente);
 
     // console.log("Respuesta API-REST Cliente. ");
     // console.log(JSON.stringify(respuesta));
 
-    return { success: ("" !== respuesta.data), cliente: respuesta.data };
+    return { status: respuesta.status, clienteBD: respuesta.data };
   }
 	catch(error)
   {
-    //TODO: Guardar log
-    console.log(`Error al registrar: ${error}`);
-    return { success: false };
+    return { status: Constantes.STATUS_ERROR, cliente: null };
+  }
+}
+
+
+
+/**
+ * Función que permite validar un cliente, según correo y clave
+ * @param cliente, Cliente a consultar
+ */
+const validarCliente = async (cliente) => 
+{
+  try
+  {
+    let respuesta = await axios.post(`${Constantes.BACKEND_URL}/cliente/info`, cliente);
+
+    // console.log("Respuesta API-REST Consultar Cliente ");
+    // console.log(JSON.stringify(respuesta));
+
+    return { status: respuesta.status, clienteBD: respuesta.data };
+  }
+  catch(error)
+  {
+    return { status: Constantes.STATUS_ERROR, cliente: null };
   }
 }
 
@@ -40,108 +59,50 @@ const actualizarCliente = async (cliente) =>
 {
   try
   {
-    let respuesta = await axios.post(`${BACKEND_URL}`, cliente);
+    let respuesta = await axios.put(`${Constantes.BACKEND_URL}/cliente`, cliente);
     
     // console.log("Respuesta API-REST Cliente. ");
     // console.log(JSON.stringify(respuesta));
 
-    return { success: ("" !== respuesta.data), cliente: respuesta.data };
+    return { status: respuesta.status, clienteBD: respuesta.data };
   }
 	catch(error)
   {
-    //TODO: Guardar log
-    console.log(`Error al registrar: ${error}`);
-    return { success: false };
+    return { status: Constantes.STATUS_ERROR };
   }
 }
 
 
 
 /**
- * Función que permite cambiar el correo del cliente
- * @param cliente, Cliente con el correo actualizar
+ * Función que permite actualizar los datos basicos del cliente
+ * @param cliente, Cliente actualizar
  */
-const actualizarCorreoCliente = async (cliente) => 
+const actualizarInformacionCliente = async (cliente) => 
 {
   try
   {
-    // console.log(JSON.stringify(cliente));
-    let respuesta = await axios.post(`${BACKEND_URL}`, cliente);
-
-    respuesta.data.correo = "ivan.hernandez@carvajal.com";
-
+    let respuesta = await axios.put(`${Constantes.BACKEND_URL}/cliente/informacion`, cliente);
+    
     // console.log("Respuesta API-REST Cliente. ");
     // console.log(JSON.stringify(respuesta));
 
-    return { success: ("" !== respuesta.data), cliente: respuesta.data };
+    return { status: respuesta.status, clienteBD: respuesta.data };
   }
 	catch(error)
   {
-    //TODO: Guardar log
-    console.log(`Error al registrar: ${error}`);
-    return { success: false };
+    return { status: Constantes.STATUS_ERROR };
   }
 }
 
 
 
-
-/**
- * Función que permite cambiar el clave del cliente
- * @param cliente, Cliente con el clave actualizar
- */
-const actualizarClaveCliente = async (cliente) => 
-{
-  try
-  {
-    // console.log(JSON.stringify(cliente));
-    let respuesta = await axios.post(`${BACKEND_URL}`, cliente);
-    respuesta.data.correo = "1234";
-
-    // console.log("Respuesta API-REST Cliente. ");
-    // console.log(JSON.stringify(respuesta));
-
-    return { success: ("" !== respuesta.data), cliente: respuesta.data };
-  }
-	catch(error)
-  {
-    //TODO: Guardar log
-    console.log(`Error al registrar: ${error}`);
-    return { success: false };
-  }
-}
-
-
-
-/**
- * Función que permite validar un cliente, según login y clave
- * @param cliente, Cliente a consultar
- */
-const validarCliente = async (cliente) => 
-{
-  try
-  {
-    let respuesta = await axios.post(`${BACKEND_URL}/validar`, cliente);
-
-    console.log("Respuesta API-REST Consultar Cliente ");
-    console.log(JSON.stringify(respuesta));
-
-    return { success: ("" !== respuesta.data), cliente: respuesta.data };
-  }
-  catch(error)
-  {
-    //TODO: Guardar log
-    console.log(`Error al validar: ${error}`);
-    return { success: false };
-  }
-}
 
 
 export default 
 {
   registrarCliente,
   actualizarCliente,
-  actualizarCorreoCliente,
-  actualizarClaveCliente,
+  actualizarInformacionCliente,
   validarCliente,
 };

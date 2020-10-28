@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link, Redirect, useHistory } from "react-router-dom";
 import Header from "../../components/Header";
 import PopupMensaje from "../../components/PopupMensaje";
-import clienteServices from "../../services/ClienteServices"; 
 
+import clienteServices from "../../services/ClienteServices"; 
+import Constantes from "../../Constantes";
 
 
 
@@ -14,14 +15,13 @@ function Login(props)
 {
   const [isTokenValido, setTokenValido] = useState(false);
   const [correo, setCorreo] = useState("ivan.hernandez.coral@gmail.com");
-  const [clave, setClave] = useState("Cusito");
+  const [clave, setClave] = useState("12345");
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
   // const [isMostrar, setIsMostrar] = useState(false);
 
   //Hook de react-router-dom maneja el historial de navegación
   let history = useHistory(); 
-  let mensaje = "";
   
     
 
@@ -59,30 +59,27 @@ function Login(props)
 
     if (event.target.checkValidity()) 
     {
-      try 
-      {
-        let {success, cliente} = await clienteServices.validarCliente({ correo, clave });
-        
-        if(success)
-        {
-          // console.log("Iniciando sesion: ".concat(cliente.tipoCliente));
-          //Gurdando token en AsyncStorage...
-          localStorage.setItem("@cliente", JSON.stringify(cliente));
+      let {status, clienteBD} = await clienteServices.validarCliente({ correo, clave });
 
-          history.goBack();
-        }
-        else
-        {
-          mensaje = "Lo sentimos. No hay ninguna cuenta de usuario\nque coincida con el Correo y Contraseña\nproporcionados.\n\nSi no recuerdas tu contraseña utiliza el enlace\n¿Has olvidado tu contraseña?\n\nSi deseas crear una cuenta de usuario nueva,\nutiliza el botón Crear cuenta.";
-          setMensajePopup(mensaje);
-          setMostrarPopup(true);
-        }
-      } 
-      catch (error) 
+      switch (status) 
       {
-        mensaje = "En el momento no es posible validar el usuario, favor intentarlo más tarde.";
-        setMensajePopup(mensaje);
-        setMostrarPopup(true);
+        case Constantes.STATUS_OK:
+          //El cliente se registro exitosamente y se guarda token en AsyncStorage
+          localStorage.setItem("@cliente", JSON.stringify(clienteBD));
+          history.goBack();
+          break;
+
+        case Constantes.STATUS_UNAUTHORIZED:
+          //El correo y clave no son validos
+          setMensajePopup("Lo sentimos. No hay ninguna cuenta de usuario\nque coincida con el Correo y Contraseña\nproporcionados.\n\nSi no recuerdas tu contraseña utiliza el enlace\n¿Has olvidado tu contraseña?\n\nSi deseas crear una cuenta de usuario nueva,\nutiliza el botón Crear cuenta.");
+          setMostrarPopup(true);
+          break;
+        
+        default:
+          //Valida si hubo un error en el api-rest al validar el cliente
+          setMensajePopup("En el momento no es posible validar el usuario,\nfavor intentarlo más tarde.");
+          setMostrarPopup(true);
+          break;
       }
     }
   };
@@ -120,7 +117,7 @@ function Login(props)
             </div>
             <div className="form-group">
               <label htmlFor="pwd">Contraseña:</label>
-              <input type="clave" className="form-control" id="pwd" placeholder="Contraseña" name="pswd" required value={clave} onChange={e => setClave(e.target.value)} />
+              <input type="password" className="form-control" id="pwd" placeholder="Contraseña" name="pswd" required value={clave} onChange={e => setClave(e.target.value)} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
               </div>

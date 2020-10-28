@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import Header from "../../components/Header";
 import FooterPagos from "../../components/FooterPagos";
 
@@ -19,7 +19,7 @@ function Pagos()
 
 
   //Hook de react-router-dom maneja el historial de navegación
-  let history = useHistory(); 
+  // let history = useHistory(); 
 
 
   
