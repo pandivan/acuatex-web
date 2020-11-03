@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 
 import Header from "../../components/Header";
 import PopupMensaje from "../../components/PopupMensaje";
-import DatosPersonalesHeader from "../../components/DatosPersonalesHeader";
 import clienteServices from "../../services/ClienteServices";
 import Constantes from "../../Constantes";
 
@@ -13,7 +12,7 @@ import Constantes from "../../Constantes";
 /**
  * Componente funcion que permite registrar un nuevo cliente en la plataforma
  */
-function Registro({isRegistro}) 
+function Registro() 
 {
   const [correo, setCorreo] = useState("ivan.hernandez.coral@gmail.com");
   const [clave, setClave] = useState("12345");
@@ -54,20 +53,8 @@ function Registro({isRegistro})
       }
 
       
-      let respuesta = null;
-
-      if(isRegistro)
-      {
-        //Se validan los datos a traves del api-rest
-        respuesta = await clienteServices.registrarCliente(cliente);
-      }
-      else
-      {
-        respuesta = await clienteServices.actualizarInformacionCliente(cliente);
-      }
-
-      let status = respuesta.status;
-      let clienteBD = respuesta.clienteBD;
+      //Se validan los datos a traves del api-rest
+      let {status, clienteBD} = await clienteServices.registrarCliente(cliente);
 
       switch (status) 
       {
@@ -79,7 +66,7 @@ function Registro({isRegistro})
 
         case Constantes.STATUS_CREATED:
           //Valida si el cliente ya esta registrado en BD a través del correo
-          setMensajePopup("Ingresaste un direccion de email que ya esta\nregistrada en Acuatex, Si ya eres miembro,\nhaz clic en Iniciar sesión");
+          setMensajePopup("Ingresaste una direccion de email que ya esta\nregistrada en Acuatex, Si ya eres miembro,\nhaz clic en Iniciar sesión");
           setMostrarPopup(true);
           break;
         
@@ -104,63 +91,44 @@ function Registro({isRegistro})
 
 
 
-  const onChange = (e) => 
-  {
-    switch(e.target.id)
-    {
-      case "txtCorreo":
-        setCorreo(e.target.value);
-        break;
-
-      case "txtClave":
-        setClave(e.target.value);
-        break;
-
-      case "txtNombres":
-        setNombres(e.target.value);
-        break;
-
-      case "txtCedula":
-        setCedula(e.target.value);
-        break;
-
-      case "txtTelefono":
-        setTelefono(e.target.value);
-        break;
-      
-      default:
-        
-        break;
-    }
-  }
-
-  const onValor = () => 
-  {
-    return nombres;
-  }
-
 
   return (
     <div className="bgg-success">
       <Header height={"none"} fondo={""} titulo={""}/>
 
       <div className="container mt-5 pt-5 bgg-dark" style={{width:"42%"}}>
-        <h2>{isRegistro ? "ESCRIBE TUS " : null} DATOS PERSONALES</h2>
+        <h2>ESCRIBE TUS DATOS PERSONALES</h2>
         <form className="needs-validation bgg-warning" onSubmit={validarFormulario} noValidate>
 
-          {/* <DatosPersonalesHeader onChange={onChange} valor={correo clave}/> */}
+          <div className="row form-group">
+            <div className="col mt-5 mr-4">
+              <label htmlFor="txtCorreo">E-mail:</label>
+              <input type="email" className="form-control" id="txtCorreo" placeholderr="E-mail" required value={correo} onChange={e => setCorreo(e.target.value)} />
+              <div className="invalid-feedback">
+                Este campo es obligatorio.
+              </div>
+            </div>
+            <div className="col mt-5 ml-4">
+              <label htmlFor="txtClave">Contraseña:</label>
+              <input type="password" className="form-control" id="txtClave" placeholderr="Contraseña" required value={clave} onChange={e => setClave(e.target.value)} />
+              <div className="invalid-feedback">
+                Este campo es obligatorio.
+              </div>
+            </div>
+          </div>
+          
 
           <div className="row form-group mt-5">
             <div className="col mr-4">
-              <label htmlFor="nombres">Nombre completo:</label>
-              <input type="text" className="form-control" placeholderr="Enter nombres completos" id="txtNombres" required value={onValor()} onChange={onChange} />
+              <label htmlFor="txtNombres">Nombre completo:</label>
+              <input type="text" className="form-control" placeholderr="Enter nombres completos" id="txtNombres" required value={nombres} onChange={e => setNombres(e.target.value)} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
               </div>
             </div>
             <div className="col ml-4">
-              <label htmlFor="cedula">Cedula:</label>
-              <input type="text" className="form-control" placeholderr="Enter cedula" id="txtCedula" required value={cedula} onChange={onChange} />
+              <label htmlFor="txtCedula">Cedula:</label>
+              <input type="text" className="form-control" placeholderr="Enter cedula" id="txtCedula" required value={cedula} onChange={e => setCedula(e.target.value)} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
               </div>
@@ -170,15 +138,15 @@ function Registro({isRegistro})
           
           <div className="row form-group mt-5">
             <div className="col mr-4">
-              <label htmlFor="telefono">Número de teléfono:</label>
-              <input type="text" className="form-control" placeholderr="Enter teléfono" id="txtTelefono" required value={telefono} onChange={onChange} />
+              <label htmlFor="txtTelefono">Número de teléfono:</label>
+              <input type="text" className="form-control" placeholderr="Enter teléfono" id="txtTelefono" required value={telefono} onChange={e => setTelefono(e.target.value)} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
               </div>
             </div>
             <div className="col ml-4">
-              <label htmlFor="direccion">Dirección:</label>
-              <input type="text" className="form-control" placeholderr="Enter Dirección" id="direccion" required value={direccion} onChange={e => setDireccion(e.target.value)} />
+              <label htmlFor="txtDireccion">Dirección:</label>
+              <input type="text" className="form-control" placeholderr="Enter Dirección" id="txtDireccion" required value={direccion} onChange={e => setDireccion(e.target.value)} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
               </div>
@@ -188,19 +156,19 @@ function Registro({isRegistro})
 
           <div className="row form-group mt-5">
             <div className="col mr-4">
-              <label htmlFor="fechaCumpleaños">Fecha cumpleaños:</label>
-              <input type="date" className="form-control" placeholderr="Enter fecha cumpleaños" id="fechaCumpleaños" value={fechaNacimiento} onChange={e => setFechaNacimiento(e.target.value)} />
+              <label htmlFor="txtFechaCumpleaños">Fecha cumpleaños:</label>
+              <input type="date" className="form-control" placeholderr="Enter fecha cumpleaños" id="txtFechaCumpleaños" value={fechaNacimiento} onChange={e => setFechaNacimiento(e.target.value)} />
             </div>
             <div className="col ml-4">
               Sexo
               <div>
                 <div className="custom-control-inline custom-radio ml-4 mt-2">
-                  <input type="radio" className="custom-control-input" id="mujer" name="mujer" checked={sexo === "F" ? true : false} onChange={() => setSexo("F")} />
-                  <label className="custom-control-label" htmlFor="mujer">Mujer</label>
+                  <input type="radio" className="custom-control-input" id="rbMujer" name="mujer" checked={sexo === "F" ? true : false} onChange={() => setSexo("F")} />
+                  <label className="custom-control-label" htmlFor="rbMujer">Mujer</label>
                 </div>
                 <div className="custom-control-inline custom-radio ml-4">
-                  <input type="radio" className="custom-control-input" id="hombre" name="hombre" checked={sexo === "M" ? true : false} onChange={() => setSexo("M")}/>
-                  <label className="custom-control-label" htmlFor="hombre">Hombre</label>
+                  <input type="radio" className="custom-control-input" id="rbHombre" name="hombre" checked={sexo === "M" ? true : false} onChange={() => setSexo("M")}/>
+                  <label className="custom-control-label" htmlFor="rbHombre">Hombre</label>
                 </div>
               </div>
             </div>
@@ -209,15 +177,15 @@ function Registro({isRegistro})
 
           <div className="row form-group mt-5">
             <div className="col mr-4">
-                <label htmlFor="pais">País:</label>
-                <select className="custom-select" id="pais" value={pais} onChange={e => setPais(e.target.value)} disabled={true}>
+                <label htmlFor="cbxPais">País:</label>
+                <select className="custom-select" id="cbxPais" value={pais} onChange={e => setPais(e.target.value)} disabled={true}>
                   <option value="EC">Ecuador</option>
                   <option value="CO">Colombia</option>
                 </select>
             </div>
             <div className="col ml-4">
-              <label htmlFor="codProvincia">Provincia:</label>
-              <select className="custom-select" id="codProvincia" value={codProvincia} onChange={e => setCodProvincia(e.target.value)} >
+              <label htmlFor="cbxCodProvincia">Provincia:</label>
+              <select className="custom-select" id="cbxCodProvincia" value={codProvincia} onChange={e => setCodProvincia(e.target.value)} >
                   <option value="01">AZUAY</option>
                   <option value="02">BOLIVAR</option>
                 </select>
@@ -227,8 +195,8 @@ function Registro({isRegistro})
 
           <div className="row form-group mt-5">
             <div className="col mr-4">
-              <label htmlFor="codCiudad">Ciudad:</label>
-              <select className="custom-select" id="codCiudad" value={codCiudad} onChange={e => setCodCiudad(e.target.value)} >
+              <label htmlFor="cbxCodCiudad">Ciudad:</label>
+              <select className="custom-select" id="cbxCodCiudad" value={codCiudad} onChange={e => setCodCiudad(e.target.value)} >
                 <option value="001">CUENCA</option>
                 <option value="001">GUARANDA</option>
               </select>
@@ -239,27 +207,24 @@ function Registro({isRegistro})
           </div>
         
 
-          {
-            isRegistro && 
-            <div className="row form-group mt-5">
-              <div className="col">
-                <div className="form-check">
-                  <input className="form-check-input" type="checkbox" id="politicas" required value={politicas} onChange={e => setPoliticas(e.target.value)}/>
-                  <label className="form-check-label" htmlFor="politicas" style={{fontSize:13}}>
-                    He podido leer y entiendo la Política de Privacidad
-                  </label>
-                  <div className="invalid-feedback">
-                    Este campo es obligatorio.
-                  </div>
+          <div className="row form-group mt-5">
+            <div className="col">
+              <div className="form-check">
+                <input className="form-check-input" type="checkbox" id="txtPoliticas" required value={politicas} onChange={e => setPoliticas(e.target.value)}/>
+                <label className="form-check-label" htmlFor="txtPoliticas" style={{fontSize:13}}>
+                  He podido leer y entiendo la Política de Privacidad
+                </label>
+                <div className="invalid-feedback">
+                  Este campo es obligatorio.
                 </div>
               </div>
             </div>
-          }
+          </div>
 
 
           <div className="row form-group mt-3">
             <div className="col">
-              <button type="submit" className="btn btn-lg mt-4 btn-dark" style={{width: isRegistro ? 220: 310, fontSize:17}}>{isRegistro ? "REGISTRAR" : "ACTUALIZAR DATOS PERSONALES"}</button>
+              <button type="submit" className="btn btn-lg mt-4 btn-dark" style={{width: 220, fontSize:17}}>REGISTRAR</button>
             </div>
           </div>
         </form>

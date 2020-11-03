@@ -56,7 +56,7 @@ function Header(props)
       </h2>
 
       <div className="mr-3 bgg-info">
-          <Link to={isLogeado ? "/ajustes" : "/login"} className="nav-link text-secondary font_size_navbar_acuatex">{isLogeado ? "Ivan" : "Iniciar Sesión"}</Link>
+          <Link to={isLogeado ? "/ajustes" : "/login"} className="nav-link text-secondary font_size_navbar_acuatex">{isLogeado ? "Ivancho" : "Iniciar Sesión"}</Link>
       </div>
 
       <div className="mr-3 bgg-dark">

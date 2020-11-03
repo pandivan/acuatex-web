@@ -47,7 +47,7 @@ function DatosAcceso()
         cliente.claveIngresada = clave;
         cliente.nuevoCorreo = nuevoCorreo;
         
-        let { status, clienteBD } = await clienteServices.actualizarCliente(cliente);
+        let { status, clienteBD } = await clienteServices.actualizarDatosAccesoCliente(cliente);
 
         if(Constantes.STATUS_OK === status)
         {
@@ -55,6 +55,8 @@ function DatosAcceso()
           {
             //Fallo validando la contraseña actual digitada
             mensaje = "La contraseña actual no es correcta. Es necesario\nque indiques tu contraseña actual para poder\ncambiar la cuenta de correo.";
+
+            mensaje = "La dirección de correo especificada (ivan.hernandez.coral@gmail.com) ya está siendo utilizada. Por favor, elige otra.";
           }
           else
           {
@@ -97,7 +99,7 @@ function DatosAcceso()
         cliente.claveIngresada = clave;
         cliente.nuevaClave = nuevaClave;
 
-        let { status, clienteBD } = await clienteServices.actualizarCliente(cliente);
+        let { status, clienteBD } = await clienteServices.actualizarDatosAccesoCliente(cliente);
 
         if(Constantes.STATUS_OK === status)
         {

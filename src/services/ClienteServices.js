@@ -55,6 +55,29 @@ const validarCliente = async (cliente) =>
  * Función que permite actualizar los datos basicos del cliente
  * @param cliente, Cliente actualizar
  */
+const actualizarDatosAccesoCliente = async (cliente) => 
+{
+  try
+  {
+    let respuesta = await axios.put(`${Constantes.BACKEND_URL}/cliente/datos_acceso`, cliente);
+    
+    // console.log("Respuesta API-REST Cliente. ");
+    // console.log(JSON.stringify(respuesta));
+
+    return { status: respuesta.status, clienteBD: respuesta.data };
+  }
+	catch(error)
+  {
+    return { status: Constantes.STATUS_ERROR };
+  }
+}
+
+
+
+/**
+ * Función que permite actualizar los datos basicos del cliente
+ * @param cliente, Cliente actualizar
+ */
 const actualizarCliente = async (cliente) => 
 {
   try
@@ -74,35 +97,12 @@ const actualizarCliente = async (cliente) =>
 
 
 
-/**
- * Función que permite actualizar los datos basicos del cliente
- * @param cliente, Cliente actualizar
- */
-const actualizarInformacionCliente = async (cliente) => 
-{
-  try
-  {
-    let respuesta = await axios.put(`${Constantes.BACKEND_URL}/cliente/informacion`, cliente);
-    
-    // console.log("Respuesta API-REST Cliente. ");
-    // console.log(JSON.stringify(respuesta));
-
-    return { status: respuesta.status, clienteBD: respuesta.data };
-  }
-	catch(error)
-  {
-    return { status: Constantes.STATUS_ERROR };
-  }
-}
-
-
-
 
 
 export default 
 {
   registrarCliente,
+  actualizarDatosAccesoCliente,
   actualizarCliente,
-  actualizarInformacionCliente,
   validarCliente,
 };
