@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Header from "../../components/Header";
 import PopupMensaje from "../../components/PopupMensaje";
@@ -13,18 +13,44 @@ import Constantes from "../../Constantes";
  */
 function InformacionPersonal() 
 {
-  const [nombres, setNombres] = useState("ivan hernandez");
-  const [cedula, setCedula] = useState("13072207");
-  const [telefono, setTelefono] = useState("3014317636");
-  const [direccion, setDireccion] = useState("valle lili");
-  const [fechaNacimiento, setFechaNacimiento] = useState("2020-10-20");
-  const [sexo, setSexo] = useState("M");
-  const [pais, setPais] = useState("EC");
-  const [codProvincia, setCodProvincia] = useState("20");
-  const [codCiudad, setCodCiudad] = useState("002");
+  const [nombres, setNombres] = useState("");
+  const [cedula, setCedula] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [direccion, setDireccion] = useState("");
+  const [fechaNacimiento, setFechaNacimiento] = useState("");
+  const [sexo, setSexo] = useState("");
+  const [pais, setPais] = useState("");
+  const [codProvincia, setCodProvincia] = useState("");
+  const [codCiudad, setCodCiudad] = useState("");
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
 
+  const [cliente] = useState(JSON.parse(localStorage.getItem("@cliente")));
+
+
+  
+
+  useEffect(() => 
+	{
+		console.log("useEffect Informacion Personal");
+
+    // let clienteStorage = JSON.parse(localStorage.getItem("@cliente"));
+ 
+    
+    if(null !== cliente)
+    {
+      setNombres(cliente.nombres);
+      setCedula(cliente.cedula);
+      setTelefono(cliente.telefono);
+      setDireccion(cliente.direccion);
+      setSexo("F");
+      setPais("EC");
+      // setFechaNacimiento(cliente.fechaNacimiento);
+      setCodProvincia(cliente.codProvincia);
+      setCodCiudad(cliente.codCiudad);
+    }
+		
+  }, [cliente])
   
   
 
@@ -39,31 +65,32 @@ function InformacionPersonal()
 
     if (event.target.checkValidity()) 
     {
-      //Capturando los datos digitados por el cleinte
-      let cliente =
-      {
-        cedula, nombres, codProvincia, codCiudad, direccion, telefono, fecha:fechaNacimiento, direccionEntrega:direccion, estado:1
-      }
+      // let cliente = JSON.parse(localStorage.getItem("@cliente"));
+
+      cliente.nombres = nombres;
+      cliente.codProvincia = codProvincia;
+      cliente.codCiudad = codCiudad;
+      cliente.direccion = direccion;
+      cliente.telefono = telefono;
+      cliente.fecha = fechaNacimiento;
+      cliente.direccionEntrega = direccion;
+      cliente.estado = 1;
 
       
       //Se validan los datos a traves del api-rest
-      let {status, clienteBD} = await clienteServices.actualizarCliente(cliente);
+      let {status, isClienteActualizado} = await clienteServices.actualizarCliente(cliente);
 
-      switch (status) 
+      let mensaje = "En el momento, no es posible actualizar tus datos.";
+
+      if(Constantes.STATUS_OK === status && isClienteActualizado)
       {
-        case Constantes.STATUS_OK:
-          //El cliente se creo exitosamente y se guarda token en AsyncStorage
-          localStorage.setItem("@cliente", JSON.stringify(clienteBD));
-          setMensajePopup("Tu información se ha guardado correctamente.");
-          setMostrarPopup(true);
-          break;
-
-        default:
-          //Valida si hubo un error en el api-rest al crear el cliente
-          setMensajePopup("En el momento, no es posible registrar tus datos.");
-          setMostrarPopup(true);
-          break;
+        //El cliente se creo exitosamente y se guarda token en AsyncStorage
+        localStorage.setItem("@cliente", JSON.stringify(cliente));
+        mensaje = "Tu información se ha guardado correctamente.";
       }
+      
+      setMensajePopup(mensaje);
+      setMostrarPopup(true);
     }
   };
 
@@ -80,6 +107,7 @@ function InformacionPersonal()
 
 
 
+
   return (
     <div className="bgg-success">
       <Header height={"none"} fondo={""} titulo={""}/>
@@ -91,7 +119,7 @@ function InformacionPersonal()
           <div className="row form-group mt-5">
             <div className="col mr-4">
               <label htmlFor="txtNombres">Nombre completo:</label>
-              <input type="text" className="form-control" placeholderr="Enter nombres completos" id="txtNombres" required value={nombres} onChange={e => setNombres(e.target.value)} />
+              <input type="text" className="form-control" placeholderr="Enter nombres completos" id="txtNombres" required value={nombres || ''} onChange={e => setNombres(e.target.value)} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
               </div>
@@ -148,7 +176,7 @@ function InformacionPersonal()
           <div className="row form-group mt-5">
             <div className="col mr-4">
                 <label htmlFor="cbxPais">País:</label>
-                <select className="custom-select" id="cbxPais" value={pais} onChange={e => setPais(e.target.value)} disabled={false}>
+                <select className="custom-select" id="cbxPais" value={pais} onChange={e => setPais(e.target.value)} disabled={true}>
                   <option value="EC">Ecuador</option>
                   <option value="CO">Colombia</option>
                 </select>
@@ -178,7 +206,7 @@ function InformacionPersonal()
         
           <div className="row form-group mt-3">
             <div className="col">
-              <button type="submit" className="btn btn-lg mt-4 btn-dark" style={{width: 310, fontSize:17}}>REGISTRAR</button>
+              <button type="submit" className="btn btn-lg mt-4 btn-dark" style={{width: 310, fontSize:17}}>ACTUALIZAR DATOS PERSONALES</button>
             </div>
           </div>
         </form>

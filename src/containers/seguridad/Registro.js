@@ -14,18 +14,18 @@ import Constantes from "../../Constantes";
  */
 function Registro() 
 {
-  const [correo, setCorreo] = useState("ivan.hernandez.coral@gmail.com");
-  const [clave, setClave] = useState("12345");
-  const [nombres, setNombres] = useState("ivan hernandez");
-  const [cedula, setCedula] = useState("13072207");
-  const [telefono, setTelefono] = useState("3014317636");
-  const [direccion, setDireccion] = useState("valle lili");
-  const [fechaNacimiento, setFechaNacimiento] = useState("2020-10-20");
+  const [correo, setCorreo] = useState("");
+  const [clave, setClave] = useState("");
+  const [nombres, setNombres] = useState("");
+  const [cedula, setCedula] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [direccion, setDireccion] = useState("");
+  const [fechaNacimiento, setFechaNacimiento] = useState("");
   const [sexo, setSexo] = useState("M");
   const [politicas, setPoliticas] = useState(true);
   const [pais, setPais] = useState("EC");
-  const [codProvincia, setCodProvincia] = useState("20");
-  const [codCiudad, setCodCiudad] = useState("002");
+  const [codProvincia, setCodProvincia] = useState("02");
+  const [codCiudad, setCodCiudad] = useState("001");
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
 

@@ -3,6 +3,7 @@ import { Switch, Route } from "react-router-dom";
 
 import Login from "./containers/seguridad/Login";
 import Registro from "./containers/seguridad/Registro";
+import InformacionPersonal from "./containers/seguridad/InformacionPersonal";
 import Ajustes from "./containers/seguridad/Ajustes";
 import DatosAcceso from "./containers/seguridad/DatosAcceso";
 import Menu from "./containers/articulos/Menu";
@@ -34,7 +35,7 @@ function App()
       </Route>
 
       <Route path="/registro/">
-        <Registro isRegistro={true} />
+        <Registro/>
       </Route>
 
       <Route path="/articulos">
@@ -62,7 +63,7 @@ function App()
       </Route>
 
       <Route path="/usuario/informacion-personal">
-        <Registro isRegistro={false}/>
+        <InformacionPersonal/>
       </Route>
 
       <Route path="/metodos_pago">

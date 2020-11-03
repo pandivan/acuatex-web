@@ -87,7 +87,7 @@ const actualizarCliente = async (cliente) =>
     // console.log("Respuesta API-REST Cliente. ");
     // console.log(JSON.stringify(respuesta));
 
-    return { status: respuesta.status, clienteBD: respuesta.data };
+    return { status: respuesta.status, isClienteActualizado: respuesta.data };
   }
 	catch(error)
   {

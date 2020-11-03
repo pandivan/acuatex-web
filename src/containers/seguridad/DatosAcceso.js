@@ -14,9 +14,9 @@ import Constantes from "../../Constantes";
  */
 function DatosAcceso() 
 {
-  const [nuevoCorreo, setNuevoCorreo] = useState("ivan@gmail.com");
-  const [repetirCorreo, setRepetirCorreo] = useState("ivan@gmail.com");
-  const [clave, setClave] = useState("12345");
+  const [nuevoCorreo, setNuevoCorreo] = useState("");
+  const [repetirCorreo, setRepetirCorreo] = useState("");
+  const [clave, setClave] = useState("");
   const [nuevaClave, setNuevaClave] = useState("");
   const [repetirClave, setRepetirClave] = useState("");
   const [isMostrarPopup, setMostrarPopup] = useState(false);
@@ -49,28 +49,29 @@ function DatosAcceso()
         
         let { status, clienteBD } = await clienteServices.actualizarDatosAccesoCliente(cliente);
 
-        if(Constantes.STATUS_OK === status)
+        switch (status) 
         {
-          if("" === clienteBD)
-          {
-            //Fallo validando la contraseña actual digitada
-            mensaje = "La contraseña actual no es correcta. Es necesario\nque indiques tu contraseña actual para poder\ncambiar la cuenta de correo.";
-
-            mensaje = "La dirección de correo especificada (ivan.hernandez.coral@gmail.com) ya está siendo utilizada. Por favor, elige otra.";
-          }
-          else
-          {
+          case Constantes.STATUS_OK:
             //El cliente se actualizo exitosamente y se guarda token en AsyncStorage
             localStorage.setItem("@cliente", JSON.stringify(clienteBD));
             mensaje = "La cuenta de correo fue actualizada correctamente.";
 
             setCliente(clienteBD);
-          }
-        }
-        else
-        {
-          //Valida si hubo un error en el api-rest al validar el cliente
-          mensaje = "No es posible en el momento actualizar la cuenta de correo,\nfavor intentarlo más tarde.";
+            break;
+
+          case Constantes.STATUS_CREATED:
+            mensaje = "La dirección de correo especificada\n(" + nuevoCorreo + ")\nya está siendo utilizada. Por favor, elige otra.";
+            break;
+
+          case Constantes.STATUS_NO_CONTENT:
+            //Fallo validando la contraseña actual digitada
+            mensaje = "La contraseña actual no es correcta. Es necesario\nque indiques tu contraseña actual para poder\ncambiar la cuenta de correo.";
+            break;
+          
+          default:
+            //Valida si hubo un error en el api-rest al validar el cliente
+            mensaje = "No es posible en el momento actualizar la cuenta de correo,\nfavor intentarlo más tarde.";
+            break;
         }
       }
       
@@ -101,24 +102,24 @@ function DatosAcceso()
 
         let { status, clienteBD } = await clienteServices.actualizarDatosAccesoCliente(cliente);
 
-        if(Constantes.STATUS_OK === status)
+
+        switch (status) 
         {
-          if("" === clienteBD)
-          {
-            //Fallo validando la contraseña actual digitada
-            mensaje = "La contraseña actual no es correcta. Es necesario\nque indiques tu contraseña actual para poder\ncambiarla por una nueva.";
-          }
-          else
-          {
+          case Constantes.STATUS_OK:
             //El cliente se actualizo exitosamente y se guarda token en AsyncStorage
             localStorage.setItem("@cliente", JSON.stringify(clienteBD));
             mensaje = "Contraseña actualizada correctamente";
-          }
-        }
-        else
-        {
-          //Valida si hubo un error en el api-rest al validar el cliente
-          mensaje = "En el momento no es posible actualizar la contraseña,\nfavor intentarlo más tarde.";
+            break;
+
+          case Constantes.STATUS_NO_CONTENT:
+            //Fallo validando la contraseña actual digitada
+            mensaje = "La contraseña actual no es correcta. Es necesario\nque indiques tu contraseña actual para poder\ncambiarla por una nueva.";
+            break;
+          
+          default:
+            //Valida si hubo un error en el api-rest al validar el cliente
+            mensaje = "En el momento no es posible actualizar la contraseña,\nfavor intentarlo más tarde.";
+            break;
         }
       }
 
@@ -158,8 +159,8 @@ function DatosAcceso()
           <form className="needs-validation pb-5 bgg-warning" onSubmit={actualizarCorreo} style={{width:"66%"}} noValidate>
             <div className="row form-group">
               <div className="col mt-3">
-                <label htmlFor="pwd">Contraseña Actual</label>
-                <input type="password" className="form-control" id="pwd" placeholderr="Contraseña" name="pswd" required value={clave} onChange={e => setClave(e.target.value)} />
+                <label htmlFor="txtClaveCorreo">Contraseña Actual</label>
+                <input type="password" className="form-control" id="txtClaveCorreo" placeholderr="Contraseña" required value={clave} onChange={e => setClave(e.target.value)} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>
@@ -203,8 +204,8 @@ function DatosAcceso()
           <form className="needs-validation bgg-warning" onSubmit={actualizarClave} style={{width:"66%"}} noValidate>
             <div className="row form-group">
               <div className="col mt-3">
-                <label htmlFor="pwd">Contraseña Actual</label>
-                <input type="password" className="form-control" id="pwd" placeholderr="Contraseña" name="pswd" required value={clave} onChange={e => setClave(e.target.value)} />
+                <label htmlFor="txtClave">Contraseña Actual</label>
+                <input type="password" className="form-control" id="txtClave" placeholderr="Contraseña" name="pswd" required value={clave} onChange={e => setClave(e.target.value)} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>
