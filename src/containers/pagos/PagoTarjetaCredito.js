@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-// import { useHistory } from "react-router-dom";
+import React, { useState } from "react";
 import Header from "../../components/Header";
 import FooterPagos from "../../components/FooterPagos";
 
@@ -16,44 +15,6 @@ function Pagos()
   const [añoCaducidad, setAñoCaducidad] = useState("");
   const [titularTarjeta, setTitularTarjeta] = useState("");
   const [numeroCVV, setNumeroCVV] = useState("");
-
-
-  //Hook de react-router-dom maneja el historial de navegación
-  // let history = useHistory(); 
-
-
-  
-
-  useEffect(() => 
-  {
-    console.log("useEffect Pagos");
-
-    /**
-     * Metodo que permite visualizar el resumen de la compra
-     */
-    const cargarResumenCompra = async () => 
-    {
-      try 
-      {
-        // let {success, articulos} = await articuloServices.getAllArticulos();
-
-        // if (success) 
-        // {
-        //   setArticulos(articulos);
-        //   setLoading(false);
-        // }
-      } 
-      catch (error) 
-      {
-        //TODO: Guardar log del error en BD 
-        console.log(error)
-      }
-    };
-
-    cargarResumenCompra();
-  }, []);
-  
-
 
 
 

@@ -46,9 +46,7 @@ function App()
         <Estilos />
       </Route>
 
-      <Route path="/detallearticulo">
-        <DetalleArticulo />
-      </Route>
+      <Route path="/detallearticulo" component={DetalleArticulo} />
 
       <Route path="/carrito">
         <Carrito />

@@ -145,12 +145,16 @@ function Carrito()
 
    return (
 	 	<div>
+       <Header height={"none"} fondo={""} titulo={""}/>
 			{
-				0 === mapArticulosPedido.size ? 
-				<span>No hay data</span>
+        0 === mapArticulosPedido.size ? 
+        <div className="container-fluid pt-4">
+          <div className="d-flex justify-content-center p-2 mb-3 mt-5 bgg-danger">
+            <img className="" src={require(`../../assets/Dama.png`)} alt="carrio vacio"/>
+          </div>
+        </div>
         :
         <div>
-          <Header height={"none"} fondo={""} titulo={""}/>
           <div className="container-fluid pt-4">
             
             <div className="d-flex justify-content-center p-2 mb-3 mt-5 bgg-danger">

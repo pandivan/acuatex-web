@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 function Header(props) 
 {
   const [isLogeado, setLogueado] = useState(false);
-  // const [nombreCliente, setLogueado] = React.useState("");
+  const [nombreCliente, setNombreCliente] = React.useState("");
 
 
 
@@ -19,11 +19,12 @@ function Header(props)
     console.log("Header");
 		try
 		{
-      let token = JSON.parse(localStorage.getItem("@cliente"));
+      let cliente = JSON.parse(localStorage.getItem("@cliente"));
       
-      if(null !== token)
+      if(null !== cliente)
       {
         setLogueado(true);
+        setNombreCliente(cliente.nombres.split(" ")[0]);
       }
 		}
 		catch(error)
@@ -56,7 +57,7 @@ function Header(props)
       </h2>
 
       <div className="mr-3 bgg-info">
-          <Link to={isLogeado ? "/ajustes" : "/login"} className="nav-link text-secondary font_size_navbar_acuatex">{isLogeado ? "Ivanchoo" : "Iniciar Sesión"}</Link>
+          <Link to={isLogeado ? "/ajustes" : "/login"} className="nav-link text-secondary font_size_navbar_acuatex">{isLogeado ? nombreCliente : "Iniciar Sesión"}</Link>
       </div>
 
       <div className="mr-3 bgg-dark">

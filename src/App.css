@@ -158,11 +158,19 @@
 }
 
 
+/* .img_border_acuatex:hover
+{
+  color: black;
+  border-color: black;
+} */
+
+
 .btn_pagos_acuatex
 {
   width: 200px;
   height: 65px
 }
+
 
 /* body 
 {

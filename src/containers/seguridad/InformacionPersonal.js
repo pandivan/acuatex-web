@@ -65,8 +65,6 @@ function InformacionPersonal()
 
     if (event.target.checkValidity()) 
     {
-      // let cliente = JSON.parse(localStorage.getItem("@cliente"));
-
       cliente.nombres = nombres;
       cliente.codProvincia = codProvincia;
       cliente.codCiudad = codCiudad;

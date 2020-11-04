@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Header from "../../components/Header";
 import FooterPagos from "../../components/FooterPagos";
 
@@ -12,42 +12,6 @@ function MetodosPago()
   const [tipoPago, setTipoPago] = useState("TC");
 
 
-  
-
-  useEffect(() => 
-  {
-    console.log("useEffect Articulo");
-
-    /**
-     * Metodo que permite visualizar el resumen de la compra
-     */
-    const cargarResumenCompra = async () => 
-    {
-      try 
-      {
-        // let {success, articulos} = await articuloServices.getAllArticulos();
-
-        // if (success) 
-        // {
-        //   setArticulos(articulos);
-        //   setLoading(false);
-        // }
-      } 
-      catch (error) 
-      {
-        //TODO: Guardar log del error en BD 
-        console.log(error)
-      }
-    };
-
-    cargarResumenCompra();
-  }, []);
-  
-
-
-
-
-
   return (
     <div>
       <Header height={"none"}/>
@@ -58,9 +22,15 @@ function MetodosPago()
         <h3 className="font-weight-bolder" >ELIGE UN MÉTODO DE PAGO</h3>
        
         <div className="my-5 bgg-warning" style={{height:450}}>
-          <img className="mr-4 mb-4 img_border_acuatex" src={require("../../assets/mastercard.png")} alt={"Master Card"} style={{height:100, width:100}} onClick={() => setTipoPago("TC")}/>
-          <img className="mr-4 mb-4 img_border_acuatex" src={require("../../assets/visa.png")} alt={"Visa"} style={{height:100, width:100}} onClick={() => setTipoPago("TC")}/>
-          <img className="mr-4 mb-4 img_border_acuatex" src={require("../../assets/pse.png")} alt={"PSE"} style={{height:100, width:100}} onClick={() => setTipoPago("PSE")}/>
+          <button className="mr-4 mb-4 p-0 btn btn-dark" >
+            <img src={require("../../assets/mastercard.png")} alt={"Master Card"} style={{height:100, width:100}} onClick={() => setTipoPago("TC")}/>
+          </button>
+          <button className="mr-4 mb-4 p-0 btn btn-dark" >
+            <img src={require("../../assets/visa.png")} alt={"Visa"} style={{height:100, width:100}} onClick={() => setTipoPago("TC")}/>
+          </button>
+          <button className="mr-4 mb-4 p-0 btn btn-dark" >
+            <img src={require("../../assets/pse.png")} alt={"PSE"} style={{height:100, width:100}} onClick={() => setTipoPago("PSE")}/>
+          </button>
         </div>
 
         <FooterPagos paginaSiguiente={tipoPago === "TC" ? "/pago_tarjeta_credito" : "/pago_pse"} paginaAnterior={"/carrito"}/>
