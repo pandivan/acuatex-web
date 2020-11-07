@@ -72,7 +72,7 @@ function DetalleArticulo(props)
       }
 
       mapArticulosPedido.set(articuloPedido.codigo, articuloPedido);
-      localStorage.setItem("@articulosPedido", JSON.stringify(Array.from(mapArticulosPedido.entries())));
+      localStorage.setItem("@articulosPedido", JSON.stringify(Array.from(mapArticulosPedido)));
 
 
       //Calculando badges

@@ -31,6 +31,11 @@ function FooterPagos(props)
   }, [])
 
 
+  const prueba = () =>
+  {
+    console.log("clik continuar");
+  }
+
   return (
     <div className="d-flex align-items-end justify-content-between bgg-warning border border-right-0 border-left-0 border-bottom-0 pt-5">
       <Link to={props.paginaAnterior} className="nav-link p-0">
@@ -58,11 +63,18 @@ function FooterPagos(props)
         </div>
       </div>
 
-      <Link to={props.paginaSiguiente} className="nav-link p-0">
-        <button type="button" className="btn btn-dark btn_pagos_acuatex" >
-          CONTINUAR
-        </button>
-      </Link>
+      {
+        null === props.registrarPedido ?
+          <Link to={props.paginaSiguiente} className="nav-link p-0">
+            <button type="button" className="btn btn-dark btn_pagos_acuatex" onClick={prueba}>
+              CONTINUAR
+            </button>
+          </Link>
+        :
+          <button type="button" className="btn btn-dark btn_pagos_acuatex" onClick={props.registrarPedido} >
+            PAGAR
+          </button>
+      }
     </div>
   );
 }

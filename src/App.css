@@ -10,15 +10,16 @@
   color: #9f9fae;
 }
 
-/* .acuatex_separacion
+.descripcion_articulo_acuatex
 {
-  height: 6px;
-  background-color: #F1F1F1;
-} */
+  color: #777B7C;
+  font-size: 15px;
+}
+
+
 
 .footer_separacion_acuatex
 {
-  /* width: 1000px; */
   height: 100px; 
   border-width: 6px; 
   border-style: solid; 
@@ -169,6 +170,14 @@
 {
   width: 200px;
   height: 65px
+}
+
+
+/* CSS Pedidos */
+.footer_separacion_pedidos_acuatex
+{
+  height: 95px;
+  background-color: #F1F1F1;
 }
 
 

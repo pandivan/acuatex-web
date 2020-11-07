@@ -9,7 +9,7 @@ import FooterPagos from "../../components/FooterPagos";
  */
 function MetodosPago() 
 {
-  const [tipoPago, setTipoPago] = useState("TC");
+  const [tipoPago, setTipoPago] = useState("");
 
 
   return (
@@ -22,10 +22,10 @@ function MetodosPago()
         <h3 className="font-weight-bolder" >ELIGE UN MÉTODO DE PAGO</h3>
        
         <div className="my-5 bgg-warning" style={{height:450}}>
-          <button className="mr-4 mb-4 p-0 btn btn-dark" >
+          <button className="mr-4 mb-4 p-1 btn btn-primary" >
             <img src={require("../../assets/mastercard.png")} alt={"Master Card"} style={{height:100, width:100}} onClick={() => setTipoPago("TC")}/>
           </button>
-          <button className="mr-4 mb-4 p-0 btn btn-dark" >
+          <button className="mr-4 mb-4 p-1 btn btn-dark" >
             <img src={require("../../assets/visa.png")} alt={"Visa"} style={{height:100, width:100}} onClick={() => setTipoPago("TC")}/>
           </button>
           <button className="mr-4 mb-4 p-0 btn btn-dark" >
@@ -33,7 +33,7 @@ function MetodosPago()
           </button>
         </div>
 
-        <FooterPagos paginaSiguiente={tipoPago === "TC" ? "/pago_tarjeta_credito" : "/pago_pse"} paginaAnterior={"/carrito"}/>
+        <FooterPagos paginaSiguiente={tipoPago === "TC" ? "/pago_tarjeta_credito" : "/pago_pse"} paginaAnterior={"/carrito"} registrarPedido={null}/>
       </div>
     </div>
   );

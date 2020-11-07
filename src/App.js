@@ -14,6 +14,8 @@ import Carrito from "./containers/articulos/Carrito";
 import MetodosPago from "./containers/pagos/MetodosPago";
 import PagoTarjetaCredito from "./containers/pagos/PagoTarjetaCredito";
 import PagoPSE from "./containers/pagos/PagoPSE";
+import Pedidos from "./containers/pedidos/Pedidos";
+import Transaccion from "./containers/pagos/Transaccion";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -75,6 +77,12 @@ function App()
       <Route path="/pago_pse">
         < PagoPSE/>
       </Route>
+
+      <Route path="/pedidos">
+        <Pedidos />
+      </Route>
+
+      <Route path="/transaccion" component={Transaccion} />
 
     </Switch>
   );

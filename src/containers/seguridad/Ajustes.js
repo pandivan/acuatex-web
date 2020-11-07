@@ -35,7 +35,7 @@ function Ajustes()
           <h3 className="font-weight-bolder">MI CUENTA</h3>
 
           <div className="mt-5 bgg-danger">
-            <Link to="/" className="text-dark"><h5 className="font-weight-bolder m-0">Mis Pedidos</h5></Link>
+            <Link to="/pedidos" className="text-dark"><h5 className="font-weight-bolder m-0">Mis Pedidos</h5></Link>
             <small>Consulta la información y el estado de tus pedidos online. También puedes cancelar el pedido o solicitar una devolución.</small>
           </div>
 
