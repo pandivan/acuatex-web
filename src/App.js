@@ -82,7 +82,9 @@ function App()
         <Pedidos />
       </Route>
 
-      <Route path="/transaccion" component={Transaccion} />
+      <Route path="/transaccion">
+        <Transaccion />
+      </Route>
 
     </Switch>
   );

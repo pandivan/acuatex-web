@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import Header from "../../components/Header";
 import FooterPagos from "../../components/FooterPagos";
+import PopupMensaje from "../../components/PopupMensaje";
 
 
 
@@ -9,7 +11,58 @@ import FooterPagos from "../../components/FooterPagos";
  */
 function MetodosPago() 
 {
-  const [tipoPago, setTipoPago] = useState("");
+  const [tipoPago, setTipoPago] = useState("TC");
+  const [isMostrarPopup, setMostrarPopup] = useState(false);
+  const [mensajePopup, setMensajePopup] = useState("");
+
+  //Hook de react-router-dom maneja el historial de navegación
+  let history = useHistory(); 
+
+
+  useEffect(() => 
+	{
+		console.log("useEffect Metodos de Pago");
+
+
+    let cantidadBadge = JSON.parse(localStorage.getItem("@cantidadBadge"));
+
+    if(null === cantidadBadge)
+    {
+      history.push("/");
+    }
+  }, [history]);
+
+
+
+  /**
+   * Función que permite abrir o cerrar el popup de mensajes
+   */
+  const togglePopup = () => 
+  {
+    setMostrarPopup(!isMostrarPopup);
+  }
+
+
+
+  const continuar = () =>
+  {
+    if("" === tipoPago)
+    {
+      setMensajePopup("Debes seleccionar una forma de pago.\nHaz click sobre uno de los iconos para\nescoger la forma de pago que prefieras.");
+      setMostrarPopup(true);
+    }
+    else
+    {
+      let urlSiguiente = "/pago_tarjeta_credito";
+
+      if("PSE" === tipoPago)
+      {
+        urlSiguiente = "/pago_pse";
+      }
+
+      history.push(urlSiguiente);
+    }
+  }
 
 
   return (
@@ -33,8 +86,12 @@ function MetodosPago()
           </button>
         </div>
 
-        <FooterPagos paginaSiguiente={tipoPago === "TC" ? "/pago_tarjeta_credito" : "/pago_pse"} paginaAnterior={"/carrito"} registrarPedido={null}/>
+        <FooterPagos paginaAnterior={"/carrito"} siguiente={continuar} textoBoton="CONTINUAR"/>
       </div>
+
+      {
+        isMostrarPopup && <PopupMensaje togglePopup={togglePopup} mensaje={mensajePopup} titulo={"AVISO"} />
+      }
     </div>
   );
 }

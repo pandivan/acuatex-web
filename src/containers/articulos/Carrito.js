@@ -239,7 +239,7 @@ function Carrito()
           }
         </div>
 			}
-      </div> 
+    </div> 
    );
 }
 
