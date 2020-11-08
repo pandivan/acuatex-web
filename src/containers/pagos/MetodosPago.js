@@ -19,6 +19,9 @@ function MetodosPago()
   let history = useHistory(); 
 
 
+
+
+
   useEffect(() => 
 	{
 		console.log("useEffect Metodos de Pago");
@@ -34,6 +37,7 @@ function MetodosPago()
 
 
 
+
   /**
    * Función que permite abrir o cerrar el popup de mensajes
    */
@@ -43,7 +47,12 @@ function MetodosPago()
   }
 
 
+  
 
+  /**
+   * Función que permite validar el metodo de pago seleccionado
+   * para avanzar a la siguiente pantalla
+   */
   const continuar = () =>
   {
     if("" === tipoPago)

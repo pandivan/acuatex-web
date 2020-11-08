@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Header from "../../components/Header";
 import PopupMensaje from "../../components/PopupMensaje";
 
@@ -14,6 +14,9 @@ function Carrito()
 	const [mapArticulosPedido, setArticulosPedido] = useState(new Map());
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
+
+  //Hook de react-router-dom maneja el historial de navegación
+  let history = useHistory(); 
 	
 
 
@@ -141,6 +144,22 @@ function Carrito()
   }
     
 
+  /**
+   * Función que permite validar si el cliente se encuentra logueado
+   */
+  const validarLogueo = () =>
+  {
+    let urlSiguiente = "/metodos_pago";
+    let cliente = JSON.parse(localStorage.getItem("@cliente"));
+      
+    if(null === cliente)
+    {
+      urlSiguiente = "/login";
+    }
+
+    history.push(urlSiguiente);
+  }
+
 
 
    return (
@@ -225,11 +244,11 @@ function Carrito()
             </div>
 
             <div className="container d-flex justify-content-end bgg-success mt-4">
-              <Link to="/metodos_pago" className="nav-link p-0">
-                <button type="button" className="btn btn-dark btn_carrito_acuatex" >
-                  <h4>Comprar</h4>
-                </button>
-              </Link>
+              {/* <Link to="/metodos_pago" className="nav-link p-0"> */}
+              <button type="button" className="btn btn-dark btn_carrito_acuatex" onClick={validarLogueo} >
+                <h4>Comprar</h4>
+              </button>
+              {/* </Link> */}
             </div> 
 
           </div>

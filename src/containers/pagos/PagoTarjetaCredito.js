@@ -25,6 +25,7 @@ function PagoTarjetaCredito()
   let history = useHistory(); 
 
 
+
   useEffect(() => 
 	{
 		console.log("useEffect Tarjeta Credito");
@@ -87,7 +88,7 @@ function PagoTarjetaCredito()
 
     if (event.target.checkValidity()) 
     {
-      console.log("pasoo")
+      pagar();
     }
   }
 
@@ -103,17 +104,17 @@ function PagoTarjetaCredito()
         <img className="mt-5 img_border_acuatex" src={require("../../assets/mastercard.png")} alt={"Master Card"} style={{height:55, width:72}}/>
 
         <div className="my-5 bgg-warning" style={{height:347}}>
-          <form className="needs-validation bg-warning" onSubmit={validarFormulario} noValidate>
+          <form className="needs-validation bgg-warning" onSubmit={validarFormulario} noValidate>
 
-            <div className="row form-group m-0 bg-dark" style={{width:"60%"}}>
-              <div className="col mt-3 pl-0 bg-danger">
+            <div className="row form-group m-0 bgg-dark" style={{width:"60%"}}>
+              <div className="col mt-3 pl-0 bgg-danger">
                 <label htmlFor="numeroTarjeta">Número de tarjeta:</label>
                 <input type="text" className="form-control" id="numeroTarjeta" placeholderr="Número de tarjeta" required value={numeroTarjeta} onChange={e => setNumeroTarjeta(e.target.value)} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>
               </div>
-              <div className="col mt-3 bg-success">
+              <div className="col mt-3 bgg-success">
                 <label htmlFor="titularTarjeta">Titular de la tarjeta:</label>
                 <input type="text" className="form-control" id="titularTarjeta" placeholderr="Titular de la tarjeta" required value={titularTarjeta} onChange={e => setTitularTarjeta(e.target.value)} />
                 <div className="invalid-feedback">
@@ -121,9 +122,8 @@ function PagoTarjetaCredito()
                 </div>
               </div>
             </div> 
-          
 
-            <div className="row form-group m-0 mt-5 bg-dark" style={{width:"60%"}}>
+            <div className="row form-group m-0 mt-5 bgg-dark" style={{width:"60%"}}>
               <div className="col mt-4 pl-0 bgg-danger">
                 <label htmlFor="mesCaducidad">Mes:</label>
                 <select className="custom-select" id="mesCaducidad" required value={mesCaducidad} onChange={e => setMesCaducidad(e.target.value)} stylee={{width:"60%"}}>
@@ -140,7 +140,7 @@ function PagoTarjetaCredito()
                   <option value="2022">2022</option>
                 </select>
               </div>
-              <div className="col-sm mt-4 bgg-success">
+              <div className="col-sm mt-4 pb-4 bgg-success">
                 <label htmlFor="numeroCVV">Número de CVV:</label>
                 <input type="text" className="form-control" id="numeroCVV" placeholderr="Número de CVV" required value={numeroCVV} onChange={e => setNumeroCVV(e.target.value)} />
                 <div className="invalid-feedback">
@@ -148,17 +148,13 @@ function PagoTarjetaCredito()
                 </div>
               </div>
             </div>
-            
-            
 
-            {/* <div className="col-sm my-4 py-5 bgg-success" > .</div> */}
+            <div className="col-sm my-4 py-5 bgg-success" > </div>
 
-            <FooterPagos paginaSiguiente={"/"} paginaAnterior={"/metodos_pago"} siguiente={pagar} textoBoton={"PAGAR"}/>
+            <FooterPagos paginaSiguiente={"/"} paginaAnterior={"/metodos_pago"} siguiente={null} textoBoton={"PAGAR"}/>
 
           </form>
         </div>
-      
-        {/* <FooterPagos paginaSiguiente={"/"} paginaAnterior={"/metodos_pago"} siguiente={pagar} textoBoton={"PAGAR"}/> */}
       </div>
       
       {

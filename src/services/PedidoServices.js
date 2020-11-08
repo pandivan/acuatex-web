@@ -93,17 +93,17 @@ const actualizarEstadoPedido = async (pedido) =>
 /**
  * Función que permite obtener todos los pedidos
  */
-const getAllPedidos = async () => 
+const getAllPedidos = async (cedula) => 
 {
   try
   {
     // console.log(JSON.stringify(pedido));
-    let respuesta = await axios.get(`${BACKEND_URL}`);
+    let respuesta = await axios.get(`${BACKEND_URL}/${cedula}`);
 
     // console.log("Respuesta API-REST Articulos. ");
     // console.log(JSON.stringify(respuesta));
 
-    return { success: ("" !== respuesta.data), arrayPedidos: respuesta.data };
+    return { success: ("" !== respuesta.data), lstPedidosBD: respuesta.data };
   }
 	catch(error)
   {
@@ -115,36 +115,11 @@ const getAllPedidos = async () =>
 
 
 
-/**
- * Función que permite obtener el historial de pedidos de la tienda o del cliente
- * @param idCliente Id del Cliente
- */
-const getAllHistorialPedidos = async (cliente) => 
-{
-  try
-  {
-    // console.log(`${BACKEND_URL}/${cliente.tipoCliente}/${cliente.idCliente}`);
-    let respuesta = await axios.get(`${BACKEND_URL}/${cliente.tipoCliente}/${cliente.idCliente}`);
-
-    // console.log("Respuesta API-REST Historial. ");
-    // console.log(JSON.stringify(respuesta.data));
-
-    return { success: ("" !== respuesta.data), arrayHistorialPedidos: respuesta.data };
-  }
-	catch(error)
-  {
-    //TODO: Guardar log en BD
-    console.log(`Error al registrarrrr: ${error}`);
-    return { success: false};
-  }
-}
-
 
 export default 
 {
   registrarPedido,
   actualizarPedido,
   actualizarEstadoPedido,
-  getAllPedidos,
-  getAllHistorialPedidos
+  getAllPedidos
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
+// import pedidoServices from "../../services/PedidoServices"; 
 
 
 
@@ -10,24 +11,101 @@ import Header from "../../components/Header";
  */
 function Pedidos() 
 {
-	const [mapArticulosPedido, setArticulosPedido] = useState(new Map());
+  const [lstPedidos, setLstPedidos] = useState([]);
 	
 
 
 	useEffect(() => 
 	{
-		console.log("useEffect Pedidos");
+    console.log("useEffect Pedidos");
+    
 
-		try
-		{
-			let mapArticulosPedidoStorage = new Map(JSON.parse(localStorage.getItem("@articulosPedido")));
+    /**
+     * Metodo que permite cargar los articulos desde el API-REST
+     */
+    const cargarPedidos = async () => 
+    {
+      try 
+      {
+        // let {success, lstPedidosBD} = await pedidoServices.getAllPedidos();
+        let success=true;
 
-			setArticulosPedido(mapArticulosPedidoStorage);
-		}
-		catch(error)
-		{
-			//TODO: Guardar log del error en BD
-		}
+        let lstPedidosBD=  
+        [
+          {
+            nroPedido:"1010",
+            fecha:"Hoy",
+            estado:"Pendiente",
+            lstPedidoDetalle:
+            [
+              {
+                codArticulo:"9",
+                cantidad:"3",
+                precioVenta:"10",
+                detalle:"Pijama Hombre"
+              },
+              {
+                codArticulo:"8",
+                cantidad:"2",
+                precioVenta:"15",
+                detalle:"Pijama Mujer"
+              }
+            ]
+          },
+          {
+            nroPedido:"1011",
+            fecha:"Hoy",
+            estado:"Cancelado",
+            lstPedidoDetalle:
+            [
+              {
+                codArticulo:"3",
+                cantidad:"9",
+                precioVenta:"10",
+                detalle:"Camisa Hombre"
+              },
+              {
+                codArticulo:"4",
+                cantidad:"12",
+                precioVenta:"15",
+                detalle:"Camisa Mujer"
+              }
+            ]
+          },
+          {
+            nroPedido:"1012",
+            fecha:"Ayer",
+            estado:"Enviado",
+            lstPedidoDetalle:
+            [
+              {
+                codArticulo:"1",
+                cantidad:"5",
+                precioVenta:"34",
+                detalle:"Pijama Niño"
+              },
+              {
+                codArticulo:"2",
+                cantidad:"6",
+                precioVenta:"25",
+                detalle:"Pijama Niña"
+              }
+            ]
+          }
+        ]; 
+
+        if (success) 
+        {
+          setLstPedidos(lstPedidosBD);
+        }
+      } 
+      catch (error) 
+      {
+        //TODO: Guardar log del error en BD 
+      }
+    };
+
+    cargarPedidos();
   }, []);
 
 
@@ -37,21 +115,17 @@ function Pedidos()
 
 
 
-    /**
+  /**
    * Funcion que permite calcular el total del pedido
    */
-  const calcularTotalPedido = () =>
+  const calcularTotalPedido = (pedido) =>
   {
     let totalPedido = 0;
-    let cantidadBadge = 0;
 
-    mapArticulosPedido.forEach((articulo, codigo) => 
+    pedido.lstPedidoDetalle.forEach( pedidoDetalle => 
     {
-      totalPedido += articulo.precio * articulo.cantidad;
-      cantidadBadge += articulo.cantidad;
+      totalPedido += pedidoDetalle.precioVenta * pedidoDetalle.cantidad;
     });
-
-    localStorage.setItem("@cantidadBadge", JSON.stringify(cantidadBadge));
 
     return totalPedido;
   }
@@ -66,7 +140,7 @@ function Pedidos()
        <div className="container pt-5 bgg-danger">
         <h2 className="mb-5 font-weight-bolder bgg-danger">MIS PEDIDOS</h2>
         {
-          0 === mapArticulosPedido.size ?
+          0 === lstPedidos.size ?
           <div className="bgg-warning">
             <span>Consulta la información y el estado de tus pedidos online.</span>
             <div>
@@ -97,101 +171,57 @@ function Pedidos()
               </div>
             </div>
 
-            <div className="container bgg-danger footer_separacion_pedidos_acuatex mb-4">
-              <div className="p-1 bgg-danger">
-                <span className="ml-2 descripcion_articulo_acuatex">N° Pedido: 30300101010</span>
-              </div>
-              <div className="p-1 bgg-danger">
-                <span className="ml-2 descripcion_articulo_acuatex">Fecha Pedido: 2020-11-04</span>
-              </div>
-              <div className="p-1 bgg-danger">
-                <span className="ml-2 descripcion_articulo_acuatex">Estado: Pendiente</span>
-              </div>
-            </div>
-
             {
-              Array.from(mapArticulosPedido.values()).map(articulo =>
+              lstPedidos.map(pedido => 
               (
-                <div key={articulo.codigo} className="container d-flex align-items-center bgg-warning mb-4">
-                  <div className="p-2 bgg-info">
-                    <img src={require("../../assets/" + articulo.codigo + ".png")} alt={articulo.nombre} style={{height:100, width:100}}/>
+                <div key={pedido.nroPedido}>
+                  <div className="container bgg-danger footer_separacion_pedidos_acuatex mb-4">
+                    <div className="p-1 bgg-danger">
+                      <span className="ml-2 descripcion_articulo_acuatex">N° Pedido: {pedido.nroPedido}</span>
+                    </div>
+                    <div className="p-1 bgg-danger">
+                      <span className="ml-2 descripcion_articulo_acuatex">Fecha Pedido: {pedido.fecha}</span>
+                    </div>
+                    <div className="p-1 bgg-danger">
+                      <span className="ml-2 descripcion_articulo_acuatex">Estado: {pedido.estado}</span>
+                    </div>
                   </div>
-                  <div className="bgg-danger" style={{width:"1%"}} />
+                  {
+                    pedido.lstPedidoDetalle.map(pedidoDetalle => 
+                    (
+                      <div key={pedidoDetalle.codArticulo} className="container d-flex align-items-center bgg-warning mb-4">
+                        <div className="p-2 bgg-info">
+                          <img src={require("../../assets/" + pedidoDetalle.codArticulo + ".png")} alt={pedidoDetalle.detalle} style={{height:100, width:100}}/>
+                        </div>
+                        <div className="bgg-danger" style={{width:"1%"}} />
 
-                  <div className="bgg-warning" style={{width:350}}>
-                    <p className="descripcion_articulo_acuatex">{articulo.nombre}</p>
-                  </div>
-                  
-                  <div className="bgg-danger" style={{width:"19%"}} />
+                        <div className="bgg-warning" style={{width:350}}>
+                          <p className="descripcion_articulo_acuatex">{pedidoDetalle.detalle}</p>
+                        </div>
+                        
+                        <div className="bgg-danger" style={{width:"19%"}} />
 
-                  <div className="p-2 bgg-primary">
-                    <span className="titulo_acuatex">{articulo.cantidad}</span>
-                  </div>
+                        <div className="p-2 bgg-primary">
+                          <span className="titulo_acuatex">{pedidoDetalle.cantidad}</span>
+                        </div>
 
-                  <div className="bgg-danger" style={{width:"23%"}} />
-                  
-                  <div className="p-2 bgg-primary">
-                    <span className="titulo_acuatex">${(articulo.cantidad * articulo.precio).toFixed(2)}</span>
+                        <div className="bgg-danger" style={{width:"23%"}} />
+                        
+                        <div className="p-2 bgg-primary">
+                          <span className="titulo_acuatex">${(pedidoDetalle.cantidad * pedidoDetalle.precioVenta).toFixed(2)}</span>
+                        </div>
+                      </div>
+                    )) 
+                  }
+
+                  <div className="container d-flex align-items-center mb-5 bgg-warning">
+                    <div className="bgg-danger" style={{width:"80%"}} />
+                    <span className="mr-5 titulo_acuatex">TOTAL</span>  
+                    <span className="pr-4 titulo_acuatex">${calcularTotalPedido(pedido).toFixed(2)}</span>
                   </div>
                 </div>
               ))
             }
-
-            <div className="container d-flex justify-content-end align-items-center mb-5 bgg-warning">
-              <span className="mr-5 titulo_acuatex">TOTAL</span>  
-              <span className="mr-5 pr-4 titulo_acuatex">${calcularTotalPedido().toFixed(2)}</span>
-            </div>
-
-
-
-
-
-
-            <div className="container bgg-danger footer_separacion_pedidos_acuatex mb-4">
-              <div className="p-1 bgg-danger">
-                <span className="ml-2 descripcion_articulo_acuatex">N° Pedido: 30300101010</span>
-              </div>
-              <div className="p-1 bgg-danger">
-                <span className="ml-2 descripcion_articulo_acuatex">Fecha Pedido: 2020-11-04</span>
-              </div>
-              <div className="p-1 bgg-danger">
-                <span className="ml-2 descripcion_articulo_acuatex">Estado: Pendiente</span>
-              </div>
-            </div>
-
-            {
-              Array.from(mapArticulosPedido.values()).map(articulo =>
-              (
-                <div key={articulo.codigo} className="container d-flex align-items-center bgg-warning mb-4">
-                  <div className="p-2 bgg-info">
-                    <img src={require("../../assets/" + articulo.codigo + ".png")} alt={articulo.nombre} style={{height:100, width:100}}/>
-                  </div>
-                  <div className="bgg-danger" style={{width:"1%"}} />
-
-                  <div className="bgg-warning" style={{width:350}}>
-                    <p className="descripcion_articulo_acuatex">{articulo.nombre}</p>
-                  </div>
-                  
-                  <div className="bgg-danger" style={{width:"19%"}} />
-
-                  <div className="p-2 bgg-primary">
-                    <span className="titulo_acuatex">{articulo.cantidad}</span>
-                  </div>
-
-                  <div className="bgg-danger" style={{width:"23%"}} />
-                  
-                  <div className="p-2 bgg-primary">
-                    <span className="titulo_acuatex">${(articulo.cantidad * articulo.precio).toFixed(2)}</span>
-                  </div>
-                </div>
-              ))
-            }
-
-            <div className="container d-flex justify-content-end align-items-center mb-5 bgg-warning">
-              <span className="mr-5 titulo_acuatex">TOTAL</span>  
-              <span className="mr-5 pr-4 titulo_acuatex">${calcularTotalPedido().toFixed(2)}</span>
-            </div>
-
           </div>
         }
       </div> 

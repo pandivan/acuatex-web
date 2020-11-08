@@ -19,7 +19,7 @@ const getAllCiudades = async () =>
     // console.log("Respuesta API-REST Articulos. ");
     // console.log(JSON.stringify(respuesta.data));
 
-    return { success: ("" !== respuesta.data), lstCiudades: respuesta.data };
+    return { success: ("" !== respuesta.data), lstCiudadesBD: respuesta.data };
   }
 	catch(error)
   {

@@ -55,13 +55,13 @@ function Registro()
     {
       try 
       {
-        let {success, lstCiudades} = await ciudadServices.getAllCiudades();
+        let {success, lstCiudadesBD} = await ciudadServices.getAllCiudades();
 
         if (success) 
         {
-          setLstCiudades(lstCiudades);
-          setLstProvincias(lstCiudades.filter(ciudad => "" === ciudad.codigoCiudad));
-          setLstCiudadesFiltradas(lstCiudades.filter(ciudad => ciudad.codigoCiudad.includes("01-")));
+          setLstCiudades(lstCiudadesBD);
+          setLstProvincias(lstCiudadesBD.filter(ciudad => "" === ciudad.codigoCiudad));
+          setLstCiudadesFiltradas(lstCiudadesBD.filter(ciudad => ciudad.codigoCiudad.includes("01-")));
         }
 
         //Se carga el listado de años desde 1905 al año actual (Referencia de facebook)
@@ -79,7 +79,6 @@ function Registro()
       catch (error) 
       {
         //TODO: Guardar log del error en BD 
-        console.log(error)
       }
     };
 

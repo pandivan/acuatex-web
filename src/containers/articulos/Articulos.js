@@ -27,18 +27,17 @@ function Articulos()
     {
       try 
       {
-        let {success, articulos} = await articuloServices.getAllArticulos();
+        let {success, lstArticulosBD} = await articuloServices.getAllArticulos();
 
         if (success) 
         {
-          setLstArticulos(articulos);
+          setLstArticulos(lstArticulosBD);
           setLoading(false);
         }
       } 
       catch (error) 
       {
         //TODO: Guardar log del error en BD 
-        console.log(error)
       }
     };
 

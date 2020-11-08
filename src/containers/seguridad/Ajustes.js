@@ -11,17 +11,19 @@ import Header from "../../components/Header";
 /**
  * Componente funcion que permite registrar un nuevo cliente en la plataforma
  */
-function Ajustes() 
+function Ajustes()
 {
   //Hook de react-router-dom maneja el historial de navegación
-  let history = useHistory(); 
+  let history = useHistory();
 
-  
+
 
   const desconectar = () =>
   {
     localStorage.clear();
     history.push("/");
+
+    // TODO: Limpiar history
   }
 
 
@@ -48,7 +50,7 @@ function Ajustes()
             <Link to="/usuario/cuenta/datos-acceso" className="text-dark"><h5 className="font-weight-bolder m-0">Datos de acceso</h5></Link>
             <small>Podrás cambiar tus datos de acceso (correo y contraseña). Recuerda que la seguridad de tus datos personales es importante, debes utilizar una contraseña segura y cambiarla periódicamente.</small>
           </div>
-          
+
           <div className="mt-5 bgg-danger">
             <button type="button" className="btn btn-link font_color_link_acuatex p-0 m-0" onClick={desconectar}><h5 className="font-weight-bolder m-0">Cerrar Sesión</h5></button>
           </div>

@@ -22,7 +22,7 @@ const registrarCliente = async (cliente) =>
   }
 	catch(error)
   {
-    return { status: Constantes.STATUS_ERROR, cliente: null };
+    return { status: Constantes.STATUS_ERROR, clienteBD: null };
   }
 }
 
@@ -45,7 +45,7 @@ const validarCliente = async (cliente) =>
   }
   catch(error)
   {
-    return { status: Constantes.STATUS_ERROR, cliente: null };
+    return { status: Constantes.STATUS_ERROR, clienteBD: null };
   }
 }
 
@@ -68,7 +68,7 @@ const actualizarDatosAccesoCliente = async (cliente) =>
   }
 	catch(error)
   {
-    return { status: Constantes.STATUS_ERROR };
+    return { status: Constantes.STATUS_ERROR, clienteBD: null };
   }
 }
 

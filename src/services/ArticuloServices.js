@@ -19,7 +19,7 @@ const getAllArticulos = async () =>
     // console.log("Respuesta API-REST Articulos. ");
     // console.log(JSON.stringify(respuesta.data));
 
-    return { success: ("" !== respuesta.data), articulos: respuesta.data };
+    return { success: ("" !== respuesta.data), lstArticulosBD: respuesta.data };
   }
 	catch(error)
   {

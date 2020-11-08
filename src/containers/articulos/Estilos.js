@@ -30,19 +30,18 @@ function Estilos()
     {
       try 
       {
-        let {success, articulos} = await articuloServices.getAllArticulos();
+        let {success, lstArticulosBD} = await articuloServices.getAllArticulos();
 
         if (success) 
         {
-          setArticulos(articulos);
-          setArticulosFiltrados(articulos);
+          setArticulos(lstArticulosBD);
+          setArticulosFiltrados(lstArticulosBD);
           setLoading(false);
         }
       } 
       catch (error) 
       {
         //TODO: Guardar log del error en BD
-        console.log(error)
       }
     };
 
