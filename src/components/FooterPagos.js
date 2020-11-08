@@ -34,7 +34,7 @@ function FooterPagos(props)
   
 
   return (
-    <div className="d-flex align-items-end justify-content-between bgg-warning border border-right-0 border-left-0 border-bottom-0 pt-5">
+    <div className="d-flex align-items-end justify-content-between bg-info border border-right-0 border-left-0 border-bottom-0 pt-5">
       <Link to={props.paginaAnterior} className="nav-link p-0">
         <button type="button" className="btn btn-dark btn_pagos_acuatex" >
           VOLVER
@@ -60,7 +60,7 @@ function FooterPagos(props)
         </div>
       </div>
 
-      <button type="button" className="btn btn-dark btn_pagos_acuatex" onClick={props.siguiente} >
+      <button type="submit" className="btn btn-dark btn_pagos_acuatex" onClick={props.siguiente} >
         {props.textoBoton}
       </button>
     </div>

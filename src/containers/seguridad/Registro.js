@@ -21,22 +21,21 @@ function Registro()
   const [cedula, setCedula] = useState("");
   const [telefono, setTelefono] = useState("");
   const [direccion, setDireccion] = useState("");
-  // const [fechaNacimiento, setFechaNacimiento] = useState("11");
   const [dia, setDia] = useState("");
   const [mes, setMes] = useState("");
   const [año, setAño] = useState("");
   const [sexo, setSexo] = useState("M");
   const [politicas, setPoliticas] = useState(true);
   const [pais, setPais] = useState("EC");
-  const [codProvincia, setCodProvincia] = useState("");
-  const [codCiudad, setCodCiudad] = useState("");
+  const [codProvincia, setCodProvincia] = useState("01");
+  const [codCiudad, setCodCiudad] = useState("01-001");
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
   const [lstProvincias, setLstProvincias] = useState([]);
   const [lstCiudades, setLstCiudades] = useState([]);
   const [lstCiudadesFiltradas, setLstCiudadesFiltradas] = useState([]);
 
-  const [lstDias] = useState([1,2,3,4,5,6,7,8,9,10]);
+  const [lstDias] = useState([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]);
   const [lstMeses] = useState([1,2,3,4,5,6,7,8,9,10,11,12]);
   const [lstAños, setLstAños] = useState([]);
 
@@ -104,7 +103,7 @@ function Registro()
       //Capturando los datos digitados por el cleinte
       let cliente =
       {
-        cedula, nombres, codProvincia, codCiudad, direccion, correo, telefono, clave, fecha:new Date(año,mes-1,dia), direccionEntrega:direccion, estado:1
+        cedula, nombres, codProvincia, codCiudad: codCiudad.split("-")[1], direccion, correo, telefono, clave, fecha:new Date(año,mes-1,dia), direccionEntrega:direccion, estado:1
       }
 
       
@@ -132,7 +131,7 @@ function Registro()
           break;
       }
     }
-  };
+  }
 
 
 
@@ -145,15 +144,20 @@ function Registro()
   }
 
 
+
   /**
-  * Función que permite abrir o cerrar el popup de mensajes
+  * Función que permite cargar las ciudades según la provincia seleccionada
   */
   const cargarCiudadesByProvincia = (e) => 
   {
     let codigoProvinciaSeleccionado = e.target.value;
+    let lstCiudadesFiltradas = lstCiudades.filter(ciudad => ciudad.codigoCiudad.includes(codigoProvinciaSeleccionado+"-"));
 
     setCodProvincia(codigoProvinciaSeleccionado);
-    setLstCiudadesFiltradas(lstCiudades.filter(ciudad => ciudad.codigoCiudad.includes(codigoProvinciaSeleccionado+"-"))); 
+    setLstCiudadesFiltradas(lstCiudadesFiltradas);
+
+    //Si el cliente pertenece a la primera ciudad de la lista entonces se coloca por default ese primer codigo ya que el cliente no tendrá la necesidad de interactuar con esta lista
+    setCodCiudad(lstCiudadesFiltradas[0].codigoCiudad);
   }
 
 
