@@ -11,7 +11,7 @@ import articuloServices from "../../services/ArticuloServices";
 function Articulos() 
 {
   const [loading, setLoading] = useState(true);
-  const [lstArticulos, setArticulos] = useState([]);
+  const [lstArticulos, setLstArticulos] = useState([]);
 
 
   
@@ -31,7 +31,7 @@ function Articulos()
 
         if (success) 
         {
-          setArticulos(articulos);
+          setLstArticulos(articulos);
           setLoading(false);
         }
       } 
@@ -56,9 +56,9 @@ function Articulos()
         {
   
           loading ? 
-          <div className="loader" />
+            <div className="loader" />
           :
-          <div className="container d-flex flex-wrap p-0 pt-2 bgg-secondary mt-5">
+            <div className="container d-flex flex-wrap p-0 pt-2 bgg-secondary mt-5">
             {
               lstArticulos.map(articulo => 
               (
@@ -72,7 +72,7 @@ function Articulos()
                 </Link>
               ))
             }
-          </div>
+            </div>
         }
       </div>
 

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
 import Header from "../../components/Header";
 import PopupMensaje from "../../components/PopupMensaje";
 import clienteServices from "../../services/ClienteServices";
+import ciudadServices from "../../services/CiudadServices"; 
 import Constantes from "../../Constantes";
 
 
@@ -20,17 +21,71 @@ function Registro()
   const [cedula, setCedula] = useState("");
   const [telefono, setTelefono] = useState("");
   const [direccion, setDireccion] = useState("");
-  const [fechaNacimiento, setFechaNacimiento] = useState("");
+  // const [fechaNacimiento, setFechaNacimiento] = useState("11");
+  const [dia, setDia] = useState("");
+  const [mes, setMes] = useState("");
+  const [año, setAño] = useState("");
   const [sexo, setSexo] = useState("M");
   const [politicas, setPoliticas] = useState(true);
   const [pais, setPais] = useState("EC");
-  const [codProvincia, setCodProvincia] = useState("02");
-  const [codCiudad, setCodCiudad] = useState("001");
+  const [codProvincia, setCodProvincia] = useState("");
+  const [codCiudad, setCodCiudad] = useState("");
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
+  const [lstProvincias, setLstProvincias] = useState([]);
+  const [lstCiudades, setLstCiudades] = useState([]);
+  const [lstCiudadesFiltradas, setLstCiudadesFiltradas] = useState([]);
+
+  const [lstDias] = useState([1,2,3,4,5,6,7,8,9,10]);
+  const [lstMeses] = useState([1,2,3,4,5,6,7,8,9,10,11,12]);
+  const [lstAños, setLstAños] = useState([]);
+
 
   //Hook de react-router-dom maneja el historial de navegación
   let history = useHistory(); 
+
+
+  useEffect(() => 
+	{
+		console.log("useEffect Registro");
+
+    /**
+     * Metodo que permite cargar los articulos desde el API-REST
+     */
+    const cargarInformacion = async () => 
+    {
+      try 
+      {
+        let {success, lstCiudades} = await ciudadServices.getAllCiudades();
+
+        if (success) 
+        {
+          setLstCiudades(lstCiudades);
+          setLstProvincias(lstCiudades.filter(ciudad => "" === ciudad.codigoCiudad));
+          setLstCiudadesFiltradas(lstCiudades.filter(ciudad => ciudad.codigoCiudad.includes("01-")));
+        }
+
+        //Se carga el listado de años desde 1905 al año actual (Referencia de facebook)
+        let añoActual = new Date().getFullYear();
+
+        const lstAñosPredefinida = []
+
+        for (let año = añoActual; año >= 1905; año--) 
+        {
+          lstAñosPredefinida.push(año);
+        }
+
+        setLstAños(lstAñosPredefinida);
+      } 
+      catch (error) 
+      {
+        //TODO: Guardar log del error en BD 
+        console.log(error)
+      }
+    };
+
+    cargarInformacion();
+  }, [])
 
   
   
@@ -49,7 +104,7 @@ function Registro()
       //Capturando los datos digitados por el cleinte
       let cliente =
       {
-        cedula, nombres, codProvincia, codCiudad, direccion, correo, telefono, clave, fecha:fechaNacimiento, direccionEntrega:direccion, estado:1
+        cedula, nombres, codProvincia, codCiudad, direccion, correo, telefono, clave, fecha:new Date(año,mes-1,dia), direccionEntrega:direccion, estado:1
       }
 
       
@@ -87,6 +142,18 @@ function Registro()
   const togglePopup = () => 
   {
     setMostrarPopup(!isMostrarPopup);
+  }
+
+
+  /**
+  * Función que permite abrir o cerrar el popup de mensajes
+  */
+  const cargarCiudadesByProvincia = (e) => 
+  {
+    let codigoProvinciaSeleccionado = e.target.value;
+
+    setCodProvincia(codigoProvinciaSeleccionado);
+    setLstCiudadesFiltradas(lstCiudades.filter(ciudad => ciudad.codigoCiudad.includes(codigoProvinciaSeleccionado+"-"))); 
   }
 
 
@@ -156,8 +223,40 @@ function Registro()
 
           <div className="row form-group mt-5">
             <div className="col mr-4">
-              <label htmlFor="txtFechaCumpleaños">Fecha cumpleaños:</label>
-              <input type="date" className="form-control" placeholderr="Enter fecha cumpleaños" id="txtFechaCumpleaños" value={fechaNacimiento} onChange={e => setFechaNacimiento(e.target.value)} />
+              <span>Fecha de cumpleaños</span>
+
+              <div className="d-flex pt-2 bg-secondaryy text-white">
+                <select className="form-control mr-2" id="txtDia" value={dia} onChange={e => setDia(e.target.value)} >
+                  <option>Día</option>
+                  {
+                    lstDias.map(dia => 
+                    (
+                      <option key={dia} value={dia}>{dia}</option>
+                    ))
+                  }
+                </select>
+
+                <select className="form-control mr-2" id="txtMes" value={mes} onChange={e => setMes(e.target.value)} >
+                  <option>Mes</option>
+                  {
+                    lstMeses.map(mes => 
+                    (
+                      <option key={mes} value={mes}>{mes}</option>
+                    ))
+                  }
+                </select>
+
+                <select className="form-control" id="txtAño" value={año} onChange={e => setAño(e.target.value)} >
+                  <option>Año</option>
+                  {
+                    lstAños.map(año => 
+                    (
+                      <option key={año} value={año}>{año}</option>
+                    ))
+                  }
+                </select>
+              </div>
+              
             </div>
             <div className="col ml-4">
               Sexo
@@ -185,10 +284,14 @@ function Registro()
             </div>
             <div className="col ml-4">
               <label htmlFor="cbxCodProvincia">Provincia:</label>
-              <select className="custom-select" id="cbxCodProvincia" value={codProvincia} onChange={e => setCodProvincia(e.target.value)} >
-                  <option value="01">AZUAY</option>
-                  <option value="02">BOLIVAR</option>
-                </select>
+              <select className="custom-select" id="cbxCodProvincia" value={codProvincia} onChange={cargarCiudadesByProvincia} >
+              {
+                lstProvincias.map(ciudad => 
+                (
+                  <option key={ciudad.id} value={ciudad.codigoProvincia}>{ciudad.nombre}</option>
+                ))
+              }
+              </select>
             </div>
           </div>
 
@@ -197,8 +300,12 @@ function Registro()
             <div className="col mr-4">
               <label htmlFor="cbxCodCiudad">Ciudad:</label>
               <select className="custom-select" id="cbxCodCiudad" value={codCiudad} onChange={e => setCodCiudad(e.target.value)} >
-                <option value="001">CUENCA</option>
-                <option value="001">GUARANDA</option>
+              {
+                lstCiudadesFiltradas.map(ciudad => 
+                (
+                  <option key={ciudad.id} value={ciudad.codigoCiudad}>{ciudad.nombre}</option>
+                ))
+              }
               </select>
             </div>
             <div className="col ml-4">

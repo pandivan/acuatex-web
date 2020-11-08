@@ -17,7 +17,7 @@ function Transaccion(props)
   return (
     
       <div>
-        <h1>Transaccion {location.state.mensaje}</h1>
+        <h1>Transaccion {location.state.mensaje} {mensajes}</h1>
       </div>
     
   );
