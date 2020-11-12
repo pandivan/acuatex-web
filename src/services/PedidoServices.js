@@ -19,12 +19,11 @@ const registrarPedido = async (pedido) =>
     // console.log("Respuesta API-REST Pedido. ");
     // console.log(JSON.stringify(respuesta));
 
-    return { success: respuesta.data };
+    return { nroPedido: respuesta.data };
   }
 	catch(error)
   {
     //TODO: Guardar log en BD
-    console.log(`Error al registrar: ${error}`);
     return { success: false};
   }
 }
@@ -55,7 +54,7 @@ const actualizarPedido = async (pedido) =>
 	catch(error)
   {
     //TODO: Guardar log en BD
-    console.log(`Error al registrar: ${error}`);
+    // console.log(`Error al registrar: ${error}`);
     return { success: false};
   }
 }
@@ -83,7 +82,7 @@ const actualizarEstadoPedido = async (pedido) =>
 	catch(error)
   {
     //TODO: Guardar log en BD
-    console.log(`Error al registrar: ${error}`);
+    // console.log(`Error al registrar: ${error}`);
     return { success: false};
   }
 }
@@ -97,7 +96,7 @@ const getAllPedidos = async (cedula) =>
 {
   try
   {
-    // console.log(JSON.stringify(pedido));
+    console.log(JSON.stringify(cedula));
     let respuesta = await axios.get(`${BACKEND_URL}/${cedula}`);
 
     // console.log("Respuesta API-REST Articulos. ");
@@ -108,7 +107,7 @@ const getAllPedidos = async (cedula) =>
 	catch(error)
   {
     //TODO: Guardar log en BD
-    console.log(`Error al registrar: ${error}`);
+    // console.log(`Error al registrar: ${error}`);
     return { success: false};
   }
 }

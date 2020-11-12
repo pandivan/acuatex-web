@@ -24,7 +24,7 @@ const getAllArticulos = async () =>
 	catch(error)
   {
     //TODO: Guardar log en BD
-    console.log(`Error al registrar: ${error}`);
+    // console.log(`Error al registrar: ${error}`);
     return { success: false};
   }
 }

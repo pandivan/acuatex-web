@@ -17,6 +17,9 @@ const ESTADO_PEDIDO_PENDIENTE = 100;
  */
 const registrarPagoTC = async (transaccion) => 
 {
+  let estadoTransaccion = "TRANSACCIÓN RECHAZADA";
+  let mensaje = "El pedido no pudo registrarse correctamente";
+
   try
   {
     /**
@@ -34,21 +37,21 @@ const registrarPagoTC = async (transaccion) =>
     if(isTransaccionAceptada)
     {
       //Se registra el pedido en BD
-      let {success, mensaje} = await registrarPedido();
+      let {resultadoTransaccion} = await registrarPedido();
       
-      return { success, mensaje };
+      return { resultadoTransaccion };
     }
 
     // console.log("Respuesta API-REST Pedido. ");
     // console.log(JSON.stringify(respuesta));
 
-    return { success: isTransaccionAceptada, mensaje: "El pedido no pudo registrarse correctamente. Transacción rechazada" };
+    return { resultadoTransaccion: { nroPedido: null, mensaje, estadoTransaccion } };
   }
 	catch(error)
   {
     //TODO: Guardar log en BD
-    console.log(`Error al registrar: ${error}`);
-    return { success: false, mensaje: "El pedido no pudo registrarse correctamente. Transacción rechazada" };
+    // console.log(`Error al registrar: ${error}`);
+    return { resultadoTransaccion: { nroPedido: null, mensaje, estadoTransaccion} };
   }
 }
 
@@ -60,7 +63,8 @@ const registrarPagoTC = async (transaccion) =>
  */
 const registrarPedido = async () => 
 {
-  let mensaje = "";
+  let estadoTransaccion = "TRANSACCIÓN RECHAZADA";
+  let mensaje = "El pedido no pudo registrarse correctamente";
 
   try
   {
@@ -127,27 +131,26 @@ const registrarPedido = async () =>
 
 
     //Enviando el pedido al servidor via api-res para registrarlo en BD
-    let {success} = await pedidoServices.registrarPedido(pedido);
+    let {nroPedido} = await pedidoServices.registrarPedido(pedido);
 
-    if(success)
+    if("" !== nroPedido)
     {
       localStorage.removeItem("@articulosPedido");
       localStorage.removeItem("@cantidadBadge");
 
-      mensaje = "Información... Su pedido fue registrado. Dentro de poco será informado de su estado.";
-    }
-    else
-    {
-      mensaje = "Información.... El pedido no pudo registrarse correctamente. Transacción rechazada";
+      estadoTransaccion = "SU PEDIDO FUE REGISTRADO";
+      mensaje = "Dentro de poco será informado de su estado";
     }
 
-    return { success, mensaje };
+    return { resultadoTransaccion: { nroPedido, mensaje, estadoTransaccion } };
   }
   catch(error)
   {
-    return { success: false, mensaje: "El pedido no pudo registrarse correctamente. Transacción rechazada" };
+    return { resultadoTransaccion: { nroPedido: null, mensaje, estadoTransaccion} };
   }
 };
+
+
 
 
 export default 

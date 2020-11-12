@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
-// import pedidoServices from "../../services/PedidoServices"; 
+import pedidoServices from "../../services/PedidoServices"; 
 
 
 
@@ -27,72 +27,74 @@ function Pedidos()
     {
       try 
       {
-        // let {success, lstPedidosBD} = await pedidoServices.getAllPedidos();
-        let success=true;
+        let cliente = JSON.parse(localStorage.getItem("@cliente"));
 
-        let lstPedidosBD=  
-        [
-          {
-            nroPedido:"1010",
-            fecha:"Hoy",
-            estado:"Pendiente",
-            lstPedidoDetalle:
-            [
-              {
-                codArticulo:"9",
-                cantidad:"3",
-                precioVenta:"10",
-                detalle:"Pijama Hombre"
-              },
-              {
-                codArticulo:"8",
-                cantidad:"2",
-                precioVenta:"15",
-                detalle:"Pijama Mujer"
-              }
-            ]
-          },
-          {
-            nroPedido:"1011",
-            fecha:"Hoy",
-            estado:"Cancelado",
-            lstPedidoDetalle:
-            [
-              {
-                codArticulo:"3",
-                cantidad:"9",
-                precioVenta:"10",
-                detalle:"Camisa Hombre"
-              },
-              {
-                codArticulo:"4",
-                cantidad:"12",
-                precioVenta:"15",
-                detalle:"Camisa Mujer"
-              }
-            ]
-          },
-          {
-            nroPedido:"1012",
-            fecha:"Ayer",
-            estado:"Enviado",
-            lstPedidoDetalle:
-            [
-              {
-                codArticulo:"1",
-                cantidad:"5",
-                precioVenta:"34",
-                detalle:"Pijama Niño"
-              },
-              {
-                codArticulo:"2",
-                cantidad:"6",
-                precioVenta:"25",
-                detalle:"Pijama Niña"
-              }
-            ]
-          }
-        ]; 
+        let {success, lstPedidosBD} = await pedidoServices.getAllPedidos(cliente.cedula);
+        // let success=true;
+
+        // let lstPedidosBD=  
+        // [
+        //   {
+        //     nroPedido:"1010",
+        //     fecha:"Hoy",
+        //     estado:"Pendiente",
+        //     lstPedidoDetalle:
+        //     [
+        //       {
+        //         codArticulo:"9",
+        //         cantidad:"3",
+        //         precioVenta:"10",
+        //         detalle:"Pijama Hombre"
+        //       },
+        //       {
+        //         codArticulo:"8",
+        //         cantidad:"2",
+        //         precioVenta:"15",
+        //         detalle:"Pijama Mujer"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     nroPedido:"1011",
+        //     fecha:"Hoy",
+        //     estado:"Cancelado",
+        //     lstPedidoDetalle:
+        //     [
+        //       {
+        //         codArticulo:"3",
+        //         cantidad:"9",
+        //         precioVenta:"10",
+        //         detalle:"Camisa Hombre"
+        //       },
+        //       {
+        //         codArticulo:"4",
+        //         cantidad:"12",
+        //         precioVenta:"15",
+        //         detalle:"Camisa Mujer"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     nroPedido:"1012",
+        //     fecha:"Ayer",
+        //     estado:"Enviado",
+        //     lstPedidoDetalle:
+        //     [
+        //       {
+        //         codArticulo:"1",
+        //         cantidad:"5",
+        //         precioVenta:"34",
+        //         detalle:"Pijama Niño"
+        //       },
+        //       {
+        //         codArticulo:"2",
+        //         cantidad:"6",
+        //         precioVenta:"25",
+        //         detalle:"Pijama Niña"
+        //       }
+        //     ]
+        //   }
+        // ]; 
 
         if (success) 
         {
@@ -101,7 +103,8 @@ function Pedidos()
       } 
       catch (error) 
       {
-        //TODO: Guardar log del error en BD 
+        //TODO: Guardar log del error en BD
+        console.log(`Error al registrar: ${error}`);
       }
     };
 
@@ -140,7 +143,7 @@ function Pedidos()
        <div className="container pt-5 bgg-danger">
         <h2 className="mb-5 font-weight-bolder bgg-danger">MIS PEDIDOS</h2>
         {
-          0 === lstPedidos.size ?
+          0 === lstPedidos.length ?
           <div className="bgg-warning">
             <span>Consulta la información y el estado de tus pedidos online.</span>
             <div>
@@ -180,7 +183,7 @@ function Pedidos()
                       <span className="ml-2 descripcion_articulo_acuatex">N° Pedido: {pedido.nroPedido}</span>
                     </div>
                     <div className="p-1 bgg-danger">
-                      <span className="ml-2 descripcion_articulo_acuatex">Fecha Pedido: {pedido.fecha}</span>
+                      <span className="ml-2 descripcion_articulo_acuatex">Fecha Pedido: {new Date(pedido.fecha).getFullYear()}-{new Date(pedido.fecha).getMonth() + 1}-{new Date(pedido.fecha).getDate()}</span>
                     </div>
                     <div className="p-1 bgg-danger">
                       <span className="ml-2 descripcion_articulo_acuatex">Estado: {pedido.estado}</span>
@@ -191,7 +194,7 @@ function Pedidos()
                     (
                       <div key={pedidoDetalle.codArticulo} className="container d-flex align-items-center bgg-warning mb-4">
                         <div className="p-2 bgg-info">
-                          <img src={require("../../assets/" + pedidoDetalle.codArticulo + ".png")} alt={pedidoDetalle.detalle} style={{height:100, width:100}}/>
+                          <img src={require("../../assets/" + pedidoDetalle.codArticulo + ".pngg")} alt={pedidoDetalle.detalle} style={{height:100, width:100}}/>
                         </div>
                         <div className="bgg-danger" style={{width:"1%"}} />
 

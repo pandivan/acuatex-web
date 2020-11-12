@@ -48,32 +48,33 @@ function PagoTarjetaCredito()
   {
     setMostrarPopup(!isMostrarPopup);
   }
-  
+ 
 
-  
+
   /**
-   * Función que permite enviar los datos a la pasarela de pago
+   * Función que permite validar si el caracter digitado es numérico
+   * @param e evento generado por teclear en un input
    */
-  const pagar = async () =>
+  const validarNumero = (e) => 
   {
-    try
+    let numero = e.target.value;
+
+    if (!Number(numero)) 
     {
-      let {mensaje} = await pagoServices.registrarPagoTC({ numeroTarjeta, mesCaducidad, añoCaducidad, titularTarjeta, numeroCVV });
-
-      const location = 
-      {
-        pathname: '/transaccion',
-        state: { mensaje }
-      }
-
-      history.replace(location);
+        return;
     }
-    catch(error)
+   
+    if("numeroTarjeta" === e.target.id)
     {
-      setMensajePopup("En el momento no es posible registrar el pago.");
-      setMostrarPopup(true); 
+      setNumeroTarjeta(numero);
+    }
+
+    if("numeroCVV" === e.target.id)
+    {
+      setNumeroCVV(numero);
     }
   }
+
 
 
 
@@ -81,14 +82,30 @@ function PagoTarjetaCredito()
    * Función que permite validar y registrar un pago
    * @param event Evento generado por el boton del formulario
    */
-  const validarFormulario = (event) => 
+  const validarFormulario = async (event) => 
   {
     event.preventDefault();
     event.target.className += " was-validated";
 
     if (event.target.checkValidity()) 
     {
-      pagar();
+      try
+      {
+        let {resultadoTransaccion} = await pagoServices.registrarPagoTC({ numeroTarjeta, mesCaducidad, añoCaducidad, titularTarjeta, numeroCVV });
+
+        const location = 
+        {
+          pathname: '/transaccion',
+          state: { resultadoTransaccion }
+        }
+
+        history.replace(location);
+      }
+      catch(error)
+      {
+        setMensajePopup("En el momento no es posible registrar el pago.");
+        setMostrarPopup(true); 
+      }
     }
   }
 
@@ -109,7 +126,7 @@ function PagoTarjetaCredito()
             <div className="row form-group m-0 bgg-dark" style={{width:"60%"}}>
               <div className="col mt-3 pl-0 bgg-danger">
                 <label htmlFor="numeroTarjeta">Número de tarjeta:</label>
-                <input type="text" className="form-control" id="numeroTarjeta" placeholderr="Número de tarjeta" required value={numeroTarjeta} onChange={e => setNumeroTarjeta(e.target.value)} />
+                <input type="text" className="form-control" id="numeroTarjeta" placeholderr="Número de tarjeta" required value={numeroTarjeta} onChange={validarNumero} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>
@@ -142,7 +159,7 @@ function PagoTarjetaCredito()
               </div>
               <div className="col-sm mt-4 pb-4 bgg-success">
                 <label htmlFor="numeroCVV">Número de CVV:</label>
-                <input type="text" className="form-control" id="numeroCVV" placeholderr="Número de CVV" required value={numeroCVV} onChange={e => setNumeroCVV(e.target.value)} />
+                <input type="text" className="form-control" id="numeroCVV" placeholderr="Número de CVV" required value={numeroCVV} onChange={validarNumero} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import PopupMensaje from "../../components/PopupMensaje";
 import clienteServices from "../../services/ClienteServices";
+import ciudadServices from "../../services/CiudadServices"; 
 import Constantes from "../../Constantes";
 
 
@@ -17,13 +18,21 @@ function InformacionPersonal()
   const [cedula, setCedula] = useState("");
   const [telefono, setTelefono] = useState("");
   const [direccion, setDireccion] = useState("");
-  const [fechaNacimiento, setFechaNacimiento] = useState("");
+  const [dia, setDia] = useState("");
+  const [mes, setMes] = useState("");
+  const [año, setAño] = useState("");
   const [sexo, setSexo] = useState("");
   const [pais, setPais] = useState("");
   const [codProvincia, setCodProvincia] = useState("");
   const [codCiudad, setCodCiudad] = useState("");
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
+  const [lstProvincias, setLstProvincias] = useState([]);
+  const [lstCiudades, setLstCiudades] = useState([]);
+  const [lstCiudadesFiltradas, setLstCiudadesFiltradas] = useState([]);
+  const [lstDias] = useState([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]);
+  const [lstMeses] = useState([1,2,3,4,5,6,7,8,9,10,11,12]);
+  const [lstAños, setLstAños] = useState([]);
 
   const [cliente] = useState(JSON.parse(localStorage.getItem("@cliente")));
 
@@ -32,24 +41,69 @@ function InformacionPersonal()
 
   useEffect(() => 
 	{
-		console.log("useEffect Informacion Personal");
-
-    // let clienteStorage = JSON.parse(localStorage.getItem("@cliente"));
- 
     
-    if(null !== cliente)
+    console.log("useEffect Informacion Personal");
+
+
+    /**
+     * Metodo que permite cargar los articulos desde el API-REST
+     */
+    const cargarInformacion = async () => 
     {
-      setNombres(cliente.nombres);
-      setCedula(cliente.cedula);
-      setTelefono(cliente.telefono);
-      setDireccion(cliente.direccion);
-      setSexo("F");
-      setPais("EC");
-      // setFechaNacimiento(cliente.fechaNacimiento);
-      setCodProvincia(cliente.codProvincia);
-      setCodCiudad(cliente.codCiudad);
-    }
-		
+      try 
+      {
+        let {success, lstCiudadesBD} = await ciudadServices.getAllCiudades();
+
+        
+        //Se carga el listado de años desde 1905 al año actual (Referencia de facebook)
+        let añoActual = new Date().getFullYear();
+
+        const lstAñosPredefinida = []
+
+        for (let año = añoActual; año >= 1905; año--) 
+        {
+          lstAñosPredefinida.push(año);
+        }
+
+        setLstAños(lstAñosPredefinida);
+        
+        if(null !== cliente)
+        {
+          let fechaNacimiento = new Date(cliente.fecha);
+
+          setNombres(cliente.nombres);
+          setCedula(cliente.cedula);
+          setTelefono(cliente.telefono);
+          setDireccion(cliente.direccion);
+          setSexo("F");
+          setPais("EC");
+          //El valor devuelto por getDay() es un entero correspondiente al día de la semana; siendo 0 (Domingo) el primer día, 1 (Lunes) el segundo
+          setDia(fechaNacimiento.getDate());
+          //El valor devuelto por getMonth() es un entero entre 0 y 11, donde 0 corresponde a Enero, 1 a Febrero y así sucesivamente
+          setMes(fechaNacimiento.getMonth() + 1);
+          setAño(fechaNacimiento.getFullYear());
+
+          if (success) 
+          {
+            setLstCiudades(lstCiudadesBD);
+            //Cargando todas las provincias
+            setLstProvincias(lstCiudadesBD.filter(ciudad => "" === ciudad.codigoCiudad));
+            setCodProvincia(cliente.codProvincia);
+
+            //Cargando todas las ciudades
+            setLstCiudadesFiltradas(lstCiudadesBD.filter(ciudad => ciudad.codigoCiudad.includes(cliente.codProvincia+"-")));
+            setCodCiudad(cliente.codProvincia.concat("-", cliente.codCiudad));
+          }
+        }
+      } 
+      catch (error) 
+      {
+        //TODO: Guardar log del error en BD 
+        console.log("erro")
+      }
+    };
+
+    cargarInformacion();
   }, [cliente])
   
   
@@ -67,10 +121,10 @@ function InformacionPersonal()
     {
       cliente.nombres = nombres;
       cliente.codProvincia = codProvincia;
-      cliente.codCiudad = codCiudad;
+      cliente.codCiudad = codCiudad.split("-")[1];
       cliente.direccion = direccion;
       cliente.telefono = telefono;
-      cliente.fecha = fechaNacimiento;
+      cliente.fecha = new Date(año,mes-1,dia); //El valor devuelto por getMonth() es un entero entre 0 y 11, donde 0 corresponde a Enero, 1 a Febrero y así sucesivamente
       cliente.direccionEntrega = direccion;
       cliente.estado = 1;
 
@@ -104,6 +158,20 @@ function InformacionPersonal()
 
 
 
+  /**
+  * Función que permite cargar las ciudades según la provincia seleccionada
+  */
+  const cargarCiudadesByProvincia = (e) => 
+  {
+    let codigoProvinciaSeleccionado = e.target.value;
+    let lstCiudadesFiltradas = lstCiudades.filter(ciudad => ciudad.codigoCiudad.includes(codigoProvinciaSeleccionado+"-"));
+
+    setCodProvincia(codigoProvinciaSeleccionado);
+    setLstCiudadesFiltradas(lstCiudadesFiltradas);
+
+    //Si el cliente pertenece a la primera ciudad de la lista entonces se coloca por default ese primer codigo ya que el cliente no tendrá la necesidad de interactuar con esta lista
+    setCodCiudad(lstCiudadesFiltradas[0].codigoCiudad);
+  }
 
 
   return (
@@ -117,14 +185,14 @@ function InformacionPersonal()
           <div className="row form-group mt-5">
             <div className="col mr-4">
               <label htmlFor="txtNombres">Nombre completo:</label>
-              <input type="text" className="form-control" placeholderr="Enter nombres completos" id="txtNombres" required value={nombres || ''} onChange={e => setNombres(e.target.value)} />
+              <input type="text" className="form-control" placeholderr="Enter nombres completos" id="txtNombres" maxLength="150" required value={nombres || ''} onChange={e => setNombres(e.target.value)} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
               </div>
             </div>
             <div className="col ml-4">
               <label htmlFor="txtCedula">Cedula:</label>
-              <input type="text" className="form-control" placeholderr="Enter cedula" id="txtCedula" readOnly required value={cedula} onChange={e => setCedula(e.target.value)} />
+              <input type="text" className="form-control" placeholderr="Enter cedula" id="txtCedula" maxLength="13" readOnly required value={cedula} onChange={e => setCedula(e.target.value)} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
               </div>
@@ -135,14 +203,14 @@ function InformacionPersonal()
           <div className="row form-group mt-5">
             <div className="col mr-4">
               <label htmlFor="txtTelefono">Número de teléfono:</label>
-              <input type="text" className="form-control" placeholderr="Enter teléfono" id="txtTelefono" required value={telefono} onChange={e => setTelefono(e.target.value)} />
+              <input type="text" className="form-control" placeholderr="Enter teléfono" id="txtTelefono" maxLength="10" required value={telefono} onChange={e => setTelefono(e.target.value)} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
               </div>
             </div>
             <div className="col ml-4">
               <label htmlFor="txtDireccion">Dirección:</label>
-              <input type="text" className="form-control" placeholderr="Enter Dirección" id="txtDireccion" required value={direccion} onChange={e => setDireccion(e.target.value)} />
+              <input type="text" className="form-control" placeholderr="Enter Dirección" id="txtDireccion" maxLength="100" required value={direccion} onChange={e => setDireccion(e.target.value)} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
               </div>
@@ -152,8 +220,40 @@ function InformacionPersonal()
 
           <div className="row form-group mt-5">
             <div className="col mr-4">
-              <label htmlFor="txtFechaCumpleaños">Fecha cumpleaños:</label>
-              <input type="date" className="form-control" placeholderr="Enter fecha cumpleaños" id="txtFechaCumpleaños" value={fechaNacimiento} onChange={e => setFechaNacimiento(e.target.value)} />
+              <span>Fecha de cumpleaños</span>
+
+              <div className="d-flex pt-2 bg-secondaryy text-white">
+                <select className="form-control mr-2" id="txtDia" value={dia} onChange={e => setDia(e.target.value)} >
+                  <option>Día</option>
+                  {
+                    lstDias.map(dia => 
+                    (
+                      <option key={dia} value={dia}>{dia}</option>
+                    ))
+                  }
+                </select>
+
+                <select className="form-control mr-2" id="txtMes" value={mes} onChange={e => setMes(e.target.value)} >
+                  <option>Mes</option>
+                  {
+                    lstMeses.map(mes => 
+                    (
+                      <option key={mes} value={mes}>{mes}</option>
+                    ))
+                  }
+                </select>
+
+                <select className="form-control" id="txtAño" value={año} onChange={e => setAño(e.target.value)} >
+                  <option>Año</option>
+                  {
+                    lstAños.map(año => 
+                    (
+                      <option key={año} value={año}>{año}</option>
+                    ))
+                  }
+                </select>
+              </div>
+              
             </div>
             <div className="col ml-4">
               Sexo
@@ -181,10 +281,14 @@ function InformacionPersonal()
             </div>
             <div className="col ml-4">
               <label htmlFor="cbxCodProvincia">Provincia:</label>
-              <select className="custom-select" id="cbxCodProvincia" value={codProvincia} onChange={e => setCodProvincia(e.target.value)} >
-                  <option value="01">AZUAY</option>
-                  <option value="02">BOLIVAR</option>
-                </select>
+              <select className="custom-select" id="cbxCodProvincia" value={codProvincia} onChange={cargarCiudadesByProvincia} >
+              {
+                lstProvincias.map(ciudad => 
+                (
+                  <option key={ciudad.id} value={ciudad.codigoProvincia}>{ciudad.nombre}</option>
+                ))
+              }
+              </select>
             </div>
           </div>
 
@@ -193,8 +297,12 @@ function InformacionPersonal()
             <div className="col mr-4">
               <label htmlFor="cbxCodCiudad">Ciudad:</label>
               <select className="custom-select" id="cbxCodCiudad" value={codCiudad} onChange={e => setCodCiudad(e.target.value)} >
-                <option value="001">CUENCA</option>
-                <option value="001">GUARANDA</option>
+              {
+                lstCiudadesFiltradas.map(ciudad => 
+                (
+                  <option key={ciudad.id} value={ciudad.codigoCiudad}>{ciudad.nombre}</option>
+                ))
+              }
               </select>
             </div>
             <div className="col ml-4">

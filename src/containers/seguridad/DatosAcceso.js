@@ -174,14 +174,14 @@ function DatosAcceso()
             <div className="row form-group mt-5 bgg-warning">
               <div className="col mt-3 bgg-success">
                 <label htmlFor="nuevoCorreo">Nuevo correo</label>
-                <input type="correo" className="form-control" id="nuevoCorreo" placeholderr="Nuevo correo" required value={nuevoCorreo} onChange={e => setNuevoCorreo(e.target.value)} />
+                <input type="correo" className="form-control" id="nuevoCorreo" placeholderr="Nuevo correo" rmaxLength="50" equired value={nuevoCorreo} onChange={e => setNuevoCorreo(e.target.value)} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>
               </div>
               <div className="col mt-3 ml-4 pl-4 pr-0 bgg-info">
                 <label htmlFor="repetirCorreo">Repetir correo</label>
-                <input type="correo" className="form-control" id="repetirCorreo" placeholderr="Repetir correo" required value={repetirCorreo} onChange={e => setRepetirCorreo(e.target.value)} />
+                <input type="correo" className="form-control" id="repetirCorreo" placeholderr="Repetir correo" maxLength="50" required value={repetirCorreo} onChange={e => setRepetirCorreo(e.target.value)} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>
@@ -219,14 +219,14 @@ function DatosAcceso()
             <div className="row form-group mt-5 bgg-warning">
               <div className="col mt-3 bgg-success">
                 <label htmlFor="nuevoClave">Nueva contraseña</label>
-                <input type="password" className="form-control" id="nuevaClave" placeholderr="Nueva Contraseña" required value={nuevaClave} onChange={e => setNuevaClave(e.target.value)} />
+                <input type="password" className="form-control" id="nuevaClave" placeholderr="Nueva Contraseña" maxLength="10" required value={nuevaClave} onChange={e => setNuevaClave(e.target.value)} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>
               </div>
               <div className="col mt-3 ml-4 pl-4 pr-0 bgg-info">
                 <label htmlFor="repetirClave">Repetir contraseña</label>
-                <input type="password" className="form-control" id="repetirClave" placeholderr="Repetir Contraseña" required value={repetirClave} onChange={e => setRepetirClave(e.target.value)} />
+                <input type="password" className="form-control" id="repetirClave" placeholderr="Repetir Contraseña" maxLength="10" required value={repetirClave} onChange={e => setRepetirClave(e.target.value)} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>

@@ -34,7 +34,6 @@ function Registro()
   const [lstProvincias, setLstProvincias] = useState([]);
   const [lstCiudades, setLstCiudades] = useState([]);
   const [lstCiudadesFiltradas, setLstCiudadesFiltradas] = useState([]);
-
   const [lstDias] = useState([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]);
   const [lstMeses] = useState([1,2,3,4,5,6,7,8,9,10,11,12]);
   const [lstAños, setLstAños] = useState([]);
@@ -87,17 +86,43 @@ function Registro()
 
   
   
+  /**
+   * Función que permite abrir o cerrar el popup de mensajes
+   */
+  const togglePopup = () => 
+  {
+    setMostrarPopup(!isMostrarPopup);
+  }
+
+
+
+  /**
+   * Función que permite validar si el caracter digitado es numérico
+   * @param e evento generado por teclear en un input
+   */
+  const validarNumero = (e) => 
+  {
+    let cedula = e.target.value;
+
+    if (!Number(cedula)) 
+    {
+        return;
+    }
+   
+    setCedula(cedula)
+  }
+
 
   /**
    * Función que permite validar y registrar un cliente
-   * @param event Evento generado por el boton del formulario
+   * @param e Evento generado por el boton del formulario
    */
-  const validarFormulario = async (event) => 
+  const validarFormulario = async (e) => 
   {
-    event.preventDefault();
-    event.target.className += " was-validated";
+    e.preventDefault();
+    e.target.className += " was-validated";
 
-    if (event.target.checkValidity()) 
+    if (e.target.checkValidity()) 
     {
       //Capturando los datos digitados por el cleinte
       let cliente =
@@ -134,14 +159,6 @@ function Registro()
 
 
 
-  /**
-   * Función que permite abrir o cerrar el popup de mensajes
-   */
-  const togglePopup = () => 
-  {
-    setMostrarPopup(!isMostrarPopup);
-  }
-
 
 
   /**
@@ -173,14 +190,14 @@ function Registro()
           <div className="row form-group">
             <div className="col mt-5 mr-4">
               <label htmlFor="txtCorreo">E-mail:</label>
-              <input type="email" className="form-control" id="txtCorreo" placeholderr="E-mail" required value={correo} onChange={e => setCorreo(e.target.value)} />
+              <input type="email" className="form-control" id="txtCorreo" placeholderr="E-mail" maxLength="50" required value={correo} onChange={e => setCorreo(e.target.value)} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
               </div>
             </div>
             <div className="col mt-5 ml-4">
               <label htmlFor="txtClave">Contraseña:</label>
-              <input type="password" className="form-control" id="txtClave" placeholderr="Contraseña" required value={clave} onChange={e => setClave(e.target.value)} />
+              <input type="password" className="form-control" id="txtClave" placeholderr="Contraseña" maxLength="10" required value={clave} onChange={e => setClave(e.target.value)} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
               </div>
@@ -191,16 +208,16 @@ function Registro()
           <div className="row form-group mt-5">
             <div className="col mr-4">
               <label htmlFor="txtNombres">Nombre completo:</label>
-              <input type="text" className="form-control" placeholderr="Enter nombres completos" id="txtNombres" required value={nombres} onChange={e => setNombres(e.target.value)} />
+              <input type="text" className="form-control" placeholderr="Enter nombres completos" id="txtNombres" maxLength="150" required value={nombres} onChange={e => setNombres(e.target.value)} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
               </div>
             </div>
             <div className="col ml-4">
               <label htmlFor="txtCedula">Cedula:</label>
-              <input type="text" className="form-control" placeholderr="Enter cedula" id="txtCedula" required value={cedula} onChange={e => setCedula(e.target.value)} />
+              <input type="text" className="form-control" placeholderr="Enter cedula" id="txtCedula" maxLength="13" pattern="^ [0-9]+$" required value={cedula} onChange={validarNumero} />
               <div className="invalid-feedback">
-                Este campo es obligatorio.
+                Este campo es obligatorio y numérico  .
               </div>
             </div>
           </div>
@@ -209,14 +226,14 @@ function Registro()
           <div className="row form-group mt-5">
             <div className="col mr-4">
               <label htmlFor="txtTelefono">Número de teléfono:</label>
-              <input type="text" className="form-control" placeholderr="Enter teléfono" id="txtTelefono" required value={telefono} onChange={e => setTelefono(e.target.value)} />
+              <input type="text" className="form-control" placeholderr="Enter teléfono" id="txtTelefono" maxLength="10" required value={telefono} onChange={e => setTelefono(e.target.value)} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
               </div>
             </div>
             <div className="col ml-4">
               <label htmlFor="txtDireccion">Dirección:</label>
-              <input type="text" className="form-control" placeholderr="Enter Dirección" id="txtDireccion" required value={direccion} onChange={e => setDireccion(e.target.value)} />
+              <input type="text" className="form-control" placeholderr="Enter Dirección" id="txtDireccion" maxLength="100" required value={direccion} onChange={e => setDireccion(e.target.value)} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
               </div>

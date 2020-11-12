@@ -11,7 +11,7 @@ import PopupMensaje from "../../components/PopupMensaje";
  */
 function MetodosPago() 
 {
-  const [tipoPago, setTipoPago] = useState("TC");
+  const [tipoPago, setTipoPago] = useState("");
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
 
@@ -84,10 +84,10 @@ function MetodosPago()
         <h3 className="font-weight-bolder" >ELIGE UN MÉTODO DE PAGO</h3>
        
         <div className="my-5 bgg-warning" style={{height:450}}>
-          <button className="mr-4 mb-4 p-1 btn btn-primary" >
+          <button className="mr-4 mb-4 p-0 btn btn-dark" >
             <img src={require("../../assets/mastercard.png")} alt={"Master Card"} style={{height:100, width:100}} onClick={() => setTipoPago("TC")}/>
           </button>
-          <button className="mr-4 mb-4 p-1 btn btn-dark" >
+          <button className="mr-4 mb-4 p-0 btn btn-dark" >
             <img src={require("../../assets/visa.png")} alt={"Visa"} style={{height:100, width:100}} onClick={() => setTipoPago("TC")}/>
           </button>
           <button className="mr-4 mb-4 p-0 btn btn-dark" >
