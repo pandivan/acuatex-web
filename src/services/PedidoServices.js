@@ -1,8 +1,6 @@
 import axios from "axios";
+import Constantes from "../Constantes";
 
-
-// const BACKEND_URL = "https://api-rest-retail.herokuapp.com/api/pedido";
-const BACKEND_URL = "http://192.168.1.8:7788/api/pedido";
 
 
 /**
@@ -14,7 +12,7 @@ const registrarPedido = async (pedido) =>
   try
   {
     // console.log(JSON.stringify(pedido));
-    let respuesta = await axios.post(`${BACKEND_URL}`, pedido);
+    let respuesta = await axios.post(`${Constantes.BACKEND_URL}/pedido`, pedido);
 
     // console.log("Respuesta API-REST Pedido. ");
     // console.log(JSON.stringify(respuesta));
@@ -39,7 +37,7 @@ const actualizarPedido = async (pedido) =>
   try
   {
     // console.log(JSON.stringify(pedido));
-    let respuesta = await axios.put(`${BACKEND_URL}`, pedido);
+    let respuesta = await axios.put(`${Constantes.BACKEND_URL}/pedido`, pedido);
 
     // console.log("Respuesta API-REST Pedido. ");
     // console.log(JSON.stringify(respuesta));
@@ -70,7 +68,7 @@ const actualizarEstadoPedido = async (pedido) =>
   try
   {
     // console.log(JSON.stringify(pedido));
-    let respuesta = await axios.put(`${BACKEND_URL}/estado`, pedido);
+    let respuesta = await axios.put(`${Constantes.BACKEND_URL}/estado`, pedido);
 
     // if(HttpStatus.INTERNAL_SERVER_ERROR == respuesta.status)
     // {
@@ -97,7 +95,7 @@ const getAllPedidos = async (cedula) =>
   try
   {
     console.log(JSON.stringify(cedula));
-    let respuesta = await axios.get(`${BACKEND_URL}/${cedula}`);
+    let respuesta = await axios.get(`${Constantes.BACKEND_URL}/pedido/${cedula}`);
 
     // console.log("Respuesta API-REST Articulos. ");
     // console.log(JSON.stringify(respuesta));

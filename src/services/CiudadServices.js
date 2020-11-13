@@ -1,8 +1,5 @@
 import axios from "axios";
-// import respuesta from "../data.json";
-
-// const BACKEND_URL = "https://api-rest-retail.herokuapp.com/api/articulos";
-const BACKEND_URL = "http://192.168.1.8:7788/api/ciudades";
+import Constantes from "../Constantes";
 
 
 
@@ -14,7 +11,7 @@ const getAllCiudades = async () =>
 {
   try
   {
-    let respuesta = await axios.get(`${BACKEND_URL}`);
+    let respuesta = await axios.get(`${Constantes.BACKEND_URL}/ciudades`);
 
     // console.log("Respuesta API-REST Articulos. ");
     // console.log(JSON.stringify(respuesta.data));

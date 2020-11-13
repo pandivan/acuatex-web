@@ -30,71 +30,6 @@ function Pedidos()
         let cliente = JSON.parse(localStorage.getItem("@cliente"));
 
         let {success, lstPedidosBD} = await pedidoServices.getAllPedidos(cliente.cedula);
-        // let success=true;
-
-        // let lstPedidosBD=  
-        // [
-        //   {
-        //     nroPedido:"1010",
-        //     fecha:"Hoy",
-        //     estado:"Pendiente",
-        //     lstPedidoDetalle:
-        //     [
-        //       {
-        //         codArticulo:"9",
-        //         cantidad:"3",
-        //         precioVenta:"10",
-        //         detalle:"Pijama Hombre"
-        //       },
-        //       {
-        //         codArticulo:"8",
-        //         cantidad:"2",
-        //         precioVenta:"15",
-        //         detalle:"Pijama Mujer"
-        //       }
-        //     ]
-        //   },
-        //   {
-        //     nroPedido:"1011",
-        //     fecha:"Hoy",
-        //     estado:"Cancelado",
-        //     lstPedidoDetalle:
-        //     [
-        //       {
-        //         codArticulo:"3",
-        //         cantidad:"9",
-        //         precioVenta:"10",
-        //         detalle:"Camisa Hombre"
-        //       },
-        //       {
-        //         codArticulo:"4",
-        //         cantidad:"12",
-        //         precioVenta:"15",
-        //         detalle:"Camisa Mujer"
-        //       }
-        //     ]
-        //   },
-        //   {
-        //     nroPedido:"1012",
-        //     fecha:"Ayer",
-        //     estado:"Enviado",
-        //     lstPedidoDetalle:
-        //     [
-        //       {
-        //         codArticulo:"1",
-        //         cantidad:"5",
-        //         precioVenta:"34",
-        //         detalle:"Pijama Niño"
-        //       },
-        //       {
-        //         codArticulo:"2",
-        //         cantidad:"6",
-        //         precioVenta:"25",
-        //         detalle:"Pijama Niña"
-        //       }
-        //     ]
-        //   }
-        // ]; 
 
         if (success) 
         {
@@ -194,7 +129,7 @@ function Pedidos()
                     (
                       <div key={pedidoDetalle.codArticulo} className="container d-flex align-items-center bgg-warning mb-4">
                         <div className="p-2 bgg-info">
-                          <img src={require("../../assets/" + pedidoDetalle.codArticulo + ".pngg")} alt={pedidoDetalle.detalle} style={{height:100, width:100}}/>
+                          <img src={require("../../assets/" + pedidoDetalle.codArticulo + ".png")} alt={pedidoDetalle.detalle} style={{height:100, width:100}}/>
                         </div>
                         <div className="bgg-danger" style={{width:"1%"}} />
 

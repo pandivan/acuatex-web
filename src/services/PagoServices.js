@@ -1,9 +1,6 @@
-// import axios from "axios";
 import pedidoServices from "../services/PedidoServices"; 
+// import Constantes from "../Constantes";
 
-
-// const BACKEND_URL = "https://api-rest-retail.herokuapp.com/api/pedido";
-// const BACKEND_URL = "http://192.168.1.8:7788/api/pedido";
 
 const ESTADO_PEDIDO_PENDIENTE = 100;
 
@@ -27,7 +24,7 @@ const registrarPagoTC = async (transaccion) =>
      * transaccion.numeroTarjeta, transaccion.mesCaducidad, transaccion.añoCaducidad, transaccion.titularTarjeta, transaccion.numeroCVV
      */
     console.log(transaccion);
-    //let respuesta = await axios.post(`${BACKEND_URL}`, pedido);
+    //let respuesta = await axios.post(`${Constantes.BACKEND_URL}/pedido`, pedido);
 
     let respuesta = {data:true};
 
@@ -82,7 +79,6 @@ const registrarPedido = async () =>
       //Creando entity ProductoPedido
       let pedidoDetalle = 
       {
-        nro_pedido: "1010",
         secuencia: i++,
         codArticulo: articulo.codigo.concat("L"), //articulo.codigoa.concat(articulo.talla),
         codPromo: null,
@@ -103,7 +99,7 @@ const registrarPedido = async () =>
     //Creando entity Pedido...
     let pedido = 
     {
-      nroPedido: "1010",
+      nroPedido: null,
       fecha: fechaActual,
       hora: fechaActual.getHours(),
       fechaEnvio: null,
@@ -133,7 +129,8 @@ const registrarPedido = async () =>
     //Enviando el pedido al servidor via api-res para registrarlo en BD
     let {nroPedido} = await pedidoServices.registrarPedido(pedido);
 
-    if("" !== nroPedido)
+
+    if(undefined !== nroPedido && "" !== nroPedido)
     {
       localStorage.removeItem("@articulosPedido");
       localStorage.removeItem("@cantidadBadge");
