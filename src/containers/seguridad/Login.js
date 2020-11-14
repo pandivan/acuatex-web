@@ -14,11 +14,10 @@ import Constantes from "../../Constantes";
 function Login(props) 
 {
   const [isTokenValido, setTokenValido] = useState(false);
-  const [correo, setCorreo] = useState("ivan.hernandez.coral@gmail.com");
-  const [clave, setClave] = useState("12345");
+  const [correo, setCorreo] = useState("");
+  const [clave, setClave] = useState("");
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
-  // const [isMostrar, setIsMostrar] = useState(false);
 
   //Hook de react-router-dom maneja el historial de navegación
   let history = useHistory(); 
