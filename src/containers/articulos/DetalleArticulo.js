@@ -108,11 +108,6 @@ function DetalleArticulo(props)
   }
 
 
-  const seleccionarTalla = (e) => 
-  {
-    setTalla(e.target.id);
-  }
-
 
   return (
     <div>
