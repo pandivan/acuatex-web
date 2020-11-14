@@ -83,14 +83,24 @@
   border-color: black;
 }
 
+.btn_grupo_acuatex:focus
+{
+  color: #9f9fae;
+  border:3px solid #9f9fae; 
+  outline: none;
+}
+
+.btn_grupo_acuatex:focus-visible 
+{
+  outline: 0px solid black;
+  border-color: black;
+}
+
+
 .img_articulo_acuatex
 {
   height: 356px; 
   width: 356px;
-  /* border: solid;
-  color: #9f9fae;
-  background-color: white;
-  border-width: 3px; */
 }
 
 
@@ -151,19 +161,12 @@
 /* CSS Metodos de Pago */
 .img_border_acuatex
 {
-  /* width: 1000px; */
-  /* height: 200px;  */
   border-width: 1px; 
   border-style: solid; 
   border-color: lightgray;
 }
 
 
-/* .img_border_acuatex:hover
-{
-  color: black;
-  border-color: black;
-} */
 
 
 .btn_pagos_acuatex
@@ -180,6 +183,13 @@
   background-color: #F1F1F1;
 }
 
+
+/* CSS DetalleArticulo */
+.btn_talla_acuatex:hover
+{
+  background-color: #9f9fae;
+  color: white;
+}
 
 /* body 
 {

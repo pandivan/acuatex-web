@@ -89,7 +89,7 @@ const registrarPedido = async () =>
         porcDescuento: null,
         ice: null,
         iva: 19,
-        detalle: "prenda"
+        detalle: articulo.nombre
       }
 
       lstPedidoDetalle.push(pedidoDetalle);

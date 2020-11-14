@@ -109,7 +109,7 @@ function Estilos()
         {
 
           loading ? 
-          <div className="loader" />
+            null 
           :
           <div className="container d-flex flex-wrap p-0 bgg-secondary mt-4">
             {

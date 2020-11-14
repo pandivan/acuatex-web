@@ -11,6 +11,7 @@ import PopupMensaje from "../../components/PopupMensaje";
 function DetalleArticulo(props) 
 {
   const [articulo, setArticulo] = useState(props.location.state.articulo);
+  const [talla, setTalla] = useState("");
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
 
@@ -107,6 +108,11 @@ function DetalleArticulo(props)
   }
 
 
+  const seleccionarTalla = (e) => 
+  {
+    setTalla(e.target.id);
+  }
+
 
   return (
     <div>
@@ -126,8 +132,10 @@ function DetalleArticulo(props)
                   <p className="card-title text-secondary pb-4 bgg-danger" style={{fontSize:40}}>{articulo.nombre}</p>
                   <p className="card-text mt-5" style={{fontSize:30}}>${(articulo.cantidad * articulo.precio).toFixed(2)}</p>
                   <p className="d-flex flex-wrap mt-4 bgg-info">{articulo.descripcion}</p>
+
+                  <p className="d-flex flex-wrap py-2 bgg-info">Talla: {talla}</p>
              
-                  <div className="btn-group mt-5 align-items-center btn_cantidad_acuatex">
+                  <div className="btn-group mt-4 align-items-center btn_cantidad_acuatex">
                     <button className="btn btn_add_acuatex" onClick={() => adicionarEliminarArticulo(false)}><i className="fa fa-minus"></i></button>
                     <span className="mx-4 px-2">{articulo.cantidad}</span>
                     <button className="btn btn_add_acuatex" onClick={() => adicionarEliminarArticulo(true)}><i className="fa fa-plus"></i></button>
@@ -190,16 +198,21 @@ function DetalleArticulo(props)
 
               <div className="card">
                 <div className="card-header align-middle">
-                  <span className="card-title">ENVÍO</span>
+                  <span className="card-title">TALLAS</span>
                 </div>
                 <div className="card-body">
-                  <div className="row">
-                    <div className="col bgg-info">.col</div>
-                    <div className="col bgg-warning">.col</div>
-                  </div>
-                  <div className="row mt-3">
-                    <div className="col bgg-info">.col</div>
-                    <div className="col bgg-warning">.col</div>
+                  <div className="list-group list-group-flush">
+                    <ul className="list-group list-group-flush">
+                      <li className="list-group-item">
+                        <span id="XL" className="btn btn_talla_acuatex" onClick={e => setTalla(e.target.id)}>S</span>
+                      </li>
+                      <li className="list-group-item">
+                        <span id="L" className="btn btn_talla_acuatex" onClick={e => setTalla(e.target.id)}>S</span>
+                      </li>
+                      <li className="list-group-item">
+                        <span id="S" className="btn btn_talla_acuatex" onClick={e => setTalla(e.target.id)}>S</span>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
