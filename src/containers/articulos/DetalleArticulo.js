@@ -57,6 +57,15 @@ function DetalleArticulo(props)
   {
     try 
     {
+      if("" === talla)
+      {
+        setMensajePopup("TIENES QUE SELECCIONAR UNA TALLA");
+        setMostrarPopup(true);
+
+        return;
+      }
+
+
       let mapArticulosPedido = new Map(JSON.parse(localStorage.getItem("@articulosPedido")));
 
       let articuloPedido = null;
@@ -71,6 +80,8 @@ function DetalleArticulo(props)
       {
         articuloPedido = {...articulo};
       }
+
+      articuloPedido.talla = talla;
 
       mapArticulosPedido.set(articuloPedido.codigo, articuloPedido);
       localStorage.setItem("@articulosPedido", JSON.stringify(Array.from(mapArticulosPedido)));
@@ -198,15 +209,14 @@ function DetalleArticulo(props)
                 <div className="card-body">
                   <div className="list-group list-group-flush">
                     <ul className="list-group list-group-flush">
-                      <li className="list-group-item">
-                        <span id="XL" className="btn btn_talla_acuatex" onClick={e => setTalla(e.target.id)}>S</span>
-                      </li>
-                      <li className="list-group-item">
-                        <span id="L" className="btn btn_talla_acuatex" onClick={e => setTalla(e.target.id)}>S</span>
-                      </li>
-                      <li className="list-group-item">
-                        <span id="S" className="btn btn_talla_acuatex" onClick={e => setTalla(e.target.id)}>S</span>
-                      </li>
+                    {
+                      articulo.lstTallas.map(talla => 
+                      (
+                        <li key={talla} className="list-group-item">
+                          <span id={talla} className="btn btn_talla_acuatex" onClick={e => setTalla(e.target.id)}>{talla}</span>
+                        </li>
+                      ))
+                    }
                     </ul>
                   </div>
                 </div>

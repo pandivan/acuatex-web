@@ -218,6 +218,7 @@ function Carrito()
 
                   <div className="bgg-warning" style={{width:150}}>
                     <p className="descripcion_articulo_acuatex">{articulo.nombre}</p>
+                    <p className="titulo_acuatex">Talla: {articulo.talla}</p>
                   </div>
                   
                   <div className="bgg-danger" style={{width:"11%"}}></div>

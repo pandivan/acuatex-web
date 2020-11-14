@@ -94,7 +94,6 @@ const getAllPedidos = async (cedula) =>
 {
   try
   {
-    console.log(JSON.stringify(cedula));
     let respuesta = await axios.get(`${Constantes.BACKEND_URL}/pedido/${cedula}`);
 
     // console.log("Respuesta API-REST Articulos. ");

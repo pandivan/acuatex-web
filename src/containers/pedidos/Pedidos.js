@@ -131,6 +131,7 @@ function Pedidos()
 
                           <div className="bgg-warning" style={{width:350}}>
                             <p className="descripcion_articulo_acuatex">{pedidoDetalle.detalle}</p>
+                            <p className="titulo_acuatex">Talla: {pedidoDetalle.talla}</p>
                           </div>
                           
                           <div className="bgg-danger" style={{width:"19%"}} />
