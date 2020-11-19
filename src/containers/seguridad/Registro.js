@@ -215,9 +215,9 @@ function Registro()
             </div>
             <div className="col ml-4">
               <label htmlFor="txtCedula">Cedula:</label>
-              <input type="text" className="form-control" placeholderr="Enter cedula" id="txtCedula" maxLength="13" pattern="^ [0-9]+$" required value={cedula} onChange={validarNumero} />
+              <input type="text" className="form-control" placeholderr="Enter cedula" id="txtCedula" maxLength="13" required value={cedula} onChange={validarNumero} />
               <div className="invalid-feedback">
-                Este campo es obligatorio y numérico  .
+                Este campo es obligatorio y numérico.
               </div>
             </div>
           </div>
