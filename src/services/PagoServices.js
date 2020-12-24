@@ -80,7 +80,7 @@ const registrarPedido = async () =>
       let pedidoDetalle = 
       {
         secuencia: i++,
-        codArticulo: articulo.codigo.concat("L"), //articulo.codigoa.concat(articulo.talla),
+        codArticulo: articulo.codigo.concat(articulo.talla),
         codPromo: null,
         umedida: null,
         cantidad: articulo.cantidad,

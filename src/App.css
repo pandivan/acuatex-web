@@ -185,14 +185,11 @@
 
 
 /* CSS DetalleArticulo */
-.btn_talla_acuatex:hover
-{
-  background-color: #9f9fae;
-  color: white;
+.active {
+  background-color: #9f9fae !important;
+  border-color: #9f9fae !important;
 }
-
 /* body 
 {
   font-family: "Open Sans", sans-serif;
 } */
-

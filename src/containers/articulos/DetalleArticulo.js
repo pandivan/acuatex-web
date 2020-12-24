@@ -74,6 +74,7 @@ function DetalleArticulo(props)
       if(mapArticulosPedido.has(articulo.codigo))
       {
         articuloPedido = mapArticulosPedido.get(articulo.codigo);
+
         articuloPedido.cantidad += articulo.cantidad;
       }
       else
@@ -81,6 +82,7 @@ function DetalleArticulo(props)
         articuloPedido = {...articulo};
       }
 
+      //TODO: Se debe ajustar para recibir distintas tallas (lista) y en la pantalla de carrtio hacer un for para pintar el producto segun las tallas escogidas
       articuloPedido.talla = talla;
 
       mapArticulosPedido.set(articuloPedido.codigo, articuloPedido);
@@ -135,11 +137,23 @@ function DetalleArticulo(props)
               
               <div className="col bgg-dark">
                 <div className="card-body bgg-danger">
-                  <p className="card-title text-secondary pb-4 bgg-danger" style={{fontSize:40}}>{articulo.nombre}</p>
+                  <p className="card-title text-secondary pb-4 bgg-danger" style={{fontSize:35}}>{articulo.nombre}</p>
                   <p className="card-text mt-5" style={{fontSize:30}}>${(articulo.cantidad * articulo.precio).toFixed(2)}</p>
                   <p className="d-flex flex-wrap mt-4 bgg-info">{articulo.descripcion}</p>
 
-                  <p className="d-flex flex-wrap py-2 bgg-info">Talla: {talla}</p>
+                  <div className="d-flex text-center py-2 bgg-dark">
+                    <span className="py-1 pr-2 bgg-danger">Talla: </span>
+                    <ul className="flex-grow-1 list-group list-group-horizontal pb-4">
+                    {
+                      articulo.lstTallas.map(tallaBD => 
+                      (
+                        <li key={tallaBD} id={tallaBD} onClick={(e) => setTalla(e.target.id)} className={(tallaBD === talla) ? "list-group-item list-group-item-action active p-1" : "list-group-item list-group-item-action p-1 bgg-warning"}>
+                          {tallaBD}
+                        </li>
+                      ))
+                    }
+                    </ul>
+                  </div>
              
                   <div className="btn-group mt-4 align-items-center btn_cantidad_acuatex">
                     <button className="btn btn_add_acuatex" onClick={() => adicionarEliminarArticulo(false)}><i className="fa fa-minus"></i></button>
@@ -207,18 +221,7 @@ function DetalleArticulo(props)
                   <span className="card-title">TALLAS</span>
                 </div>
                 <div className="card-body">
-                  <div className="list-group list-group-flush">
-                    <ul className="list-group list-group-flush">
-                    {
-                      articulo.lstTallas.map(talla => 
-                      (
-                        <li key={talla} className="list-group-item">
-                          <span id={talla} className="btn btn_talla_acuatex" onClick={e => setTalla(e.target.id)}>{talla}</span>
-                        </li>
-                      ))
-                    }
-                    </ul>
-                  </div>
+                  
                 </div>
               </div>
             </div>

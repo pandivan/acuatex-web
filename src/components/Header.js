@@ -7,20 +7,20 @@ import { Link } from "react-router-dom";
  * Funcion que permite renderizar el header en cada pantalla
  * @param props Recibe como parametros el height y el fondo del header
  */
-function Header(props) 
+function Header(props)
 {
   const [isLogeado, setLogueado] = useState(false);
   const [nombreCliente, setNombreCliente] = React.useState("");
 
 
 
-  useEffect(() => 
+  useEffect(() =>
 	{
     console.log("Header");
 		try
 		{
       let cliente = JSON.parse(localStorage.getItem("@cliente"));
-      
+
       if(null !== cliente)
       {
         setLogueado(true);
@@ -34,7 +34,7 @@ function Header(props)
   }, [])
 
 
-  let headerStyle = 
+  let headerStyle =
   {
     height: props.height,
     backgroundImage: (undefined === props.fondo || "" === props.fondo ? "" : "url(" + require("../assets/"+ props.fondo + ".png") + ")")
@@ -56,9 +56,18 @@ function Header(props)
         {props.titulo}
       </h2>
 
-      <div className="mr-3 bgg-info">
+      <div className="bgg-danger">
           <Link to={isLogeado ? "/ajustes" : "/login"} className="nav-link text-secondary font_size_navbar_acuatex">{isLogeado ? nombreCliente : "Iniciar Sesión"}</Link>
       </div>
+
+      {
+        isLogeado ? 
+        <div className="bgg-info">
+            <Link to="/pedidos" className="nav-link text-secondary font_size_navbar_acuatex">Mis Pedidos</Link>
+        </div>
+        :
+        null
+      }
 
       <div className="mr-3 bgg-dark">
           <Link to="/carrito" className="nav-link text-secondary pt-0 font_size_navbar_acuatex">
@@ -66,7 +75,7 @@ function Header(props)
             <span className="badge badge-pill badge-danger">{0 === JSON.parse(localStorage.getItem("@cantidadBadge")) ? null : JSON.parse(localStorage.getItem("@cantidadBadge"))}</span>
           </Link>
       </div>
-    
+
 
       <div className="mr-3 bgg-warning">
         <img src={require("../assets/11.png")} alt="Logo" style={{width: 46}} />
