@@ -1,53 +1,8 @@
 import axios from "axios";
 
 import Constantes from "../Constantes";
+import tokenServices from "../services/TokenServices"; 
 
-
-
-
-/**
- * Función que permite actualizar o registrar un nuevo cliente
- * @param cliente, Cliente actualizar o registrar
- */
-const registrarCliente = async (cliente) => 
-{
-  try
-  {
-    let respuesta = await axios.post(`${Constantes.BACKEND_URL}/cliente`, cliente);
-
-    // console.log("Respuesta API-REST Cliente. ");
-    // console.log(JSON.stringify(respuesta));
-
-    return { status: respuesta.status, clienteBD: respuesta.data };
-  }
-	catch(error)
-  {
-    return { status: Constantes.STATUS_ERROR, clienteBD: null };
-  }
-}
-
-
-
-/**
- * Función que permite validar un cliente, según correo y clave
- * @param cliente, Cliente a consultar
- */
-const validarCliente = async (cliente) => 
-{
-  try
-  {
-    let respuesta = await axios.post(`${Constantes.BACKEND_URL}/cliente/info`, cliente);
-
-    // console.log("Respuesta API-REST Consultar Cliente ");
-    // console.log(JSON.stringify(respuesta));
-
-    return { status: respuesta.status, clienteBD: respuesta.data };
-  }
-  catch(error)
-  {
-    return { status: Constantes.STATUS_ERROR, clienteBD: null };
-  }
-}
 
 
 
@@ -59,8 +14,8 @@ const actualizarDatosAccesoCliente = async (cliente) =>
 {
   try
   {
-    let respuesta = await axios.put(`${Constantes.BACKEND_URL}/cliente/datos_acceso`, cliente);
-    
+    let respuesta = await axios.put(`${Constantes.BACKEND_URL}/clientes/datos_acceso`, cliente, { headers: tokenServices.autenticacionHeader() });
+
     // console.log("Respuesta API-REST Cliente. ");
     // console.log(JSON.stringify(respuesta));
 
@@ -82,7 +37,7 @@ const actualizarCliente = async (cliente) =>
 {
   try
   {
-    let respuesta = await axios.put(`${Constantes.BACKEND_URL}/cliente`, cliente);
+    let respuesta = await axios.put(`${Constantes.BACKEND_URL}/clientes`, cliente, { headers: tokenServices.autenticacionHeader() });
     
     // console.log("Respuesta API-REST Cliente. ");
     // console.log(JSON.stringify(respuesta));
@@ -101,8 +56,6 @@ const actualizarCliente = async (cliente) =>
 
 export default 
 {
-  registrarCliente,
   actualizarDatosAccesoCliente,
-  actualizarCliente,
-  validarCliente,
+  actualizarCliente
 };

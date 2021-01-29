@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 
 import Header from "../../components/Header";
 import PopupMensaje from "../../components/PopupMensaje";
-import clienteServices from "../../services/ClienteServices";
+import autenticacionServices from "../../services/AutenticacionServices";
 import ciudadServices from "../../services/CiudadServices"; 
 import Constantes from "../../Constantes";
 
@@ -132,13 +132,11 @@ function Registro()
 
       
       //Se validan los datos a traves del api-rest
-      let {status, clienteBD} = await clienteServices.registrarCliente(cliente);
+      let {status} = await autenticacionServices.signup(cliente);
 
       switch (status) 
       {
         case Constantes.STATUS_OK:
-          //El cliente se creo exitosamente y se guarda token en AsyncStorage
-          localStorage.setItem("@cliente", JSON.stringify(clienteBD));
           history.goBack();
           break;
 

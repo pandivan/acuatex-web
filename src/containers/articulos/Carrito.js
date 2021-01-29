@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import Header from "../../components/Header";
 import PopupMensaje from "../../components/PopupMensaje";
-
+import autenticacionServices from "../../services/AutenticacionServices"; 
 
 
 
@@ -153,7 +153,7 @@ function Carrito()
   const validarLogueo = () =>
   {
     let urlSiguiente = "/metodos_pago";
-    let cliente = JSON.parse(localStorage.getItem("@cliente"));
+    let cliente = autenticacionServices.getClienteActual();
       
     if(null === cliente)
     {

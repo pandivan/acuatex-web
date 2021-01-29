@@ -3,7 +3,7 @@ import { Link, Redirect, useHistory } from "react-router-dom";
 import Header from "../../components/Header";
 import PopupMensaje from "../../components/PopupMensaje";
 
-import clienteServices from "../../services/ClienteServices"; 
+import autenticacionServices from "../../services/AutenticacionServices"; 
 import Constantes from "../../Constantes";
 
 
@@ -31,9 +31,9 @@ function Login(props)
 
 		try
 		{
-      let token = JSON.parse(localStorage.getItem("@cliente"));
+      let cliente = autenticacionServices.getClienteActual();
       
-      if(null !== token)
+      if(null !== cliente)
       {
         setTokenValido(true);
       }
@@ -58,13 +58,11 @@ function Login(props)
 
     if (event.target.checkValidity()) 
     {
-      let {status, clienteBD} = await clienteServices.validarCliente({ correo, clave });
+      let {status} = await autenticacionServices.login({ correo, clave });
 
       switch (status) 
       {
         case Constantes.STATUS_OK:
-          //El cliente se registro exitosamente y se guarda token en AsyncStorage
-          localStorage.setItem("@cliente", JSON.stringify(clienteBD));
           history.goBack();
           break;
 

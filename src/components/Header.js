@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import autenticacionServices from "../services/AutenticacionServices"; 
 
 
 
@@ -19,7 +20,7 @@ function Header(props)
     console.log("Header");
 		try
 		{
-      let cliente = JSON.parse(localStorage.getItem("@cliente"));
+      let cliente = autenticacionServices.getClienteActual();
 
       if(null !== cliente)
       {

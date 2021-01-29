@@ -1,9 +1,9 @@
 import * as React from "react";
-// import React, { useState } from "react";
 
 import { Link, useHistory } from "react-router-dom";
 
 import Header from "../../components/Header";
+import autenticacionServices from "../../services/AutenticacionServices"; 
 
 
 
@@ -20,7 +20,7 @@ function Ajustes()
 
   const desconectar = () =>
   {
-    localStorage.clear();
+    autenticacionServices.logout();
     history.push("/");
 
     // TODO: Limpiar history

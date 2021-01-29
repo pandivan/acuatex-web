@@ -3,6 +3,7 @@ import Header from "../../components/Header";
 import PopupMensaje from "../../components/PopupMensaje";
 
 import clienteServices from "../../services/ClienteServices"; 
+import autenticacionServices from "../../services/AutenticacionServices";
 import Constantes from "../../Constantes";
 
 
@@ -21,7 +22,7 @@ function DatosAcceso()
   const [repetirClave, setRepetirClave] = useState("");
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
-  const [cliente, setCliente] = useState(JSON.parse(localStorage.getItem("@cliente")));
+  const [cliente, setCliente] = useState(autenticacionServices.getClienteActual()); //TODO: Revisar si sirve llamando desde autentication
 
 
   
@@ -52,10 +53,9 @@ function DatosAcceso()
         switch (status) 
         {
           case Constantes.STATUS_OK:
-            //El cliente se actualizo exitosamente y se guarda token en AsyncStorage
-            localStorage.setItem("@cliente", JSON.stringify(clienteBD));
             mensaje = "La cuenta de correo fue actualizada correctamente.";
-
+            
+            autenticacionServices.setClienteLocalStorage(clienteBD);
             setCliente(clienteBD);
             break;
 
@@ -106,8 +106,7 @@ function DatosAcceso()
         switch (status) 
         {
           case Constantes.STATUS_OK:
-            //El cliente se actualizo exitosamente y se guarda token en AsyncStorage
-            localStorage.setItem("@cliente", JSON.stringify(clienteBD));
+            autenticacionServices.setClienteLocalStorage(clienteBD);
             mensaje = "Contraseña actualizada correctamente";
             break;
 
@@ -174,7 +173,7 @@ function DatosAcceso()
             <div className="row form-group mt-5 bgg-warning">
               <div className="col mt-3 bgg-success">
                 <label htmlFor="nuevoCorreo">Nuevo correo</label>
-                <input type="correo" className="form-control" id="nuevoCorreo" placeholderr="Nuevo correo" rmaxLength="50" equired value={nuevoCorreo} onChange={e => setNuevoCorreo(e.target.value)} />
+                <input type="correo" className="form-control" id="nuevoCorreo" placeholderr="Nuevo correo" maxLength="50" required value={nuevoCorreo} onChange={e => setNuevoCorreo(e.target.value)} />
                 <div className="invalid-feedback">
                   Este campo es obligatorio.
                 </div>

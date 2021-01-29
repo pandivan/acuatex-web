@@ -14,7 +14,7 @@ function Transaccion(props)
   let nroPedido = "";
 
 console.log("Transaccion")
-  if(undefined !== location.state)
+  if(location.state)
   {
     msjEstado = location.state.resultadoTransaccion.estadoTransaccion;
     msjDetalle = location.state.resultadoTransaccion.mensaje;

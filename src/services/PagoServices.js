@@ -1,5 +1,5 @@
 import pedidoServices from "../services/PedidoServices"; 
-// import Constantes from "../Constantes";
+import autenticacionServices from "../services/AutenticacionServices";
 
 
 const ESTADO_PEDIDO_PENDIENTE = 100;
@@ -65,7 +65,7 @@ const registrarPedido = async () =>
 
   try
   {
-    let cliente = JSON.parse(localStorage.getItem("@cliente"));
+    let cliente = autenticacionServices.getClienteActual();
     let fechaActual = new Date();
 
     

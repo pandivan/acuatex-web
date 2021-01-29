@@ -4,6 +4,7 @@ import Header from "../../components/Header";
 import PopupMensaje from "../../components/PopupMensaje";
 import clienteServices from "../../services/ClienteServices";
 import ciudadServices from "../../services/CiudadServices"; 
+import autenticacionServices from "../../services/AutenticacionServices"; 
 import Constantes from "../../Constantes";
 
 
@@ -34,7 +35,7 @@ function InformacionPersonal()
   const [lstMeses] = useState([1,2,3,4,5,6,7,8,9,10,11,12]);
   const [lstAños, setLstAños] = useState([]);
 
-  const [cliente] = useState(JSON.parse(localStorage.getItem("@cliente")));
+  const [cliente] = useState(autenticacionServices.getClienteActual());
 
 
   
@@ -99,7 +100,7 @@ function InformacionPersonal()
       catch (error) 
       {
         //TODO: Guardar log del error en BD 
-        console.log("erro")
+        console.log("error")
       }
     };
 
@@ -137,7 +138,7 @@ function InformacionPersonal()
       if(Constantes.STATUS_OK === status && isClienteActualizado)
       {
         //El cliente se creo exitosamente y se guarda token en AsyncStorage
-        localStorage.setItem("@cliente", JSON.stringify(cliente));
+        autenticacionServices.setClienteLocalStorage(cliente);
         mensaje = "Tu información se ha guardado correctamente.";
       }
       

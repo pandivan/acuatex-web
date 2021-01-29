@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+
 import Header from "../../components/Header";
 import pedidoServices from "../../services/PedidoServices"; 
+import autenticacionServices from "../../services/AutenticacionServices"; 
 
 
 
@@ -13,12 +16,15 @@ function Pedidos()
 {
   const [lstPedidos, setLstPedidos] = useState([]);
   const [isLoading, setLoading] = useState(true);
+
+  //Hook de react-router-dom maneja el historial de navegación
+  let history = useHistory();
 	
 
 
 	useEffect(() => 
 	{
-    console.log("useEffect Pedidos");
+    console.log("useEffect Pedidoss");
     
 
     /**
@@ -28,16 +34,26 @@ function Pedidos()
     {
       try 
       {
-        let cliente = JSON.parse(localStorage.getItem("@cliente"));
+        let cliente = autenticacionServices.getClienteActual();
 
-        let {success, lstPedidosBD} = await pedidoServices.getAllPedidos(cliente.cedula);
+        let {isTokenValido, lstPedidosBD} = await pedidoServices.getAllPedidos(cliente.cedula);
 
-        if (success) 
+        //Se valida si el token es valido
+        if (isTokenValido) 
         {
-          setLstPedidos(lstPedidosBD);
+          if (null !== lstPedidosBD) 
+          {
+            setLstPedidos(lstPedidosBD);
+          }
+          setLoading(false);
+        }
+        else
+        {
+          autenticacionServices.logout();
+          // alert("Tu sesión ha expirado");
+          history.replace("/");
         }
 
-        setLoading(false);
       } 
       catch (error) 
       {
@@ -47,7 +63,7 @@ function Pedidos()
     };
 
     cargarPedidos();
-  }, []);
+  }, [history]);
 
 
 
@@ -73,16 +89,15 @@ function Pedidos()
 
 
 
-
-   return (
+  return (
 	 	<div>
        <Header height={"none"} fondo={""} titulo={""}/>
 
-       <div className="container pt-5 bgg-danger">
+        <div className="container pt-5 bgg-danger">
         <h2 className="mb-5 font-weight-bolder bgg-danger">MIS PEDIDOS</h2>
         {
           isLoading ?
-            null
+          <span style={{fontSize:13}}>Cargando......</span>
           :
             0 !== lstPedidos.length ?
             <div>
@@ -168,7 +183,7 @@ function Pedidos()
                 <span style={{fontSize:13}}>NO SE HAN ENCONTRADO PEDIDOS</span>
               </div>
             </div>
-      }
+        }
       </div> 
     </div>
    );

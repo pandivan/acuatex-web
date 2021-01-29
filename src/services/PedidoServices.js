@@ -1,7 +1,6 @@
 import axios from "axios";
 import Constantes from "../Constantes";
-
-
+import tokenServices from "../services/TokenServices"; 
 
 /**
  * Función que permite registrar un nuevo pedido
@@ -12,7 +11,7 @@ const registrarPedido = async (pedido) =>
   try
   {
     // console.log(JSON.stringify(pedido));
-    let respuesta = await axios.post(`${Constantes.BACKEND_URL}/pedido`, pedido);
+    let respuesta = await axios.post(`${Constantes.BACKEND_URL}/pedidos`, pedido, { headers: tokenServices.autenticacionHeader() });
 
     // console.log("Respuesta API-REST Pedido. ");
     // console.log(JSON.stringify(respuesta));
@@ -22,7 +21,7 @@ const registrarPedido = async (pedido) =>
 	catch(error)
   {
     //TODO: Guardar log en BD
-    return { success: false};
+    return { nroPedido: ""};
   }
 }
 
@@ -32,58 +31,58 @@ const registrarPedido = async (pedido) =>
  * Función que permite actualizar un pedido
  * @param pedido, Pedido actualizar
  */
-const actualizarPedido = async (pedido) => 
-{
-  try
-  {
-    // console.log(JSON.stringify(pedido));
-    let respuesta = await axios.put(`${Constantes.BACKEND_URL}/pedido`, pedido);
+// const actualizarPedido = async (pedido) => 
+// {
+//   try
+//   {
+//     // console.log(JSON.stringify(pedido));
+//     let respuesta = await axios.put(`${Constantes.BACKEND_URL}/pedido`, pedido, { headers: tokenServices.autenticacionHeader() });
 
-    // console.log("Respuesta API-REST Pedido. ");
-    // console.log(JSON.stringify(respuesta));
+//     // console.log("Respuesta API-REST Pedido. ");
+//     // console.log(JSON.stringify(respuesta));
 
-    // if(HttpStatus.INTERNAL_SERVER_ERROR == respuesta.status)
-    // {
-    //   //TODO: Guardar log BD
-    // }
+//     // if(HttpStatus.INTERNAL_SERVER_ERROR == respuesta.status)
+//     // {
+//     //   //TODO: Guardar log BD
+//     // }
 
-    return { success: respuesta.data };
-  }
-	catch(error)
-  {
-    //TODO: Guardar log en BD
-    // console.log(`Error al registrar: ${error}`);
-    return { success: false};
-  }
-}
+//     return { success: respuesta.data };
+//   }
+// 	catch(error)
+//   {
+//     //TODO: Guardar log en BD
+//     // console.log(`Error al registrar: ${error}`);
+//     return { success: false};
+//   }
+// }
 
 
 
-/**
- * Función que permite actualizar el estado un pedido
- * @param pedido, Pedido actualizar
- */
-const actualizarEstadoPedido = async (pedido) => 
-{
-  try
-  {
-    // console.log(JSON.stringify(pedido));
-    let respuesta = await axios.put(`${Constantes.BACKEND_URL}/estado`, pedido);
+// /**
+//  * Función que permite actualizar el estado un pedido
+//  * @param pedido, Pedido actualizar
+//  */
+// const actualizarEstadoPedido = async (pedido) => 
+// {
+//   try
+//   {
+//     // console.log(JSON.stringify(pedido));
+//     let respuesta = await axios.put(`${Constantes.BACKEND_URL}/estado`, pedido, { headers: tokenServices.autenticacionHeader() });
 
-    // if(HttpStatus.INTERNAL_SERVER_ERROR == respuesta.status)
-    // {
-    //   //TODO: Guardar log BD
-    // }
+//     // if(HttpStatus.INTERNAL_SERVER_ERROR == respuesta.status)
+//     // {
+//     //   //TODO: Guardar log BD
+//     // }
 
-    return { success: respuesta.data };
-  }
-	catch(error)
-  {
-    //TODO: Guardar log en BD
-    // console.log(`Error al registrar: ${error}`);
-    return { success: false};
-  }
-}
+//     return { success: respuesta.data };
+//   }
+// 	catch(error)
+//   {
+//     //TODO: Guardar log en BD
+//     // console.log(`Error al registrar: ${error}`);
+//     return { success: false};
+//   }
+// }
 
 
 
@@ -94,18 +93,24 @@ const getAllPedidos = async (cedula) =>
 {
   try
   {
-    let respuesta = await axios.get(`${Constantes.BACKEND_URL}/pedido/${cedula}`);
+    let respuesta = await axios.get(`${Constantes.BACKEND_URL}/pedidos/${cedula}`, { headers: tokenServices.autenticacionHeader() });
 
     // console.log("Respuesta API-REST Articulos. ");
     // console.log(JSON.stringify(respuesta));
 
-    return { success: ("" !== respuesta.data), lstPedidosBD: respuesta.data };
+    return { isTokenValido: true, lstPedidosBD: respuesta.data };
   }
 	catch(error)
   {
     //TODO: Guardar log en BD
     // console.log(`Error al registrar: ${error}`);
-    return { success: false};
+
+    if(error.response && Constantes.TOKEN_EXPIRED === error.response.status)
+    {
+      return { isTokenValido: false }
+    }
+
+    return { isTokenValido: true, lstPedidosBD: null };
   }
 }
 
@@ -115,7 +120,7 @@ const getAllPedidos = async (cedula) =>
 export default 
 {
   registrarPedido,
-  actualizarPedido,
-  actualizarEstadoPedido,
+  // actualizarPedido,
+  // actualizarEstadoPedido,
   getAllPedidos
 };

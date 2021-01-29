@@ -1,5 +1,6 @@
 import axios from "axios";
 import Constantes from "../Constantes";
+import tokenServices from "../services/TokenServices"; 
 
 
 
@@ -11,7 +12,7 @@ const getAllCiudades = async () =>
 {
   try
   {
-    let respuesta = await axios.get(`${Constantes.BACKEND_URL}/ciudades`);
+    let respuesta = await axios.get(`${Constantes.BACKEND_URL}/ciudades`, { headers: tokenServices.autenticacionHeader() });
 
     // console.log("Respuesta API-REST Articulos. ");
     // console.log(JSON.stringify(respuesta.data));
