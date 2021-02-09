@@ -26,6 +26,8 @@ function Pedidos()
 	{
     console.log("useEffect Pedidoss");
     
+    let token = autenticacionServices.getToken();
+    
 
     /**
      * Metodo que permite cargar los articulos desde el API-REST
@@ -34,9 +36,7 @@ function Pedidos()
     {
       try 
       {
-        let cliente = autenticacionServices.getClienteActual();
-
-        let {isTokenValido, lstPedidosBD} = await pedidoServices.getAllPedidos(cliente.cedula);
+        let {isTokenValido, lstPedidosBD} = await pedidoServices.getAllPedidos(token);
 
         //Se valida si el token es valido
         if (isTokenValido) 
@@ -53,7 +53,6 @@ function Pedidos()
           // alert("Tu sesión ha expirado");
           history.replace("/");
         }
-
       } 
       catch (error) 
       {
@@ -62,7 +61,15 @@ function Pedidos()
       }
     };
 
-    cargarPedidos();
+    //Se valida si tiene token
+    if(token)
+    {
+      cargarPedidos();
+    }
+    else
+    {
+      history.replace("/");
+    }
   }, [history]);
 
 

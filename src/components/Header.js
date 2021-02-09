@@ -20,12 +20,13 @@ function Header(props)
     console.log("Header");
 		try
 		{
-      let cliente = autenticacionServices.getClienteActual();
+      let token = autenticacionServices.getToken();
 
-      if(null !== cliente)
+      if(null !== token)
       {
         setLogueado(true);
-        setNombreCliente(cliente.nombres.split(" ")[0]);
+        // setNombreCliente(cliente.nombres.split(" ")[0]);
+        setNombreCliente("Cuenta");
       }
 		}
 		catch(error)

@@ -3,11 +3,11 @@ import autenticacionServices from "../services/AutenticacionServices";
 
 const autenticacionHeader = () =>
 {
-  let cliente = autenticacionServices.getClienteActual();
+  let token = autenticacionServices.getToken();
 
-  if (cliente && cliente.token) 
+  if (token) 
   {
-    return { Authorization: 'Bearer ' + cliente.token };
+    return { Authorization: 'Bearer ' + token };
   } 
   else 
   {

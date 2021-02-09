@@ -153,7 +153,7 @@ function Carrito()
   const validarLogueo = () =>
   {
     let urlSiguiente = "/metodos_pago";
-    let cliente = autenticacionServices.getClienteActual();
+    let cliente = autenticacionServices.getToken();
       
     if(null === cliente)
     {

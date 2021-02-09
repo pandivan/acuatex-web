@@ -65,7 +65,7 @@ const registrarPedido = async () =>
 
   try
   {
-    let cliente = autenticacionServices.getClienteActual();
+    let cliente = autenticacionServices.getToken();
     let fechaActual = new Date();
 
     

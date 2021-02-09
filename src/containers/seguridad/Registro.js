@@ -48,7 +48,7 @@ function Registro()
 		console.log("useEffect Registro");
 
     /**
-     * Metodo que permite cargar los articulos desde el API-REST
+     * Metodo que permite cargar las ciudades desde el API-REST
      */
     const cargarInformacion = async () => 
     {

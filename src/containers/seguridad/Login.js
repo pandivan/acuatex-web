@@ -31,9 +31,9 @@ function Login(props)
 
 		try
 		{
-      let cliente = autenticacionServices.getClienteActual();
+      let token = autenticacionServices.getToken();
       
-      if(null !== cliente)
+      if(null !== token)
       {
         setTokenValido(true);
       }

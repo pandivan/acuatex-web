@@ -89,11 +89,11 @@ const registrarPedido = async (pedido) =>
 /**
  * Función que permite obtener todos los pedidos
  */
-const getAllPedidos = async (cedula) => 
+const getAllPedidos = async (token) => 
 {
   try
   {
-    let respuesta = await axios.get(`${Constantes.BACKEND_URL}/pedidos/${cedula}`, { headers: tokenServices.autenticacionHeader() });
+    let respuesta = await axios.get(`${Constantes.BACKEND_URL}/pedidos/${token}`, { headers: tokenServices.autenticacionHeader() });
 
     // console.log("Respuesta API-REST Articulos. ");
     // console.log(JSON.stringify(respuesta));

@@ -4,7 +4,7 @@ import Header from "../../components/Header";
 import PopupMensaje from "../../components/PopupMensaje";
 import clienteServices from "../../services/ClienteServices";
 import ciudadServices from "../../services/CiudadServices"; 
-import autenticacionServices from "../../services/AutenticacionServices"; 
+import autenticacionServices from "../../services/AutenticacionServices";
 import Constantes from "../../Constantes";
 
 
@@ -35,8 +35,6 @@ function InformacionPersonal()
   const [lstMeses] = useState([1,2,3,4,5,6,7,8,9,10,11,12]);
   const [lstAños, setLstAños] = useState([]);
 
-  const [cliente] = useState(autenticacionServices.getClienteActual());
-
 
   
 
@@ -44,6 +42,8 @@ function InformacionPersonal()
 	{
     
     console.log("useEffect Informacion Personal");
+
+    let token = autenticacionServices.getToken();
 
 
     /**
@@ -67,15 +67,18 @@ function InformacionPersonal()
         }
 
         setLstAños(lstAñosPredefinida);
-        
-        if(null !== cliente)
-        {
-          let fechaNacimiento = new Date(cliente.fecha);
 
-          setNombres(cliente.nombres);
-          setCedula(cliente.cedula);
-          setTelefono(cliente.telefono);
-          setDireccion(cliente.direccion);
+        //Se obtiene el cliente a traves del api-rest
+        let {status, clienteBD} = await clienteServices.getCliente(token);
+        
+        if(Constantes.STATUS_OK === status)
+        {
+          let fechaNacimiento = new Date(clienteBD.fecha);
+
+          setNombres(clienteBD.nombres);
+          setCedula(clienteBD.cedula);
+          setTelefono(clienteBD.telefono);
+          setDireccion(clienteBD.direccion);
           setSexo("F");
           setPais("EC");
           //El valor devuelto por getDay() es un entero correspondiente al día de la semana; siendo 0 (Domingo) el primer día, 1 (Lunes) el segundo
@@ -89,11 +92,11 @@ function InformacionPersonal()
             setLstCiudades(lstCiudadesBD);
             //Cargando todas las provincias
             setLstProvincias(lstCiudadesBD.filter(ciudad => "" === ciudad.codigoCiudad));
-            setCodProvincia(cliente.codProvincia);
+            setCodProvincia(clienteBD.codProvincia);
 
             //Cargando todas las ciudades
-            setLstCiudadesFiltradas(lstCiudadesBD.filter(ciudad => ciudad.codigoCiudad.includes(cliente.codProvincia+"-")));
-            setCodCiudad(cliente.codProvincia.concat("-", cliente.codCiudad));
+            setLstCiudadesFiltradas(lstCiudadesBD.filter(ciudad => ciudad.codigoCiudad.includes(clienteBD.codProvincia+"-")));
+            setCodCiudad(clienteBD.codProvincia.concat("-", clienteBD.codCiudad));
           }
         }
       } 
@@ -105,7 +108,7 @@ function InformacionPersonal()
     };
 
     cargarInformacion();
-  }, [cliente])
+  }, [])
   
   
 
@@ -120,14 +123,17 @@ function InformacionPersonal()
 
     if (event.target.checkValidity()) 
     {
-      cliente.nombres = nombres;
-      cliente.codProvincia = codProvincia;
-      cliente.codCiudad = codCiudad.split("-")[1];
-      cliente.direccion = direccion;
-      cliente.telefono = telefono;
-      cliente.fecha = new Date(año,mes-1,dia); //El valor devuelto por getMonth() es un entero entre 0 y 11, donde 0 corresponde a Enero, 1 a Febrero y así sucesivamente
-      cliente.direccionEntrega = direccion;
-      cliente.estado = 1;
+      let cliente = 
+      {
+        nombres,
+        codProvincia,
+        codCiudad: codCiudad.split("-")[1],
+        direccion,
+        telefono,
+        fecha: new Date(año,mes-1,dia), //El valor devuelto por getMonth() es un entero entre 0 y 11, donde 0 corresponde a Enero, 1 a Febrero y así sucesivamente
+        direccionEntrega: direccion,
+        estado: 1
+      };
 
       
       //Se validan los datos a traves del api-rest
@@ -137,8 +143,6 @@ function InformacionPersonal()
 
       if(Constantes.STATUS_OK === status && isClienteActualizado)
       {
-        //El cliente se creo exitosamente y se guarda token en AsyncStorage
-        autenticacionServices.setClienteLocalStorage(cliente);
         mensaje = "Tu información se ha guardado correctamente.";
       }
       

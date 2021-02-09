@@ -15,9 +15,9 @@ const signup = async (cliente) =>
   {
     let respuesta = await axios.post(`${Constantes.BACKEND_URL}/signup`, cliente);
 
-    if ("" !== respuesta.data) 
+    if (respuesta.data) 
     {
-      setClienteLocalStorage(respuesta.data);
+      setTokenLocalStorage(respuesta.data);
     }
 
     // console.log("Respuesta API-REST Cliente. ");
@@ -27,7 +27,7 @@ const signup = async (cliente) =>
   }
 	catch(error)
   {
-    return { status: Constantes.STATUS_ERROR, clienteBD: null };
+    return { status: Constantes.STATUS_ERROR };
   }
 }
 
@@ -43,12 +43,11 @@ const login = async (cliente) =>
   {
     let respuesta = await axios.post(`${Constantes.BACKEND_URL}/login`, cliente);
 
-    if (respuesta.data.token) 
+    if (respuesta.data) 
     {
       //El cliente se registro exitosamente y se guarda token en AsyncStorage
-      setClienteLocalStorage(respuesta.data);
+      setTokenLocalStorage(respuesta.data);
     }
-
 
     // console.log("Respuesta API-REST Consultar Cliente ");
     // console.log(JSON.stringify(respuesta));
@@ -57,13 +56,13 @@ const login = async (cliente) =>
   }
   catch(error)
   {
-    return { status: Constantes.STATUS_ERROR, clienteBD: null };
+    return { status: Constantes.STATUS_ERROR };
   }
 }
 
 
 /**
- * 
+ * Método que permite desloguear el usuario de la web limpiando su local storage
  */
 const logout = () =>
 {
@@ -71,14 +70,16 @@ const logout = () =>
 }
 
 
+
+
 /**
- * Método que permite obtener el cliente del local storage
+ * Método que permite obtener el token del local storage
  */
-const getClienteActual = () => 
+const getToken = () => 
 {
   try
   {
-    return JSON.parse(localStorage.getItem("@cliente"));
+    return JSON.parse(localStorage.getItem("@token"));
   }
   catch(error)
   {
@@ -88,12 +89,12 @@ const getClienteActual = () =>
 
 
 /**
- * Método que permite almacenar el cliente en el local storage
- * @param cliente que se va almacenar
+ * Método que permite almacenar el token en el local storage
+ * @param token que se va almacenar
  */
-const setClienteLocalStorage = (cliente) => 
+const setTokenLocalStorage = (token) => 
 {
-  localStorage.setItem("@cliente", JSON.stringify(cliente));
+  localStorage.setItem("@token", JSON.stringify(token));
 }
 
 
@@ -104,6 +105,6 @@ export default
   signup,
   login,
   logout,
-  getClienteActual,
-  setClienteLocalStorage
+  getToken,
+  setTokenLocalStorage
 };

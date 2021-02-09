@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import Header from "../../components/Header";
 import PopupMensaje from "../../components/PopupMensaje";
-
+import autenticacionServices from "../../services/AutenticacionServices"; 
 import clienteServices from "../../services/ClienteServices"; 
-import autenticacionServices from "../../services/AutenticacionServices";
 import Constantes from "../../Constantes";
 
 
@@ -22,7 +21,6 @@ function DatosAcceso()
   const [repetirClave, setRepetirClave] = useState("");
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
-  const [cliente, setCliente] = useState(autenticacionServices.getClienteActual()); //TODO: Revisar si sirve llamando desde autentication
 
 
   
@@ -45,18 +43,19 @@ function DatosAcceso()
     {
       if(nuevoCorreo === repetirCorreo)
       {
-        cliente.claveIngresada = clave;
-        cliente.nuevoCorreo = nuevoCorreo;
+        let cliente = 
+        {
+          claveIngresada: clave,
+          nuevoCorreo,
+          token: autenticacionServices.getToken()
+        };
         
-        let { status, clienteBD } = await clienteServices.actualizarDatosAccesoCliente(cliente);
+        let { status } = await clienteServices.actualizarDatosAccesoCliente(cliente);
 
         switch (status) 
         {
           case Constantes.STATUS_OK:
             mensaje = "La cuenta de correo fue actualizada correctamente.";
-            
-            autenticacionServices.setClienteLocalStorage(clienteBD);
-            setCliente(clienteBD);
             break;
 
           case Constantes.STATUS_CREATED:
@@ -97,16 +96,19 @@ function DatosAcceso()
     {
       if(nuevaClave === repetirClave)
       {
-        cliente.claveIngresada = clave;
-        cliente.nuevaClave = nuevaClave;
+        let cliente = 
+        {
+          claveIngresada: clave,
+          nuevaClave,
+          token: autenticacionServices.getToken()
+        };
 
-        let { status, clienteBD } = await clienteServices.actualizarDatosAccesoCliente(cliente);
+        let { status } = await clienteServices.actualizarDatosAccesoCliente(cliente);
 
 
         switch (status) 
         {
           case Constantes.STATUS_OK:
-            autenticacionServices.setClienteLocalStorage(clienteBD);
             mensaje = "Contraseña actualizada correctamente";
             break;
 
@@ -152,7 +154,7 @@ function DatosAcceso()
             <h5 className="font-weight-bolder">Cambio de dirección de correo electrónico</h5>
               <h6>Si deseas cambiar la dirección de correo electrónico asociada a tu cuenta rellena los campos siguientes. Se solicita tu contraseña por motivos de seguridad.</h6>
               
-              <p>Tu correo actual es <span className="font-weight-bold">{cliente.correo}</span></p>
+              <p>Tu correo actual es <span className="font-weight-bold">colocar correo</span></p>
           </div>
 
           <form className="needs-validation pb-5 bgg-warning" onSubmit={actualizarCorreo} style={{width:"66%"}} noValidate>
@@ -198,7 +200,7 @@ function DatosAcceso()
           <div className="mt-5 pt-4 separacion_datos_acuatex border-bottom-0 border-right-0 border-left-0 bgg-danger">
             <h5 className="font-weight-bolder mt-5">Cambio de contraseña</h5>
               <h6>Si deseas cambiar la contraseña de acceso a tu cuenta proporciona la siguiente información:</h6>
-              <p>Tu correo actual es <span className="font-weight-bold">{cliente.correo}</span></p>    
+              <p>Tu correo actual es <span className="font-weight-bold">colocar correo</span></p>    
           </div>
           <form className="needs-validation bgg-warning" onSubmit={actualizarClave} style={{width:"66%"}} noValidate>
             <div className="row form-group">
