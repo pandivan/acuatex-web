@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import Header from "../../components/Header";
+import Constantes from "../../Constantes";
 import articuloServices from "../../services/ArticuloServices";
 
 
@@ -30,13 +31,18 @@ function Estilos()
     {
       try 
       {
-        let {success, lstArticulosBD} = await articuloServices.getAllArticulos();
+        let {status, lstArticulosBD} = await articuloServices.getAllArticulos();
 
-        if (success) 
+        switch (status) 
         {
-          setArticulos(lstArticulosBD);
-          setArticulosFiltrados(lstArticulosBD);
-          setLoading(false);
+          case Constantes.STATUS_OK:
+            setArticulos(lstArticulosBD);
+            setArticulosFiltrados(lstArticulosBD);
+            setLoading(false);
+            break;
+          
+          default:
+            break;
         }
       } 
       catch (error) 

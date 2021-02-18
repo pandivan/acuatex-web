@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
+
 import Header from "../../components/Header";
 import FooterPagos from "../../components/FooterPagos";
 import PopupMensaje from "../../components/PopupMensaje";
 import pagoServices from "../../services/PagoServices"; 
+import autenticacionServices from "../../services/AutenticacionServices";
+import Constantes from "../../Constantes";
+
 
 
 
@@ -12,6 +16,7 @@ import pagoServices from "../../services/PagoServices";
  */
 function PagoTarjetaCredito() 
 {
+  const [isTokenValido, setTokenValido] = useState(autenticacionServices.getToken() ? true : false);
   const [numeroTarjeta, setNumeroTarjeta] = useState("");
   const [mesCaducidad, setMesCaducidad] = useState("01");
   const [añoCaducidad, setAñoCaducidad] = useState("2020");
@@ -28,16 +33,53 @@ function PagoTarjetaCredito()
 
   useEffect(() => 
 	{
-		console.log("useEffect Tarjeta Credito");
+		console.log("useEffect Pago Tarjeta Credito");
 
-
-    let cantidadBadge = JSON.parse(localStorage.getItem("@cantidadBadge"));
-
-    if(null === cantidadBadge)
+    /**
+     * Metodo que permite cargar información inicial desde el API-REST
+     */
+    const cargarInformacion = async () =>
     {
-      history.push("/");
+      //Se obtiene el correo del cliente a traves del api-rest
+      let {status} = await autenticacionServices.validarToken();
+  
+      switch (status)
+      {
+        case Constantes.STATUS_OK:
+          let cantidadBadge = JSON.parse(localStorage.getItem("@cantidadBadge"));
+
+          if(null === cantidadBadge)
+          {
+            setTokenValido(false);
+          }
+          break;
+
+        case Constantes.STATUS_ACCESO_DENEGADO:
+          
+          //Si tiene token es porque estoy logueado y debo informar que la sesión expiro
+          if(autenticacionServices.getToken())
+          {
+            alert("Tu sesión ha expirado!!!");
+          }
+
+          autenticacionServices.logout();
+          setTokenValido(false);
+          break;
+  
+        default:
+          //Valida si hubo un error en el api-rest al validar los datos del cliente
+          //Si tiene token es porque estoy logueado y debo informar que hubo un error en el backend
+          if(autenticacionServices.getToken())
+          {
+            setMensajePopup("En el momento no es posible acceder al\npago, favor intentarlo más tarde.");
+            setMostrarPopup(true);
+          }
+          break;
+      };
     }
-  }, [history]);
+    
+    cargarInformacion();
+  }, []);
 
 
 
@@ -112,6 +154,7 @@ function PagoTarjetaCredito()
 
 
   return (
+    isTokenValido ?
     <div>
       <Header height={"none"}/>
 
@@ -178,6 +221,8 @@ function PagoTarjetaCredito()
         isMostrarPopup && <PopupMensaje togglePopup={togglePopup} mensaje={mensajePopup} titulo={"AVISO"} />
       }
     </div>  
+    :
+    <Redirect to={"/articulos"} />
     );
 }
 

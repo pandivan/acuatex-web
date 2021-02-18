@@ -1,5 +1,6 @@
 import axios from "axios";
 
+import tokenServices from "../services/TokenServices"; 
 import Constantes from "../Constantes";
 
 
@@ -99,6 +100,24 @@ const setTokenLocalStorage = (token) =>
 
 
 
+/**
+ * Función que permite validar si el token está activo
+ */
+const validarToken = async () => 
+{
+  try
+  {
+    let respuesta = await axios.get(`${Constantes.BACKEND_URL}/info`, { headers: tokenServices.autenticacionHeader() });
+
+    return { status: respuesta.status };
+  }
+  catch(error)
+  {
+    return { status: error.request.status };
+  }
+}
+
+
 
 export default 
 {
@@ -106,5 +125,6 @@ export default
   login,
   logout,
   getToken,
-  setTokenLocalStorage
+  setTokenLocalStorage,
+  validarToken
 };

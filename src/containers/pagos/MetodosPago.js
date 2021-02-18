@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
+
 import Header from "../../components/Header";
 import FooterPagos from "../../components/FooterPagos";
 import PopupMensaje from "../../components/PopupMensaje";
+import autenticacionServices from "../../services/AutenticacionServices";
+import Constantes from "../../Constantes";
 
 
 
@@ -11,6 +14,7 @@ import PopupMensaje from "../../components/PopupMensaje";
  */
 function MetodosPago() 
 {
+  const [isTokenValido, setTokenValido] = useState(autenticacionServices.getToken() ? true : false);
   const [tipoPago, setTipoPago] = useState("");
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
@@ -26,14 +30,51 @@ function MetodosPago()
 	{
 		console.log("useEffect Metodos de Pago");
 
-
-    let cantidadBadge = JSON.parse(localStorage.getItem("@cantidadBadge"));
-
-    if(null === cantidadBadge)
+    /**
+     * Metodo que permite cargar información inicial desde el API-REST
+     */
+    const cargarInformacion = async () =>
     {
-      history.push("/");
+      //Se obtiene el correo del cliente a traves del api-rest
+      let {status} = await autenticacionServices.validarToken();
+  
+      switch (status)
+      {
+        case Constantes.STATUS_OK:
+          let cantidadBadge = JSON.parse(localStorage.getItem("@cantidadBadge"));
+
+          if(null === cantidadBadge)
+          {
+            setTokenValido(false);
+          }
+          break;
+
+        case Constantes.STATUS_ACCESO_DENEGADO:
+          
+          //Si tiene token es porque estoy logueado y debo informar que la sesión expiro
+          if(autenticacionServices.getToken())
+          {
+            alert("Tu sesión ha expirado!!!");
+          }
+
+          autenticacionServices.logout();
+          setTokenValido(false);
+          break;
+  
+        default:
+          //Valida si hubo un error en el api-rest al validar los datos del cliente
+          //Si tiene token es porque estoy logueado y debo informar que hubo un error en el backend
+          if(autenticacionServices.getToken())
+          {
+            setMensajePopup("En el momento no es posible acceder al\nmétodo de pago, favor intentarlo más tarde.");
+            setMostrarPopup(true);
+          }
+          break;
+      };
     }
-  }, [history]);
+    
+    cargarInformacion();
+  }, []);
 
 
 
@@ -75,6 +116,7 @@ function MetodosPago()
 
 
   return (
+    isTokenValido ?
     <div>
       <Header height={"none"}/>
 
@@ -102,6 +144,8 @@ function MetodosPago()
         isMostrarPopup && <PopupMensaje togglePopup={togglePopup} mensaje={mensajePopup} titulo={"AVISO"} />
       }
     </div>
+    :
+    <Redirect to={"/articulos"} />
   );
 }
 

@@ -13,16 +13,13 @@ const getAllArticulos = async () =>
   {
     let respuesta = await axios.get(`${Constantes.BACKEND_URL}/articulos`);
 
-    // console.log("Respuesta API-REST Articulos. ");
-    // console.log(JSON.stringify(respuesta.data));
-
-    return { success: ("" !== respuesta.data), lstArticulosBD: respuesta.data };
+    return { status: respuesta.status, lstArticulosBD: respuesta.data };
   }
 	catch(error)
   {
     //TODO: Guardar log en BD
     // console.log(`Error al registrar: ${error}`);
-    return { success: false};
+    return { status: error.request.status };
   }
 }
 

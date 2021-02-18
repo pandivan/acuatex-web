@@ -51,13 +51,14 @@ function DatosAcceso()
             break;
 
           case Constantes.STATUS_ACCESO_DENEGADO:
-            autenticacionServices.logout();
-
+            
             //Si tiene token es porque estoy logueado y debo informar que la sesión expiro
             if(autenticacionServices.getToken())
             {
               alert("Tu sesión ha expirado!!!");
             }
+            
+            autenticacionServices.logout();
             setTokenValido(false);
             break;
 
