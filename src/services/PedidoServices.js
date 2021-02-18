@@ -41,7 +41,7 @@ const registrarPedido = async (pedido) =>
 //     // console.log("Respuesta API-REST Pedido. ");
 //     // console.log(JSON.stringify(respuesta));
 
-//     // if(HttpStatus.INTERNAL_SERVER_ERROR == respuesta.status)
+//     // if(HttpStatus.STATUS_INTERNAL_SERVER_ERROR == respuesta.status)
 //     // {
 //     //   //TODO: Guardar log BD
 //     // }
@@ -69,7 +69,7 @@ const registrarPedido = async (pedido) =>
 //     // console.log(JSON.stringify(pedido));
 //     let respuesta = await axios.put(`${Constantes.BACKEND_URL}/estado`, pedido, { headers: tokenServices.autenticacionHeader() });
 
-//     // if(HttpStatus.INTERNAL_SERVER_ERROR == respuesta.status)
+//     // if(HttpStatus.STATUS_INTERNAL_SERVER_ERROR == respuesta.status)
 //     // {
 //     //   //TODO: Guardar log BD
 //     // }
@@ -105,7 +105,7 @@ const getAllPedidos = async (token) =>
     //TODO: Guardar log en BD
     // console.log(`Error al registrar: ${error}`);
 
-    if(error.response && Constantes.TOKEN_EXPIRED === error.response.status)
+    if(error.response && Constantes.STATUS_ACCESO_DENEGADO === error.response.status)
     {
       return { isTokenValido: false }
     }

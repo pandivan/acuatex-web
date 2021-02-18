@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Redirect } from "react-router-dom";
 
 import Header from "../../components/Header";
 import PopupMensaje from "../../components/PopupMensaje";
@@ -15,6 +16,7 @@ import Constantes from "../../Constantes";
  */
 function InformacionPersonal() 
 {
+  const [isTokenValido, setTokenValido] = useState(autenticacionServices.getToken() ? true : false);
   const [nombres, setNombres] = useState("");
   const [cedula, setCedula] = useState("");
   const [telefono, setTelefono] = useState("");
@@ -26,6 +28,7 @@ function InformacionPersonal()
   const [pais, setPais] = useState("");
   const [codProvincia, setCodProvincia] = useState("");
   const [codCiudad, setCodCiudad] = useState("");
+  const [correo, setCorreo] = useState("");
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
   const [lstProvincias, setLstProvincias] = useState([]);
@@ -43,8 +46,6 @@ function InformacionPersonal()
     
     console.log("useEffect Informacion Personal");
 
-    let token = autenticacionServices.getToken();
-
 
     /**
      * Metodo que permite cargar los articulos desde el API-REST
@@ -53,51 +54,74 @@ function InformacionPersonal()
     {
       try 
       {
-        let {success, lstCiudadesBD} = await ciudadServices.getAllCiudades();
+        //Se obtiene el cliente a traves del api-rest y se valida si el token es valido
+        let {status, clienteBD} = await clienteServices.getCliente();
 
-        
-        //Se carga el listado de años desde 1905 al año actual (Referencia de facebook)
-        let añoActual = new Date().getFullYear();
-
-        const lstAñosPredefinida = []
-
-        for (let año = añoActual; año >= 1905; año--) 
+        switch (status)
         {
-          lstAñosPredefinida.push(año);
-        }
+          case Constantes.STATUS_OK:
+            let {status, lstCiudadesBD} = await ciudadServices.getAllCiudades();
+  
+            //Se carga el listado de años desde 1905 al año actual (Referencia de facebook)
+            let añoActual = new Date().getFullYear();
+    
+            const lstAñosPredefinida = [];
+    
+            for (let año = añoActual; año >= 1905; año--) 
+            {
+              lstAñosPredefinida.push(año);
+            }
+    
+            setLstAños(lstAñosPredefinida);
 
-        setLstAños(lstAñosPredefinida);
+            let fechaNacimiento = new Date(clienteBD.fecha);
 
-        //Se obtiene el cliente a traves del api-rest
-        let {status, clienteBD} = await clienteServices.getCliente(token);
-        
-        if(Constantes.STATUS_OK === status)
-        {
-          let fechaNacimiento = new Date(clienteBD.fecha);
+            setCorreo(clienteBD.correo);
+            setNombres(clienteBD.nombres);
+            setCedula(clienteBD.cedula);
+            setTelefono(clienteBD.telefono);
+            setDireccion(clienteBD.direccion);
+            setSexo("F");
+            setPais("EC");
+            //El valor devuelto por getDay() es un entero correspondiente al día de la semana; siendo 0 (Domingo) el primer día, 1 (Lunes) el segundo
+            setDia(fechaNacimiento.getDate());
+            //El valor devuelto por getMonth() es un entero entre 0 y 11, donde 0 corresponde a Enero, 1 a Febrero y así sucesivamente
+            setMes(fechaNacimiento.getMonth() + 1);
+            setAño(fechaNacimiento.getFullYear());
 
-          setNombres(clienteBD.nombres);
-          setCedula(clienteBD.cedula);
-          setTelefono(clienteBD.telefono);
-          setDireccion(clienteBD.direccion);
-          setSexo("F");
-          setPais("EC");
-          //El valor devuelto por getDay() es un entero correspondiente al día de la semana; siendo 0 (Domingo) el primer día, 1 (Lunes) el segundo
-          setDia(fechaNacimiento.getDate());
-          //El valor devuelto por getMonth() es un entero entre 0 y 11, donde 0 corresponde a Enero, 1 a Febrero y así sucesivamente
-          setMes(fechaNacimiento.getMonth() + 1);
-          setAño(fechaNacimiento.getFullYear());
+            if (Constantes.STATUS_OK === status) 
+            {
+              setLstCiudades(lstCiudadesBD);
+              //Cargando todas las provincias
+              setLstProvincias(lstCiudadesBD.filter(ciudad => "" === ciudad.codigoCiudad));
+              setCodProvincia(clienteBD.codProvincia);
 
-          if (success) 
-          {
-            setLstCiudades(lstCiudadesBD);
-            //Cargando todas las provincias
-            setLstProvincias(lstCiudadesBD.filter(ciudad => "" === ciudad.codigoCiudad));
-            setCodProvincia(clienteBD.codProvincia);
+              //Cargando todas las ciudades
+              setLstCiudadesFiltradas(lstCiudadesBD.filter(ciudad => ciudad.codigoCiudad.includes(clienteBD.codProvincia+"-")));
+              setCodCiudad(clienteBD.codProvincia.concat("-", clienteBD.codCiudad));
+            }
+            break;
 
-            //Cargando todas las ciudades
-            setLstCiudadesFiltradas(lstCiudadesBD.filter(ciudad => ciudad.codigoCiudad.includes(clienteBD.codProvincia+"-")));
-            setCodCiudad(clienteBD.codProvincia.concat("-", clienteBD.codCiudad));
-          }
+          case Constantes.STATUS_ACCESO_DENEGADO:
+            autenticacionServices.logout();
+
+            //Si tiene token es porque estoy logueado y debo informar que la sesión expiro
+            if(autenticacionServices.getToken())
+            {
+              alert("Tu sesión ha expirado!!!");
+            }
+            setTokenValido(false);
+            break;
+
+          default:
+            //Valida si hubo un error en el api-rest al validar los datos del cliente
+            //Si tiene token es porque estoy logueado y debo informar que hubo un error en el backend
+            if(autenticacionServices.getToken())
+            {
+              setMensajePopup("En el momento no es posible acceder a la\ninformación, favor intentarlo más tarde.");
+              setMostrarPopup(true);
+            }
+            break;
         }
       } 
       catch (error) 
@@ -125,10 +149,12 @@ function InformacionPersonal()
     {
       let cliente = 
       {
+        cedula,
         nombres,
         codProvincia,
         codCiudad: codCiudad.split("-")[1],
         direccion,
+        correo,
         telefono,
         fecha: new Date(año,mes-1,dia), //El valor devuelto por getMonth() es un entero entre 0 y 11, donde 0 corresponde a Enero, 1 a Febrero y así sucesivamente
         direccionEntrega: direccion,
@@ -136,18 +162,28 @@ function InformacionPersonal()
       };
 
       
-      //Se validan los datos a traves del api-rest
-      let {status, isClienteActualizado} = await clienteServices.actualizarCliente(cliente);
+      //Se actualiza la información del cliente a traves del api-rest
+      let { status } = await clienteServices.actualizarCliente(cliente);
 
-      let mensaje = "En el momento, no es posible actualizar tus datos.";
-
-      if(Constantes.STATUS_OK === status && isClienteActualizado)
+      switch (status)
       {
-        mensaje = "Tu información se ha guardado correctamente.";
+        case Constantes.STATUS_OK:
+          setMensajePopup("Tu información se ha guardado correctamente.");
+          setMostrarPopup(true);
+          break;
+
+        case Constantes.STATUS_ACCESO_DENEGADO:
+          autenticacionServices.logout();
+          alert("Tu sesión ha expirado!!!");
+          setTokenValido(false);
+          break;
+
+        default:
+          //Valida si hubo un error en el api-rest al actualizar la información del cliente
+          setMensajePopup("En el momento, no es posible actualizar tus datos.");
+          setMostrarPopup(true);
+          break;
       }
-      
-      setMensajePopup(mensaje);
-      setMostrarPopup(true);
     }
   };
 
@@ -180,6 +216,7 @@ function InformacionPersonal()
 
 
   return (
+    isTokenValido ?
     <div className="bgg-success">
       <Header height={"none"} fondo={""} titulo={""}/>
 
@@ -328,6 +365,8 @@ function InformacionPersonal()
       }
     
     </div>
+    :
+    <Redirect to={"/articulos"} />
   );
 }
 

@@ -22,7 +22,7 @@ function Header(props)
 		{
       let token = autenticacionServices.getToken();
 
-      if(null !== token)
+      if(token)
       {
         setLogueado(true);
         // setNombreCliente(cliente.nombres.split(" ")[0]);

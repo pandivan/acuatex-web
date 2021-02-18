@@ -1,6 +1,6 @@
-import * as React from "react";
+import React, { useState } from "react";
 
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, Redirect } from "react-router-dom";
 
 import Header from "../../components/Header";
 import autenticacionServices from "../../services/AutenticacionServices"; 
@@ -13,6 +13,8 @@ import autenticacionServices from "../../services/AutenticacionServices";
  */
 function Ajustes()
 {
+  const [isTokenValido] = useState(autenticacionServices.getToken() ? true : false);
+
   //Hook de react-router-dom maneja el historial de navegación
   let history = useHistory();
 
@@ -29,6 +31,7 @@ function Ajustes()
 
 
   return (
+    isTokenValido ?
     <div className="bgg-info">
       <Header height={"none"} fondo={""} titulo={""}/>
 
@@ -57,6 +60,8 @@ function Ajustes()
         </div>
       </div>
     </div>
+    :
+    <Redirect to={"/articulos"} />
   );
 }
 

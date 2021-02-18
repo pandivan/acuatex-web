@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, Redirect, useHistory } from "react-router-dom";
 import Header from "../../components/Header";
 import PopupMensaje from "../../components/PopupMensaje";
@@ -11,9 +11,9 @@ import Constantes from "../../Constantes";
 /**
  * Componente funcion que permite loguearse a la plataforma
  */
-function Login(props) 
+function Login() 
 {
-  const [isTokenValido, setTokenValido] = useState(false);
+  const [isTokenValido] = useState(autenticacionServices.getToken());
   const [correo, setCorreo] = useState("");
   const [clave, setClave] = useState("");
   const [isMostrarPopup, setMostrarPopup] = useState(false);
@@ -22,27 +22,6 @@ function Login(props)
   //Hook de react-router-dom maneja el historial de navegación
   let history = useHistory(); 
   
-    
-
-
-  useEffect(() => 
-	{
-		console.log("useEffect Loguin");
-
-		try
-		{
-      let token = autenticacionServices.getToken();
-      
-      if(null !== token)
-      {
-        setTokenValido(true);
-      }
-		}
-		catch(error)
-		{
-			setTokenValido(false);
-		}
-  }, [])
 
 
 

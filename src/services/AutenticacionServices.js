@@ -27,7 +27,7 @@ const signup = async (cliente) =>
   }
 	catch(error)
   {
-    return { status: Constantes.STATUS_ERROR };
+    return { status: error.request.status };
   }
 }
 
@@ -56,7 +56,7 @@ const login = async (cliente) =>
   }
   catch(error)
   {
-    return { status: Constantes.STATUS_ERROR };
+    return { status: error.request.status };
   }
 }
 

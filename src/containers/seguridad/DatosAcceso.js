@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Redirect } from "react-router-dom";
+
 import Header from "../../components/Header";
 import PopupMensaje from "../../components/PopupMensaje";
-import autenticacionServices from "../../services/AutenticacionServices"; 
-import clienteServices from "../../services/ClienteServices"; 
+import autenticacionServices from "../../services/AutenticacionServices";
+import clienteServices from "../../services/ClienteServices";
 import Constantes from "../../Constantes";
 
 
@@ -12,8 +14,9 @@ import Constantes from "../../Constantes";
 /**
  * Componente funcion que permite registrar un nuevo cliente en la plataforma
  */
-function DatosAcceso() 
+function DatosAcceso()
 {
+  const [isTokenValido, setTokenValido] = useState(autenticacionServices.getToken() ? true : false);
   const [nuevoCorreo, setNuevoCorreo] = useState("");
   const [repetirCorreo, setRepetirCorreo] = useState("");
   const [clave, setClave] = useState("");
@@ -21,10 +24,63 @@ function DatosAcceso()
   const [repetirClave, setRepetirClave] = useState("");
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
+  const [correo, setCorreo] = useState("");
 
 
-  
-  console.log("DatosAcceso...")
+
+
+  useEffect(() =>
+	{
+
+    console.log("useEffect DatosAcceso");
+
+    /**
+     * Metodo que permite cargar información inicial desde el API-REST
+     */
+    const cargarInformacion = async () =>
+    {
+      try
+      {
+        //Se obtiene el correo del cliente a traves del api-rest
+        let {status, correoBD} = await clienteServices.getCorreoCliente();
+
+        switch (status)
+        {
+          case Constantes.STATUS_OK:
+            setCorreo(correoBD);
+            break;
+
+          case Constantes.STATUS_ACCESO_DENEGADO:
+            autenticacionServices.logout();
+
+            //Si tiene token es porque estoy logueado y debo informar que la sesión expiro
+            if(autenticacionServices.getToken())
+            {
+              alert("Tu sesión ha expirado!!!");
+            }
+            setTokenValido(false);
+            break;
+
+          default:
+            //Valida si hubo un error en el api-rest al validar los datos del cliente
+            //Si tiene token es porque estoy logueado y debo informar que hubo un error en el backend
+            if(autenticacionServices.getToken())
+            {
+              setMensajePopup("En el momento no es posible acceder a la\ninformación, favor intentarlo más tarde.");
+              setMostrarPopup(true);
+            }
+            break;
+        }
+      }
+      catch (error)
+      {
+        //TODO: Guardar log del error en BD
+        console.log("error")
+      }
+    };
+
+    cargarInformacion();
+  }, [])
 
 
 
@@ -32,50 +88,64 @@ function DatosAcceso()
    * Función que permite cambiar el correo del cliente
    * @param event Evento que se genera al enviar el formulario
    */
-  const actualizarCorreo = async (event) => 
+  const actualizarCorreo = async (event) =>
   {
-    let mensaje = "Las cuenta de correo no coinciden.";
-
     event.preventDefault();
     event.target.className += " was-validated";
 
-    if (event.target.checkValidity()) 
+    //Se valida campos obligatorios del formulario
+    if (event.target.checkValidity())
     {
       if(nuevoCorreo === repetirCorreo)
       {
-        let cliente = 
+        let cliente =
         {
           claveIngresada: clave,
           nuevoCorreo,
           token: autenticacionServices.getToken()
         };
-        
-        let { status } = await clienteServices.actualizarDatosAccesoCliente(cliente);
 
-        switch (status) 
+        //Se llama al api-res para actualizar datos del cliente
+        let { status, clienteBD } = await clienteServices.actualizarDatosAccesoCliente(cliente);
+
+        switch (status)
         {
           case Constantes.STATUS_OK:
-            mensaje = "La cuenta de correo fue actualizada correctamente.";
+            autenticacionServices.setTokenLocalStorage(clienteBD.token);
+            setCorreo(clienteBD.correo);
+            setMensajePopup("La cuenta de correo fue actualizada correctamente.");
+            setMostrarPopup(true);
             break;
 
           case Constantes.STATUS_CREATED:
-            mensaje = "La dirección de correo especificada\n(" + nuevoCorreo + ")\nya está siendo utilizada. Por favor, elige otra.";
+            setMensajePopup("La dirección de correo especificada\n(" + nuevoCorreo + ")\nya está siendo utilizada. Por favor, elige otra.");
+            setMostrarPopup(true);
             break;
 
           case Constantes.STATUS_NO_CONTENT:
             //Fallo validando la contraseña actual digitada
-            mensaje = "La contraseña actual no es correcta. Es necesario\nque indiques tu contraseña actual para poder\ncambiar la cuenta de correo.";
+            setMensajePopup("La contraseña actual no es correcta. Es necesario\nque indiques tu contraseña actual para poder\ncambiar la cuenta de correo.");
+            setMostrarPopup(true);
             break;
-          
+
+          case Constantes.STATUS_ACCESO_DENEGADO:
+            autenticacionServices.logout();
+            alert("Tu sesión ha expirado!!!");
+            setTokenValido(false);
+            break;
+
           default:
             //Valida si hubo un error en el api-rest al validar el cliente
-            mensaje = "No es posible en el momento actualizar la cuenta de correo,\nfavor intentarlo más tarde.";
+            setMensajePopup("En el momento no es posible actualizar la cuenta\nde correo, favor intentarlo más tarde.");
+            setMostrarPopup(true);
             break;
         }
       }
-      
-      setMensajePopup(mensaje);
-      setMostrarPopup(true);
+      else
+      {
+        setMensajePopup("Las cuentas de correo no coinciden.");
+        setMostrarPopup(true);
+      }
     }
   };
 
@@ -85,18 +155,16 @@ function DatosAcceso()
    * Función que permite cambiar el clave del cliente
    * @param event Evento que se genera al enviar el formulario
    */
-  const actualizarClave = async (event) => 
+  const actualizarClave = async (event) =>
   {
-    let mensaje = "Las contraseñas de correo no coinciden.";
-
     event.preventDefault();
     event.target.className += " was-validated";
 
-    if (event.target.checkValidity()) 
+    if (event.target.checkValidity())
     {
       if(nuevaClave === repetirClave)
       {
-        let cliente = 
+        let cliente =
         {
           claveIngresada: clave,
           nuevaClave,
@@ -106,43 +174,55 @@ function DatosAcceso()
         let { status } = await clienteServices.actualizarDatosAccesoCliente(cliente);
 
 
-        switch (status) 
+        switch (status)
         {
           case Constantes.STATUS_OK:
-            mensaje = "Contraseña actualizada correctamente";
+            setMensajePopup("Contraseña actualizada correctamente");
+            setMostrarPopup(true);
             break;
 
           case Constantes.STATUS_NO_CONTENT:
             //Fallo validando la contraseña actual digitada
-            mensaje = "La contraseña actual no es correcta. Es necesario\nque indiques tu contraseña actual para poder\ncambiarla por una nueva.";
+            setMensajePopup("La contraseña actual no es correcta. Es necesario\nque indiques tu contraseña actual para poder\ncambiarla por una nueva.");
+            setMostrarPopup(true);
             break;
-          
+
+          case Constantes.STATUS_ACCESO_DENEGADO:
+            autenticacionServices.logout();
+            alert("Tu sesión ha expirado!!!");
+            setTokenValido(false);
+            break;
+
           default:
             //Valida si hubo un error en el api-rest al validar el cliente
-            mensaje = "En el momento no es posible actualizar la contraseña,\nfavor intentarlo más tarde.";
+            setMensajePopup("En el momento no es posible actualizar la\ncontraseña, favor intentarlo más tarde.");
+            setMostrarPopup(true);
             break;
         }
       }
-
-      setMensajePopup(mensaje);
-      setMostrarPopup(true);
+      else
+      {
+        setMensajePopup("Las contraseñas de correo no coinciden.");
+        setMostrarPopup(true);
+      }
     }
   };
 
 
-  
 
-  
+
+
   /**
    * Función que permite abrir o cerrar el popup de mensajes
    */
-  const togglePopup = () => 
+  const togglePopup = () =>
   {
     setMostrarPopup(!isMostrarPopup);
   }
 
 
   return (
+    isTokenValido ?
     <div className="bgg-info">
       <Header height={"none"} fondo={""} titulo={""}/>
 
@@ -153,8 +233,8 @@ function DatosAcceso()
           <div className="mt-5 bgg-warning">
             <h5 className="font-weight-bolder">Cambio de dirección de correo electrónico</h5>
               <h6>Si deseas cambiar la dirección de correo electrónico asociada a tu cuenta rellena los campos siguientes. Se solicita tu contraseña por motivos de seguridad.</h6>
-              
-              <p>Tu correo actual es <span className="font-weight-bold">colocar correo</span></p>
+
+              <p>Tu correo actual es <span className="font-weight-bold">{correo}</span></p>
           </div>
 
           <form className="needs-validation pb-5 bgg-warning" onSubmit={actualizarCorreo} style={{width:"66%"}} noValidate>
@@ -200,7 +280,7 @@ function DatosAcceso()
           <div className="mt-5 pt-4 separacion_datos_acuatex border-bottom-0 border-right-0 border-left-0 bgg-danger">
             <h5 className="font-weight-bolder mt-5">Cambio de contraseña</h5>
               <h6>Si deseas cambiar la contraseña de acceso a tu cuenta proporciona la siguiente información:</h6>
-              <p>Tu correo actual es <span className="font-weight-bold">colocar correo</span></p>    
+              <p>Tu correo actual es <span className="font-weight-bold">{correo}</span></p>
           </div>
           <form className="needs-validation bgg-warning" onSubmit={actualizarClave} style={{width:"66%"}} noValidate>
             <div className="row form-group">
@@ -252,6 +332,8 @@ function DatosAcceso()
       }
 
     </div>
+    :
+    <Redirect to={"/articulos"} />
   );
 }
 

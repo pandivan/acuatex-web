@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 
 import Header from "../../components/Header";
 import PopupMensaje from "../../components/PopupMensaje";
@@ -15,6 +15,7 @@ import Constantes from "../../Constantes";
  */
 function Registro() 
 {
+  const [isTokenValido] = useState(autenticacionServices.getToken());
   const [correo, setCorreo] = useState("");
   const [clave, setClave] = useState("");
   const [nombres, setNombres] = useState("");
@@ -54,26 +55,42 @@ function Registro()
     {
       try 
       {
-        let {success, lstCiudadesBD} = await ciudadServices.getAllCiudades();
+        let {status, lstCiudadesBD} = await ciudadServices.getAllCiudades();
 
-        if (success) 
+        switch (status) 
         {
-          setLstCiudades(lstCiudadesBD);
-          setLstProvincias(lstCiudadesBD.filter(ciudad => "" === ciudad.codigoCiudad));
-          setLstCiudadesFiltradas(lstCiudadesBD.filter(ciudad => ciudad.codigoCiudad.includes("01-")));
+          case Constantes.STATUS_OK:
+            //Si NO tiene token, entra a la web de registro
+            if(!autenticacionServices.getToken())
+            {
+              setLstCiudades(lstCiudadesBD);
+              setLstProvincias(lstCiudadesBD.filter(ciudad => "" === ciudad.codigoCiudad));
+              setLstCiudadesFiltradas(lstCiudadesBD.filter(ciudad => ciudad.codigoCiudad.includes("01-")));
+  
+              //Se carga el listado de años desde 1905 al año actual (Referencia de facebook)
+              let añoActual = new Date().getFullYear();
+  
+              const lstAñosPredefinida = []
+  
+              for (let año = añoActual; año >= 1905; año--) 
+              {
+                lstAñosPredefinida.push(año);
+              }
+  
+              setLstAños(lstAñosPredefinida);
+            }
+            break;
+          
+          default:
+            //Valida si hubo un error en el api-rest al obtener las ciudades
+            //Si NO tiene token es porque no estoy logueado y debo informar que hubo un error en el backend
+            if(!autenticacionServices.getToken())
+            {
+              setMensajePopup("En el momento, no es posible registrar tus datos,\nfavor intentarlo más tarde.");
+              setMostrarPopup(true);
+            }
+            break;
         }
-
-        //Se carga el listado de años desde 1905 al año actual (Referencia de facebook)
-        let añoActual = new Date().getFullYear();
-
-        const lstAñosPredefinida = []
-
-        for (let año = añoActual; año >= 1905; año--) 
-        {
-          lstAñosPredefinida.push(año);
-        }
-
-        setLstAños(lstAñosPredefinida);
       } 
       catch (error) 
       {
@@ -178,6 +195,9 @@ function Registro()
 
 
   return (
+    isTokenValido ?
+    <Redirect to={"/articulos"} />  
+    :
     <div className="bgg-success">
       <Header height={"none"} fondo={""} titulo={""}/>
 
@@ -358,7 +378,6 @@ function Registro()
       {
         isMostrarPopup && <PopupMensaje togglePopup={togglePopup} mensaje={mensajePopup} titulo={"AVISO"} />
       }
-    
     </div>
   );
 }

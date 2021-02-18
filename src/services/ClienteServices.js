@@ -7,8 +7,8 @@ import tokenServices from "../services/TokenServices";
 
 
 /**
- * Función que permite actualizar los datos basicos del cliente
- * @param cliente, Cliente actualizar
+ * Función que permite actualizar los datos de acceso del cliente
+ * @param cliente actualizar
  */
 const actualizarDatosAccesoCliente = async (cliente) => 
 {
@@ -19,11 +19,11 @@ const actualizarDatosAccesoCliente = async (cliente) =>
     // console.log("Respuesta API-REST Cliente. ");
     // console.log(JSON.stringify(respuesta));
 
-    return { status: respuesta.status, isClienteActualizado: respuesta.data };
+    return { status: respuesta.status, clienteBD: respuesta.data };
   }
 	catch(error)
   {
-    return { status: Constantes.STATUS_ERROR };
+    return { status: error.request.status };
   }
 }
 
@@ -31,36 +31,32 @@ const actualizarDatosAccesoCliente = async (cliente) =>
 
 /**
  * Función que permite actualizar los datos basicos del cliente
- * @param cliente, Cliente actualizar
+ * @param cliente actualizar
  */
 const actualizarCliente = async (cliente) => 
 {
   try
   {
     let respuesta = await axios.put(`${Constantes.BACKEND_URL}/clientes`, cliente, { headers: tokenServices.autenticacionHeader() });
-    
-    // console.log("Respuesta API-REST Cliente. ");
-    // console.log(JSON.stringify(respuesta));
-
-    return { status: respuesta.status, isClienteActualizado: respuesta.data };
+   
+    return { status: respuesta.status };
   }
 	catch(error)
   {
-    return { status: Constantes.STATUS_ERROR };
+    return { status: error.request.status };
   }
 }
 
 
 
 /**
- * Función que permite validar un cliente, según correo y clave
- * @param token, Cliente a consultar
+ * Función que permite obtener los datos del cliente
  */
-const getCliente = async (token) => 
+const getCliente = async () => 
 {
   try
   {
-    let respuesta = await axios.get(`${Constantes.BACKEND_URL}/info/${token}`, { headers: tokenServices.autenticacionHeader() });
+    let respuesta = await axios.get(`${Constantes.BACKEND_URL}/clientes`, { headers: tokenServices.autenticacionHeader() });
 
     // console.log("Respuesta API-REST Consultar Cliente ");
     // console.log(JSON.stringify(respuesta));
@@ -69,7 +65,26 @@ const getCliente = async (token) =>
   }
   catch(error)
   {
-    return { status: Constantes.STATUS_ERROR, clienteBD: null };
+    return { status: error.request.status };
+  }
+}
+
+
+
+/**
+ * Función que permite obtener el correo del cliente
+ */
+const getCorreoCliente = async () => 
+{
+  try
+  {
+    let respuesta = await axios.get(`${Constantes.BACKEND_URL}/clientes/mail`, { headers: tokenServices.autenticacionHeader() });
+
+    return { status: respuesta.status, correoBD: respuesta.data };
+  }
+  catch(error)
+  {
+    return { status: error.request.status };
   }
 }
 
@@ -78,5 +93,6 @@ export default
 {
   actualizarDatosAccesoCliente,
   actualizarCliente,
-  getCliente
+  getCliente,
+  getCorreoCliente
 };
