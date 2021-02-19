@@ -63,7 +63,7 @@ function DatosAcceso()
             break;
 
           default:
-            //Valida si hubo un error en el api-rest al validar los datos del cliente
+            //Valida si hubo un error en el api-rest
             //Si tiene token es porque estoy logueado y debo informar que hubo un error en el backend
             if(autenticacionServices.getToken())
             {
@@ -136,7 +136,7 @@ function DatosAcceso()
             break;
 
           default:
-            //Valida si hubo un error en el api-rest al validar el cliente
+            //Valida si hubo un error en el api-rest
             setMensajePopup("En el momento no es posible actualizar la cuenta\nde correo, favor intentarlo más tarde.");
             setMostrarPopup(true);
             break;
@@ -195,7 +195,7 @@ function DatosAcceso()
             break;
 
           default:
-            //Valida si hubo un error en el api-rest al validar el cliente
+            //Valida si hubo un error en el api-rest
             setMensajePopup("En el momento no es posible actualizar la\ncontraseña, favor intentarlo más tarde.");
             setMostrarPopup(true);
             break;

@@ -42,9 +42,7 @@ function Carrito()
       setMostrarPopup(true);
 		}
   }, []);
-
-  // Parece que algo no ha ido bien. Por favor, inténtalo de nuevo más tarde y si el problema persiste ponte en contacto con soporte.
-
+  
 
 
 

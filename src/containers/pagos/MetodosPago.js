@@ -35,7 +35,7 @@ function MetodosPago()
      */
     const cargarInformacion = async () =>
     {
-      //Se obtiene el correo del cliente a traves del api-rest
+      //Se valida a traves del api-rest si el token es válido
       let {status} = await autenticacionServices.validarToken();
   
       switch (status)
@@ -50,23 +50,22 @@ function MetodosPago()
           break;
 
         case Constantes.STATUS_ACCESO_DENEGADO:
-          
           //Si tiene token es porque estoy logueado y debo informar que la sesión expiro
           if(autenticacionServices.getToken())
           {
-            alert("Tu sesión ha expirado!!!");
+            setMensajePopup("Tu sesión ha expirado!!!");
+            setMostrarPopup(true);
           }
 
-          autenticacionServices.logout();
-          setTokenValido(false);
+          autenticacionServices.removerToken();
           break;
   
         default:
-          //Valida si hubo un error en el api-rest al validar los datos del cliente
+          //Valida si hubo un error en el api-rest
           //Si tiene token es porque estoy logueado y debo informar que hubo un error en el backend
           if(autenticacionServices.getToken())
           {
-            setMensajePopup("En el momento no es posible acceder al\nmétodo de pago, favor intentarlo más tarde.");
+            setMensajePopup("En el momento no es posible realizar la\ntransacción, favor intentarlo en unos minutos.");
             setMostrarPopup(true);
           }
           break;
@@ -85,6 +84,7 @@ function MetodosPago()
   const togglePopup = () => 
   {
     setMostrarPopup(!isMostrarPopup);
+    setTokenValido(false);
   }
 
 

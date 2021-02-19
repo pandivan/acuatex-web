@@ -1,58 +1,71 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 import Header from "../../components/Header";
+import PopupMensaje from "../../components/PopupMensaje";
 import pedidoServices from "../../services/PedidoServices"; 
-import autenticacionServices from "../../services/AutenticacionServices"; 
+import autenticacionServices from "../../services/AutenticacionServices";
+import Constantes from "../../Constantes";
 
 
 
 
 
 /**
- * Componente funcion que permite renderizar el carrito de compras con los articulos seleccionados
+ * Componente funcion que permite renderizar los pedidos del cliente
  */
 function Pedidos() 
 {
+  const [isTokenValido, setTokenValido] = useState(autenticacionServices.getToken() ? true : false);
   const [lstPedidos, setLstPedidos] = useState([]);
   const [isLoading, setLoading] = useState(true);
-
-  //Hook de react-router-dom maneja el historial de navegación
-  let history = useHistory();
+  const [isMostrarPopup, setMostrarPopup] = useState(false);
+  const [mensajePopup, setMensajePopup] = useState("");
 	
 
 
 	useEffect(() => 
 	{
-    console.log("useEffect Pedidoss");
-    
-    let token = autenticacionServices.getToken();
+    console.log("useEffect Pedidos");
     
 
     /**
-     * Metodo que permite cargar los articulos desde el API-REST
+     * Metodo que permite cargar información inicial desde el API-REST
      */
-    const cargarPedidos = async () => 
+    const cargarInformacion = async () => 
     {
       try 
       {
-        let {isTokenValido, lstPedidosBD} = await pedidoServices.getAllPedidos(token);
+        let {status, lstPedidosBD} = await pedidoServices.getAllPedidos();
 
-        //Se valida si el token es valido
-        if (isTokenValido) 
+        switch (status)
         {
-          if (null !== lstPedidosBD) 
-          {
+          case Constantes.STATUS_OK:
             setLstPedidos(lstPedidosBD);
-          }
-          setLoading(false);
-        }
-        else
-        {
-          autenticacionServices.logout();
-          // alert("Tu sesión ha expirado");
-          history.replace("/");
-        }
+            setLoading(false);
+            break;
+
+          case Constantes.STATUS_ACCESO_DENEGADO:
+            //Si tiene token es porque estoy logueado y debo informar que la sesión expiro
+            if(autenticacionServices.getToken())
+            {
+              setMensajePopup("Tu sesión ha expirado!!!");
+              setMostrarPopup(true);
+            }
+
+            autenticacionServices.removerToken();
+            break;
+    
+          default:
+            //Valida si hubo un error en el api-rest
+            //Si tiene token es porque estoy logueado y debo informar que hubo un error en el backend
+            if(autenticacionServices.getToken())
+            {
+              setMensajePopup("En el momento no es posible acceder a tus pedidos,\nfavor intentarlo más tarde.");
+              setMostrarPopup(true);
+            }
+            break;
+        };
       } 
       catch (error) 
       {
@@ -61,21 +74,19 @@ function Pedidos()
       }
     };
 
-    //Se valida si tiene token
-    if(token)
-    {
-      cargarPedidos();
-    }
-    else
-    {
-      history.replace("/");
-    }
-  }, [history]);
+    cargarInformacion();
+  }, []);
 
 
 
-
-
+  /**
+   * Función que permite abrir o cerrar el popup de mensajes
+   */
+  const togglePopup = () => 
+  {
+    setMostrarPopup(!isMostrarPopup);
+    setTokenValido(false);
+  }
 
 
 
@@ -97,10 +108,11 @@ function Pedidos()
 
 
   return (
+    isTokenValido ?
 	 	<div>
-       <Header height={"none"} fondo={""} titulo={""}/>
+      <Header height={"none"} fondo={""} titulo={""}/>
 
-        <div className="container pt-5 bgg-danger">
+      <div className="container pt-5 bgg-danger">
         <h2 className="mb-5 font-weight-bolder bgg-danger">MIS PEDIDOS</h2>
         {
           isLoading ?
@@ -191,8 +203,14 @@ function Pedidos()
               </div>
             </div>
         }
-      </div> 
+      </div>
+
+      {
+        isMostrarPopup && <PopupMensaje togglePopup={togglePopup} mensaje={mensajePopup} titulo={"AVISO"} />
+      }
     </div>
+    :
+    <Redirect to={"/articulos"} />
    );
 }
 

@@ -6,6 +6,7 @@ import FooterPagos from "../../components/FooterPagos";
 import PopupMensaje from "../../components/PopupMensaje";
 import pagoServices from "../../services/PagoServices"; 
 import autenticacionServices from "../../services/AutenticacionServices";
+import clienteServices from "../../services/ClienteServices";
 import Constantes from "../../Constantes";
 
 
@@ -40,7 +41,7 @@ function PagoTarjetaCredito()
      */
     const cargarInformacion = async () =>
     {
-      //Se obtiene el correo del cliente a traves del api-rest
+      //Se valida a traves del api-rest si el token es válido
       let {status} = await autenticacionServices.validarToken();
   
       switch (status)
@@ -55,23 +56,22 @@ function PagoTarjetaCredito()
           break;
 
         case Constantes.STATUS_ACCESO_DENEGADO:
-          
           //Si tiene token es porque estoy logueado y debo informar que la sesión expiro
           if(autenticacionServices.getToken())
           {
-            alert("Tu sesión ha expirado!!!");
+            setMensajePopup("Tu sesión ha expirado!!!");
+            setMostrarPopup(true);
           }
 
-          autenticacionServices.logout();
-          setTokenValido(false);
+          autenticacionServices.removerToken();
           break;
   
         default:
-          //Valida si hubo un error en el api-rest al validar los datos del cliente
+          //Valida si hubo un error en el api-rest
           //Si tiene token es porque estoy logueado y debo informar que hubo un error en el backend
           if(autenticacionServices.getToken())
           {
-            setMensajePopup("En el momento no es posible acceder al\npago, favor intentarlo más tarde.");
+            setMensajePopup("En el momento no es posible realizar la\ntransacción, favor intentarlo en unos minutos.");
             setMostrarPopup(true);
           }
           break;
@@ -89,6 +89,7 @@ function PagoTarjetaCredito()
   const togglePopup = () => 
   {
     setMostrarPopup(!isMostrarPopup);
+    setTokenValido(false);
   }
  
 
@@ -129,23 +130,53 @@ function PagoTarjetaCredito()
     event.preventDefault();
     event.target.className += " was-validated";
 
+    //Valida que los campos obligatorios esten diligenciados
     if (event.target.checkValidity()) 
     {
       try
       {
-        let {resultadoTransaccion} = await pagoServices.registrarPagoTC({ numeroTarjeta, mesCaducidad, añoCaducidad, titularTarjeta, numeroCVV });
+        //Se valida a traves del api-rest si el token es válido
+        let {status, clienteBD} = await clienteServices.getCliente();
 
-        const location = 
+        switch (status)
         {
-          pathname: '/transaccion',
-          state: { resultadoTransaccion }
-        }
+          case Constantes.STATUS_OK:
+            let {resultadoTransaccion} = await pagoServices.registrarPagoTC({ numeroTarjeta, mesCaducidad, añoCaducidad, titularTarjeta, numeroCVV, clienteBD });
+  
+            const location = 
+            {
+              pathname: '/transaccion',
+              state: { resultadoTransaccion }
+            }
+    
+            history.replace(location);
+            break;
 
-        history.replace(location);
+          case Constantes.STATUS_ACCESO_DENEGADO:
+            //Si tiene token es porque estoy logueado y debo informar que la sesión expiro
+            if(autenticacionServices.getToken())
+            {
+              setMensajePopup("Tu sesión ha expirado!!!");
+              setMostrarPopup(true);
+            }
+
+            autenticacionServices.removerToken();
+            break;
+    
+          default:
+            //Valida si hubo un error en el api-rest
+            //Si tiene token es porque estoy logueado y debo informar que hubo un error en el backend
+            if(autenticacionServices.getToken())
+            {
+              setMensajePopup("En el momento no es posible realizar la\ntransacción, favor intentarlo en unos minutos.");
+              setMostrarPopup(true);
+            }
+            break;
+        };
       }
       catch(error)
       {
-        setMensajePopup("En el momento no es posible registrar el pago.");
+        setMensajePopup("En el momento no es posible realizar la\ntransacción, favor intentarlo en unos minutos.");
         setMostrarPopup(true); 
       }
     }

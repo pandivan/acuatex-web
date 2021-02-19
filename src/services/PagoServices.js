@@ -1,5 +1,4 @@
 import pedidoServices from "../services/PedidoServices"; 
-import autenticacionServices from "../services/AutenticacionServices";
 
 
 const ESTADO_PEDIDO_PENDIENTE = 100;
@@ -19,11 +18,12 @@ const registrarPagoTC = async (transaccion) =>
 
   try
   {
+    console.log("registrarPagoTC >>> " + transaccion);
+
     /**
      * Se llama a la pasarela de pago STRIPE
      * transaccion.numeroTarjeta, transaccion.mesCaducidad, transaccion.añoCaducidad, transaccion.titularTarjeta, transaccion.numeroCVV
      */
-    console.log(transaccion);
     //let respuesta = await axios.post(`${Constantes.BACKEND_URL}/pedido`, pedido);
 
     let respuesta = {data:true};
@@ -34,7 +34,7 @@ const registrarPagoTC = async (transaccion) =>
     if(isTransaccionAceptada)
     {
       //Se registra el pedido en BD
-      let {resultadoTransaccion} = await registrarPedido();
+      let {resultadoTransaccion} = await registrarPedido(transaccion.clienteBD);
       
       return { resultadoTransaccion };
     }
@@ -57,18 +57,16 @@ const registrarPagoTC = async (transaccion) =>
 
 /**
  * Función que permite registrar un pedio en BD
+ * @param cliente que hizo el pedido
  */
-const registrarPedido = async () => 
+const registrarPedido = async (cliente) => 
 {
   let estadoTransaccion = "TRANSACCIÓN RECHAZADA";
   let mensaje = "El pedido no pudo registrarse correctamente";
 
   try
   {
-    let cliente = autenticacionServices.getToken();
     let fechaActual = new Date();
-
-    
     let lstPedidoDetalle = [];
     let mapArticulosPedido = new Map(JSON.parse(localStorage.getItem("@articulosPedido")));
 

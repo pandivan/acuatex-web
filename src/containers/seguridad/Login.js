@@ -52,7 +52,7 @@ function Login()
           break;
         
         default:
-          //Valida si hubo un error en el api-rest al validar el cliente
+          //Valida si hubo un error en el api-rest
           setMensajePopup("En el momento no es posible validar el usuario,\nfavor intentarlo más tarde.");
           setMostrarPopup(true);
           break;

@@ -2,6 +2,9 @@ import axios from "axios";
 import Constantes from "../Constantes";
 import tokenServices from "../services/TokenServices"; 
 
+
+
+
 /**
  * Función que permite registrar un nuevo pedido
  * @param pedido, Pedido a registrar
@@ -10,11 +13,7 @@ const registrarPedido = async (pedido) =>
 {
   try
   {
-    // console.log(JSON.stringify(pedido));
     let respuesta = await axios.post(`${Constantes.BACKEND_URL}/pedidos`, pedido, { headers: tokenServices.autenticacionHeader() });
-
-    // console.log("Respuesta API-REST Pedido. ");
-    // console.log(JSON.stringify(respuesta));
 
     return { nroPedido: respuesta.data };
   }
@@ -87,30 +86,22 @@ const registrarPedido = async (pedido) =>
 
 
 /**
- * Función que permite obtener todos los pedidos
+ * Función que permite obtener todos los pedidos del cliente
  */
-const getAllPedidos = async (token) => 
+const getAllPedidos = async () => 
 {
   try
   {
-    let respuesta = await axios.get(`${Constantes.BACKEND_URL}/pedidos/${token}`, { headers: tokenServices.autenticacionHeader() });
+    let respuesta = await axios.get(`${Constantes.BACKEND_URL}/pedidos`, { headers: tokenServices.autenticacionHeader() });
 
-    // console.log("Respuesta API-REST Articulos. ");
-    // console.log(JSON.stringify(respuesta));
-
-    return { isTokenValido: true, lstPedidosBD: respuesta.data };
+    return { status: respuesta.status, lstPedidosBD: respuesta.data };
   }
 	catch(error)
   {
     //TODO: Guardar log en BD
     // console.log(`Error al registrar: ${error}`);
 
-    if(error.response && Constantes.STATUS_ACCESO_DENEGADO === error.response.status)
-    {
-      return { isTokenValido: false }
-    }
-
-    return { isTokenValido: true, lstPedidosBD: null };
+    return { status: error.request.status };
   }
 }
 

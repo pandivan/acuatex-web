@@ -82,7 +82,7 @@ function Registro()
             break;
           
           default:
-            //Valida si hubo un error en el api-rest al obtener las ciudades
+            //Valida si hubo un error en el api-rest
             //Si NO tiene token es porque no estoy logueado y debo informar que hubo un error en el backend
             if(!autenticacionServices.getToken())
             {
@@ -164,7 +164,7 @@ function Registro()
           break;
         
         default:
-          //Valida si hubo un error en el api-rest al crear el cliente
+          //Valida si hubo un error en el api-rest
           setMensajePopup("En el momento, no es posible registrar tus datos.");
           setMostrarPopup(true);
           break;

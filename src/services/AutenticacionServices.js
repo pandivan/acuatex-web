@@ -72,6 +72,16 @@ const logout = () =>
 
 
 
+/**
+ * Método que permite remover el token del local storage
+ */
+const removerToken = () => 
+{
+  localStorage.removeItem("@token");
+}
+
+
+
 
 /**
  * Método que permite obtener el token del local storage
@@ -126,5 +136,6 @@ export default
   logout,
   getToken,
   setTokenLocalStorage,
-  validarToken
+  validarToken,
+  removerToken
 };

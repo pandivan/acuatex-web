@@ -115,7 +115,7 @@ function InformacionPersonal()
             break;
 
           default:
-            //Valida si hubo un error en el api-rest al validar los datos del cliente
+            //Valida si hubo un error en el api-rest
             //Si tiene token es porque estoy logueado y debo informar que hubo un error en el backend
             if(autenticacionServices.getToken())
             {
@@ -180,7 +180,7 @@ function InformacionPersonal()
           break;
 
         default:
-          //Valida si hubo un error en el api-rest al actualizar la información del cliente
+          //Valida si hubo un error en el api-rest
           setMensajePopup("En el momento, no es posible actualizar tus datos.");
           setMostrarPopup(true);
           break;

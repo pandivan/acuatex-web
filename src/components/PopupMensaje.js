@@ -1,7 +1,10 @@
 import React from "react";
 
 
-
+/**
+ * Componente popup de mensajes
+ * @param props parametros enviados al componente [Titulo, Mensaje, Metodo Cerrar]
+ */
 function PopupMensaje(props)
 {
 

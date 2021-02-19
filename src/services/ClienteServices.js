@@ -16,9 +16,6 @@ const actualizarDatosAccesoCliente = async (cliente) =>
   {
     let respuesta = await axios.put(`${Constantes.BACKEND_URL}/clientes/datos_acceso`, cliente, { headers: tokenServices.autenticacionHeader() });
 
-    // console.log("Respuesta API-REST Cliente. ");
-    // console.log(JSON.stringify(respuesta));
-
     return { status: respuesta.status, clienteBD: respuesta.data };
   }
 	catch(error)
@@ -57,9 +54,6 @@ const getCliente = async () =>
   try
   {
     let respuesta = await axios.get(`${Constantes.BACKEND_URL}/clientes`, { headers: tokenServices.autenticacionHeader() });
-
-    // console.log("Respuesta API-REST Consultar Cliente ");
-    // console.log(JSON.stringify(respuesta));
 
     return { status: respuesta.status, clienteBD: respuesta.data };
   }
