@@ -136,6 +136,24 @@ function Carrito()
   }
 
 
+  
+  /**
+   * Función que permite validar si el cliente se encuentra logueado
+   */
+  const validarLogueo = () =>
+  {
+    let urlSiguiente = "/metodos_pago";
+    let token = autenticacionServices.getToken();
+    
+    if(null === token)
+    {
+      urlSiguiente = "/login";
+    }
+    
+    history.push(urlSiguiente);
+  }
+  
+  
 
   /**
    * Función que permite abrir o cerrar el popup de mensajes
@@ -144,26 +162,8 @@ function Carrito()
   {
     setMostrarPopup(!isMostrarPopup);
   }
-    
 
-  /**
-   * Función que permite validar si el cliente se encuentra logueado
-   */
-  const validarLogueo = () =>
-  {
-    let urlSiguiente = "/metodos_pago";
-    let token = autenticacionServices.getToken();
-      
-    if(null === token)
-    {
-      urlSiguiente = "/login";
-    }
-
-    history.push(urlSiguiente);
-  }
-
-
-
+  
    return (
 	 	<div>
        <Header height={"none"} fondo={""} titulo={""}/>

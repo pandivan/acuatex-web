@@ -80,17 +80,6 @@ function Pedidos()
 
 
   /**
-   * Función que permite abrir o cerrar el popup de mensajes
-   */
-  const togglePopup = () => 
-  {
-    setMostrarPopup(!isMostrarPopup);
-    setTokenValido(false);
-  }
-
-
-
-  /**
    * Funcion que permite calcular el total del pedido
    */
   const calcularTotalPedido = (pedido) =>
@@ -106,6 +95,17 @@ function Pedidos()
   }
 
 
+
+  /**
+   * Función que permite abrir o cerrar el popup de mensajes
+   */
+  const togglePopup = () => 
+  {
+    setMostrarPopup(!isMostrarPopup);
+    setTokenValido(false);
+  }
+
+  
 
   return (
     isTokenValido ?

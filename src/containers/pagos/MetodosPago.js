@@ -76,18 +76,6 @@ function MetodosPago()
   }, []);
 
 
-
-
-  /**
-   * Función que permite abrir o cerrar el popup de mensajes
-   */
-  const togglePopup = () => 
-  {
-    setMostrarPopup(!isMostrarPopup);
-    setTokenValido(false);
-  }
-
-
   
 
   /**
@@ -111,6 +99,20 @@ function MetodosPago()
       }
 
       history.push(urlSiguiente);
+    }
+  }
+
+  
+  /**
+   * Función que permite abrir o cerrar el popup de mensajes
+   */
+  const togglePopup = () => 
+  {
+    setMostrarPopup(!isMostrarPopup);
+    
+    if(!autenticacionServices.getToken())
+    {
+      setTokenValido(false);
     }
   }
 

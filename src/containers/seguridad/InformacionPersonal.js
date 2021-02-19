@@ -103,15 +103,14 @@ function InformacionPersonal()
             break;
 
           case Constantes.STATUS_ACCESO_DENEGADO:
-            
             //Si tiene token es porque estoy logueado y debo informar que la sesión expiro
             if(autenticacionServices.getToken())
             {
-              alert("Tu sesión ha expirado!!!");
+              setMensajePopup("Tu sesión ha expirado!!!");
+              setMostrarPopup(true);
             }
             
-            autenticacionServices.logout();
-            setTokenValido(false);
+            autenticacionServices.removerToken();
             break;
 
           default:
@@ -174,9 +173,9 @@ function InformacionPersonal()
           break;
 
         case Constantes.STATUS_ACCESO_DENEGADO:
-          autenticacionServices.logout();
-          alert("Tu sesión ha expirado!!!");
-          setTokenValido(false);
+          autenticacionServices.removerToken();
+          setMensajePopup("Tu sesión ha expirado!!!");
+          setMostrarPopup(true);
           break;
 
         default:
@@ -187,16 +186,6 @@ function InformacionPersonal()
       }
     }
   };
-
-
-
-  /**
-   * Función que permite abrir o cerrar el popup de mensajes
-   */
-  const togglePopup = () => 
-  {
-    setMostrarPopup(!isMostrarPopup);
-  }
 
 
 
@@ -215,6 +204,22 @@ function InformacionPersonal()
     setCodCiudad(lstCiudadesFiltradas[0].codigoCiudad);
   }
 
+
+
+  /**
+   * Función que permite abrir o cerrar el popup de mensajes
+   */
+  const togglePopup = () => 
+  {
+    setMostrarPopup(!isMostrarPopup);
+
+    if(!autenticacionServices.getToken())
+    {
+      setTokenValido(false);
+    }
+  }
+
+  
 
   return (
     isTokenValido ?
@@ -362,7 +367,7 @@ function InformacionPersonal()
       </div>
 
       {
-        isMostrarPopup && <PopupMensaje togglePopup={togglePopup} mensaje={mensajePopup} titulo={"DATOS GUARDADOS"} />
+        isMostrarPopup && <PopupMensaje togglePopup={togglePopup} mensaje={mensajePopup} titulo={"AVISO"} />
       }
     
     </div>

@@ -101,16 +101,6 @@ function Registro()
     cargarInformacion();
   }, [])
 
-  
-  
-  /**
-   * Función que permite abrir o cerrar el popup de mensajes
-   */
-  const togglePopup = () => 
-  {
-    setMostrarPopup(!isMostrarPopup);
-  }
-
 
 
   /**
@@ -192,6 +182,14 @@ function Registro()
   }
 
 
+  /**
+   * Función que permite abrir o cerrar el popup de mensajes
+   */
+  const togglePopup = () => 
+  {
+    setMostrarPopup(!isMostrarPopup);
+  }
+  
 
 
   return (

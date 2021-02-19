@@ -82,15 +82,6 @@ function PagoTarjetaCredito()
   }, []);
 
 
-
-  /**
-   * Función que permite abrir o cerrar el popup de mensajes
-   */
-  const togglePopup = () => 
-  {
-    setMostrarPopup(!isMostrarPopup);
-    setTokenValido(false);
-  }
  
 
 
@@ -182,6 +173,15 @@ function PagoTarjetaCredito()
     }
   }
 
+
+  /**
+   * Función que permite abrir o cerrar el popup de mensajes
+   */
+  const togglePopup = () => 
+  {
+    setMostrarPopup(!isMostrarPopup);
+    setTokenValido(false);
+  }
 
 
   return (

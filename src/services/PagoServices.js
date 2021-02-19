@@ -116,7 +116,7 @@ const registrarPedido = async (cliente) =>
       codProvinciaEntrega: cliente.codProvincia,
       codCiudad_entrega: cliente.codCiudad,
       diasPlazo: 3,
-      detalle: "primera compra XL",
+      detalle: "WEB",
       estado: ESTADO_PEDIDO_PENDIENTE,
       vendedor: "WEB",
       fechaDespacho: null,
