@@ -116,7 +116,7 @@ function Pedidos()
         <h2 className="mb-5 font-weight-bolder bgg-danger">MIS PEDIDOS</h2>
         {
           isLoading ?
-          <span style={{fontSize:13}}>Cargando......</span>
+          null
           :
             0 !== lstPedidos.length ?
             <div>

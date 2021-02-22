@@ -12,7 +12,6 @@ import articuloServices from "../../services/ArticuloServices";
  */
 function Estilos() 
 {
-  const [loading, setLoading] = useState(true);
   const [lstArticulos, setArticulos] = useState([]);
   const [lstArticulosFiltrados, setArticulosFiltrados] = useState([]);
   const [imagenFondo, setImagenFondo] = useState("Todo");
@@ -38,7 +37,6 @@ function Estilos()
           case Constantes.STATUS_OK:
             setArticulos(lstArticulosBD);
             setArticulosFiltrados(lstArticulosBD);
-            setLoading(false);
             break;
           
           default:
@@ -65,7 +63,6 @@ function Estilos()
     e.preventDefault();
 
     setArticulosFiltrados(lstArticulos.filter(articulo => articulo.nombre.concat(articulo.grupo).toLowerCase().includes(nombreArticulo.toLowerCase())));
-    setLoading(false);
   };
 */
 
@@ -79,7 +76,6 @@ function Estilos()
   {
     setImagenFondo(fondo);
     setArticulosFiltrados(lstArticulos.filter(articulo => articulo.grupo.includes(grupo)));
-    setLoading(false);
   };
   
 
@@ -113,24 +109,20 @@ function Estilos()
           <button type="button" className="btn_grupo_acuatex mr-4" onClick={() => buscarArticuloByGrupo("CABALLERO", "Caballero")}>Caballero</button>
         </div>
         {
-
-          loading ? 
-            null 
-          :
           <div className="container d-flex flex-wrap p-0 bgg-secondary mt-4">
-            {
-              lstArticulosFiltrados.map(articulo => 
-              (
-                <Link key={articulo.codigo} to=
-                    {{
-                        pathname: "/detallearticulo",
-                        state: { articulo }
-                    }}
-                >
-                  <img className="img_articulo_acuatex mr-4 mb-4" src={require(`../../assets/${articulo.codigo}.png`)} alt={articulo.nombre}/>
-                </Link>
-              ))
-            }
+          {
+            lstArticulosFiltrados.map(articulo => 
+            (
+              <Link key={articulo.codigo} to=
+                  {{
+                      pathname: "/detallearticulo",
+                      state: { articulo }
+                  }}
+              >
+                <img className="img_articulo_acuatex mr-4 mb-4" src={require(`../../assets/${articulo.codigo}.png`)} alt={articulo.nombre}/>
+              </Link>
+            ))
+          }
           </div>
         }
 

@@ -12,7 +12,6 @@ import articuloServices from "../../services/ArticuloServices";
  */
 function Articulos() 
 {
-  const [loading, setLoading] = useState(true);
   const [lstArticulos, setLstArticulos] = useState([]);
 
 
@@ -35,7 +34,6 @@ function Articulos()
         {
           case Constantes.STATUS_OK:
             setLstArticulos(lstArticulosBD);
-            setLoading(false);
             break;
           
           default:
@@ -60,25 +58,21 @@ function Articulos()
 
       <div className="container-fluid bgg-dark">
       {
-
-        loading ? 
-          null
-        :
-          <div className="container d-flex flex-wrap p-0 pt-2 bgg-secondary mt-5">
-          {
-            lstArticulos.map(articulo => 
-            (
-              <Link key={articulo.codigo} to=
-              {{
-                  pathname: "/detallearticulo",
-                  state: { articulo }
-              }}
-              >
-                <img className="img_articulo_acuatex mr-4 mb-4" src={require(`../../assets/${articulo.codigo}.png`)} alt={articulo.nombre}/>
-              </Link>
-            ))
-          }
-          </div>
+        <div className="container d-flex flex-wrap p-0 pt-2 bgg-secondary mt-5">
+        {
+          lstArticulos.map(articulo => 
+          (
+            <Link key={articulo.codigo} to=
+            {{
+                pathname: "/detallearticulo",
+                state: { articulo }
+            }}
+            >
+              <img className="img_articulo_acuatex mr-4 mb-4" src={require(`../../assets/${articulo.codigo}.png`)} alt={articulo.nombre}/>
+            </Link>
+          ))
+        }
+        </div>
       }
       </div>
 

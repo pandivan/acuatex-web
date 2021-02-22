@@ -15,7 +15,6 @@ function Carrito()
 	const [mapArticulosPedido, setArticulosPedido] = useState(new Map());
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
-  const [isLoading, setLoading] = useState(true);
 
   //Hook de react-router-dom maneja el historial de navegación
   let history = useHistory(); 
@@ -32,8 +31,6 @@ function Carrito()
 			let mapArticulosPedidoStorage = new Map(JSON.parse(localStorage.getItem("@articulosPedido")));
 
       setArticulosPedido(mapArticulosPedidoStorage);
-      
-      setLoading(false);
 		}
 		catch(error)
 		{
@@ -168,99 +165,96 @@ function Carrito()
 	 	<div>
        <Header height={"none"} fondo={""} titulo={""}/>
 			{
-        isLoading ?
-          null
-        :
-          0 === mapArticulosPedido.size ? 
-          <div className="container-fluid pt-4">
-            <div className="d-flex justify-content-center p-2 mb-3 mt-5 bgg-danger">
-              <img className="" src={require(`../../assets/Dama.png`)} alt="carrio vacio"/>
-            </div>
-          </div>  
-          :
-          <div>
-            <div className="container-fluid pt-4">
-            
-              <div className="container d-flex justify-content-center p-2 mb-3 mt-5 bgg-danger">
-                <div className="bgg-info" style={{width:"6%"}}></div>
-                <span className="titulo_acuatex">CARRITO DE COMPRAS</span>
-              </div>
-
-              <div className="container d-flex align-items-center bgg-warning border-top-0 border-right-0 border-left-0 footer_separacion_acuatex mb-4">
-
-                <div className="p-2 bgg-danger">
-                  <span className="subtitulo_acuatex">Articulo</span>
-                </div>
-
-                <div className="bgg-dark" style={{width:"43%"}} />
-
-                <div className="p-2 bgg-danger">
-                  <span className="subtitulo_acuatex">Cantidad</span>
-                </div>
-
-                <div className="bgg-dark" style={{width:"21%"}} />
-
-                <div className="p-2 bgg-danger">
-                  <span className="subtitulo_acuatex">Precio</span>
-                </div>
-              </div>
-
-              {
-                Array.from(mapArticulosPedido.values()).map(articulo =>
-                (
-                  <div key={articulo.codigo} className="d-flex justify-content-center align-items-center bgg-secondary mb-4">
-                  <div className="p-2 bgg-info">
-                    <img src={require("../../assets/" + articulo.codigo + ".png")} alt={articulo.nombre} style={{height:146, width:146}}/>
-                  </div>
-
-                  <div className="bgg-danger" style={{width:"1%"}}></div>
-
-                  <div className="bgg-warning" style={{width:150}}>
-                    <p className="descripcion_articulo_acuatex">{articulo.nombre}</p>
-                    <p className="titulo_acuatex">Talla: {articulo.talla}</p>
-                  </div>
-                  
-                  <div className="bgg-danger" style={{width:"11%"}}></div>
-                  
-                  <div className="btn-group align-items-center btn_cantidad_acuatex">
-                    <button type="button" className="btn btn_add_acuatex" onClick={() => adicionarEliminarArticulo(articulo, false)}><i className="fa fa-minus fa-1x"></i></button>
-                    <span className="mx-4">{articulo.cantidad}</span>
-                    <button type="button" className="btn btn_add_acuatex" onClick={() => adicionarEliminarArticulo(articulo, true)}><i className="fa fa-plus fa-1x"></i></button>
-                  </div>
-                  
-                  <div className="bgg-danger" style={{width:"11%"}}></div>
-                  
-                  <div className="p-2 bgg-primary">
-                    <span className="titulo_acuatex">${(articulo.cantidad * articulo.precio).toFixed(2)}</span>
-                  </div>
-                  
-                  <div className="bgg-danger" style={{width:"6%"}}></div>
-                  
-                  <div className="p-2 bgg-primary">
-                    <button type="button" className="btn" onClick={() => eliminarArticulo(articulo)}><i className="fa fa-times fa-2x btn_delete_acuatex"></i></button>
-                  </div>
-                </div>
-                ))
-              }
-
-
-              <div className="container d-flex justify-content-end align-items-center bgg-warning border-right-0 border-left-0 footer_separacion_acuatex">
-                <span className="mr-5 titulo_acuatex">TOTAL</span>
-                <span className="mr-5 titulo_acuatex">${calcularTotalPedido().toFixed(2)}</span>
-              </div>
-
-              <div className="container d-flex justify-content-end bgg-success mt-4">
-                <button type="button" className="btn btn-dark btn_carrito_acuatex" onClick={comprar} >
-                  <h4>Comprar</h4>
-                </button>
-              </div> 
-
-            </div>
-       
-            {
-              isMostrarPopup && <PopupMensaje togglePopup={togglePopup} mensaje={mensajePopup} titulo={"AVISO"} />
-            }
+        0 === mapArticulosPedido.size ? 
+        <div className="container-fluid pt-4">
+          <div className="d-flex justify-content-center p-2 mb-3 mt-5 bgg-danger">
+            <img className="" src={require(`../../assets/Dama.png`)} alt="carrio vacio"/>
           </div>
+        </div>  
+        :
+        <div>
+          <div className="container-fluid pt-4">
+          
+            <div className="container d-flex justify-content-center p-2 mb-3 mt-5 bgg-danger">
+              <div className="bgg-info" style={{width:"6%"}}></div>
+              <span className="titulo_acuatex">CARRITO DE COMPRAS</span>
+            </div>
+
+            <div className="container d-flex align-items-center bgg-warning border-top-0 border-right-0 border-left-0 footer_separacion_acuatex mb-4">
+
+              <div className="p-2 bgg-danger">
+                <span className="subtitulo_acuatex">Articulo</span>
+              </div>
+
+              <div className="bgg-dark" style={{width:"43%"}} />
+
+              <div className="p-2 bgg-danger">
+                <span className="subtitulo_acuatex">Cantidad</span>
+              </div>
+
+              <div className="bgg-dark" style={{width:"21%"}} />
+
+              <div className="p-2 bgg-danger">
+                <span className="subtitulo_acuatex">Precio</span>
+              </div>
+            </div>
+
+            {
+              Array.from(mapArticulosPedido.values()).map(articulo =>
+              (
+                <div key={articulo.codigo} className="d-flex justify-content-center align-items-center bgg-secondary mb-4">
+                <div className="p-2 bgg-info">
+                  <img src={require("../../assets/" + articulo.codigo + ".png")} alt={articulo.nombre} style={{height:146, width:146}}/>
+                </div>
+
+                <div className="bgg-danger" style={{width:"1%"}}></div>
+
+                <div className="bgg-warning" style={{width:150}}>
+                  <p className="descripcion_articulo_acuatex">{articulo.nombre}</p>
+                  <p className="titulo_acuatex">Talla: {articulo.talla}</p>
+                </div>
+                
+                <div className="bgg-danger" style={{width:"11%"}}></div>
+                
+                <div className="btn-group align-items-center btn_cantidad_acuatex">
+                  <button type="button" className="btn btn_add_acuatex" onClick={() => adicionarEliminarArticulo(articulo, false)}><i className="fa fa-minus fa-1x"></i></button>
+                  <span className="mx-4">{articulo.cantidad}</span>
+                  <button type="button" className="btn btn_add_acuatex" onClick={() => adicionarEliminarArticulo(articulo, true)}><i className="fa fa-plus fa-1x"></i></button>
+                </div>
+                
+                <div className="bgg-danger" style={{width:"11%"}}></div>
+                
+                <div className="p-2 bgg-primary">
+                  <span className="titulo_acuatex">${(articulo.cantidad * articulo.precio).toFixed(2)}</span>
+                </div>
+                
+                <div className="bgg-danger" style={{width:"6%"}}></div>
+                
+                <div className="p-2 bgg-primary">
+                  <button type="button" className="btn" onClick={() => eliminarArticulo(articulo)}><i className="fa fa-times fa-2x btn_delete_acuatex"></i></button>
+                </div>
+              </div>
+              ))
+            }
+
+
+            <div className="container d-flex justify-content-end align-items-center bgg-warning border-right-0 border-left-0 footer_separacion_acuatex">
+              <span className="mr-5 titulo_acuatex">TOTAL</span>
+              <span className="mr-5 titulo_acuatex">${calcularTotalPedido().toFixed(2)}</span>
+            </div>
+
+            <div className="container d-flex justify-content-end bgg-success mt-4">
+              <button type="button" className="btn btn-dark btn_carrito_acuatex" onClick={comprar} >
+                <h4>Comprar</h4>
+              </button>
+            </div> 
+
+          </div>
+      
+          {
+            isMostrarPopup && <PopupMensaje togglePopup={togglePopup} mensaje={mensajePopup} titulo={"AVISO"} />
+          }
+        </div>
       }
     </div> 
    );
