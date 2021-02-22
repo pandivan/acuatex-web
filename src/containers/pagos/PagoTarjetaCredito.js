@@ -113,7 +113,7 @@ function PagoTarjetaCredito()
 
 
   /**
-   * Función que permite validar y registrar un pago
+   * Función que permite validar los datos obligatorios del formulario y registrar el pago
    * @param event Evento generado por el boton del formulario
    */
   const validarFormulario = async (event) => 

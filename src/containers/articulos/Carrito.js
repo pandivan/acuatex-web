@@ -138,9 +138,9 @@ function Carrito()
 
   
   /**
-   * Función que permite validar si el cliente se encuentra logueado
+   * Función que permite comenzar la compra siempre y cuando el cliente se encuentra logueado
    */
-  const validarLogueo = () =>
+  const comprar = () =>
   {
     let urlSiguiente = "/metodos_pago";
     let token = autenticacionServices.getToken();
@@ -250,7 +250,7 @@ function Carrito()
               </div>
 
               <div className="container d-flex justify-content-end bgg-success mt-4">
-                <button type="button" className="btn btn-dark btn_carrito_acuatex" onClick={validarLogueo} >
+                <button type="button" className="btn btn-dark btn_carrito_acuatex" onClick={comprar} >
                   <h4>Comprar</h4>
                 </button>
               </div> 
