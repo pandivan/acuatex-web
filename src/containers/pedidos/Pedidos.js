@@ -88,7 +88,7 @@ function Pedidos()
 
     pedido.lstPedidoDetalle.forEach( pedidoDetalle => 
     {
-      totalPedido += pedidoDetalle.precioVenta;
+      totalPedido += pedidoDetalle.cantidad * pedidoDetalle.precioVenta;
     });
 
     return totalPedido;
@@ -177,7 +177,7 @@ function Pedidos()
                           <div className="bgg-danger" style={{width:"23%"}} />
                           
                           <div className="p-2 bgg-primary">
-                            <span className="titulo_acuatex">${(pedidoDetalle.precioVenta).toFixed(2)}</span>
+                            <span className="titulo_acuatex">${(pedidoDetalle.cantidad * pedidoDetalle.precioVenta).toFixed(2)}</span>
                           </div>
                         </div>
                       )) 

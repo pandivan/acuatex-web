@@ -83,7 +83,7 @@ const registrarPedido = async (cliente) =>
         umedida: null,
         cantidad: articulo.cantidad,
         bonificacion: null,
-        precioVenta: (articulo.cantidad * articulo.precio).toFixed(2),
+        precioVenta: articulo.precio,
         porcDescuento: null,
         ice: null,
         iva: 19,
