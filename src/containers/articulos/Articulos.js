@@ -63,12 +63,7 @@ function Articulos()
         {
           lstArticulos.map(articulo => 
           (
-            <Link key={articulo.codigo} to={"/detallearticulo/" + articulo.codigo}
-            // {{
-            //     pathname: "/detallearticulo/" + articulo.codigo,
-            //     state: { articulo }
-            // }}
-            >
+            <Link key={articulo.codigo} to={"/detallearticulo/" + articulo.codigo}>
               <img className="img_articulo_acuatex mr-4 mb-4" src={require(`../../assets/${articulo.codigo}.png`)} alt={articulo.nombre}/>
             </Link>
           ))

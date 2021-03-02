@@ -35,6 +35,7 @@ function Estilos()
         switch (status) 
         {
           case Constantes.STATUS_OK:
+            localStorage.setItem("@articulos", JSON.stringify(lstArticulosBD));
             setArticulos(lstArticulosBD);
             setArticulosFiltrados(lstArticulosBD);
             break;
@@ -113,12 +114,7 @@ function Estilos()
           {
             lstArticulosFiltrados.map(articulo => 
             (
-              <Link key={articulo.codigo} to=
-                  {{
-                      pathname: "/detallearticulo",
-                      state: { articulo }
-                  }}
-              >
+              <Link key={articulo.codigo} to={"/detallearticulo/" + articulo.codigo}>
                 <img className="img_articulo_acuatex mr-4 mb-4" src={require(`../../assets/${articulo.codigo}.png`)} alt={articulo.nombre}/>
               </Link>
             ))

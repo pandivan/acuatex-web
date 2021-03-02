@@ -33,7 +33,7 @@ function DetalleArticulo()
     
     setArticulo(lstArticulos.find(articulo => articulo.codigo === articuloCodigo));
 
-  }, [articuloCodigo]);
+  }, [articuloCodigo]); //Solo si cambia el articuloCodigo vuelve a renderizar
 
   
 
