@@ -5,7 +5,7 @@ import Header from "../../components/Header";
 
 
 
-function Transaccion(props) 
+function Transaccion() 
 {  
   let location = useLocation();
 

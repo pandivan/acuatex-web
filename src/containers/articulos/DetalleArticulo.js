@@ -1,19 +1,42 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+
 import Header from "../../components/Header";
 import PopupMensaje from "../../components/PopupMensaje";
 
 
+
+
+
+
+
 /**
  * Componente de función que permite visualizar el detalle del articulo
- * @param props Recibe como parametro el articulo
  */
-function DetalleArticulo(props) 
+function DetalleArticulo() 
 {
-  const [articulo, setArticulo] = useState(props.location.state ? props.location.state.articulo : null);
+  const [articulo, setArticulo] = useState(null);
   const [talla, setTalla] = useState("");
   const [isMostrarPopup, setMostrarPopup] = useState(false);
   const [mensajePopup, setMensajePopup] = useState("");
+
+  //Hook de react-router-dom maneja los parametros que se pasan por url, el nombre del parametro {articuloCodigo} debe ser igual al que esta en App.js
+  let { articuloCodigo } = useParams();
+
+
+
+    
+  useEffect(() =>
+  {
+    let lstArticulos = JSON.parse(localStorage.getItem("@articulos"));
+    
+    setArticulo(lstArticulos.find(articulo => articulo.codigo === articuloCodigo));
+
+  }, [articuloCodigo]);
+
+  
+
 
 
 
@@ -110,6 +133,7 @@ function DetalleArticulo(props)
 
 
 
+
   /**
    * Función que permite abrir o cerrar el popup de mensajes
    */
@@ -129,7 +153,7 @@ function DetalleArticulo(props)
           <div className="container d-flex justify-content-center bgg-success mb-5">
             <div className="bgg-info">
               
-              <div className="row bgg-danger">
+              <div className="row mb-5 pb-5 bgg-danger">
                 <div className="col mr-3 bgg-warning">
                   <img src={require(`../../assets/${articulo.codigo}.png`)} alt={articulo.nombre} className="align-self-start mr-2" style={{height:630, width:630}}/>
                 </div>
@@ -169,61 +193,23 @@ function DetalleArticulo(props)
                 </div>
               </div>
 
-
-              <div className="card-deck mt-5 pt-4">
-                <div className="card">
-                  <div className="card-header align-middle">
-                    <span className="card-titles">DETALLE DEL ARTICULO</span>
-                  </div>
-                  <div className="card-body">
-                    <div className="row">
-                      <div className="col bgg-info">.col</div>
-                      <div className="col bgg-warning">.col</div>
-                    </div>
-                    <div className="row mt-3">
-                      <div className="col bgg-info">.col</div>
-                      <div className="col bgg-warning">.col</div>
-                    </div>
-                    <div className="row mt-3">
-                      <div className="col bgg-info">.col</div>
-                      <div className="col bgg-warning">.col</div>
-                    </div>
-                    <div className="row mt-3">
-                      <div className="col bgg-info">.col</div>
-                      <div className="col bgg-warning">.col</div>
-                    </div>
-                    <div className="row mt-3">
-                      <div className="col bgg-info">.col</div>
-                      <div className="col bgg-warning">.col</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="card">
-                  <div className="card-header align-middle">
-                    <span className="card-title">DIMENSIONES</span>
-                  </div>
-                  <div className="card-body">
-                    <div className="row">
-                      <div className="col bgg-info">.col</div>
-                      <div className="col bgg-warning">.col</div>
-                    </div>
-                    <div className="row mt-3">
-                      <div className="col bgg-info">.col</div>
-                      <div className="col bgg-warning">.col</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="card">
-                  <div className="card-header align-middle">
-                    <span className="card-title">TALLAS</span>
-                  </div>
-                  <div className="card-body">
-                    
-                  </div>
-                </div>
+              <div className="pt-5 bgg-info">
+                <h2 className="mt-4 pt-4">
+                  COMPLETAR LOOK
+                </h2>
               </div>
+
+              <div className="container d-flex flex-wrap p-0 pt-2 mt-2 bgg-secondary">
+              {
+                articulo.lstArticulosLook.map(articuloLook => 
+                (
+                  <Link key={articuloLook} to={"/detallearticulo/" + articuloLook}>
+                    <img className="img_articulo_acuatex mr-2 mb-4" src={require(`../../assets/${articuloLook}.png`)} alt={articuloLook}/>
+                  </Link>
+                ))
+              }
+              </div>
+            
             </div>
           </div>
         </div>

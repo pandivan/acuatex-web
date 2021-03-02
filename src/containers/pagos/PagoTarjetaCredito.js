@@ -134,7 +134,7 @@ function PagoTarjetaCredito()
           case Constantes.STATUS_OK:
             let {resultadoTransaccion} = await pagoServices.registrarPagoTC({ numeroTarjeta, mesCaducidad, añoCaducidad, titularTarjeta, numeroCVV, clienteBD });
   
-            const location = 
+            let location = 
             {
               pathname: '/transaccion',
               state: { resultadoTransaccion }

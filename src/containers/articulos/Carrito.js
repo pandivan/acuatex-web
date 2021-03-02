@@ -17,7 +17,7 @@ function Carrito()
   const [mensajePopup, setMensajePopup] = useState("");
 
   //Hook de react-router-dom maneja el historial de navegación
-  let history = useHistory(); 
+  let history = useHistory();
 	
 
 

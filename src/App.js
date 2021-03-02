@@ -48,7 +48,8 @@ function App()
         <Estilos />
       </Route>
 
-      <Route path="/detallearticulo" component={DetalleArticulo} />
+      {/* Se llama al component={DetalleArticulo} para utilizar dentro de él [props.location] */}
+      <Route path="/detallearticulo/:articuloCodigo" component={DetalleArticulo} />
 
       <Route path="/carrito">
         <Carrito />
