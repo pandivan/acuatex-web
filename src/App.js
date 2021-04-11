@@ -18,6 +18,7 @@ import Pedidos from "./containers/pedidos/Pedidos";
 import Transaccion from "./containers/pagos/Transaccion";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import RestaurarClave from "./containers/seguridad/RestaurarClave";
 
 
 
@@ -28,33 +29,7 @@ function App()
 {
   return (
     <Switch>
-      <Route exact path="/">
-        <Menu />
-      </Route>
-
-      <Route path="/login">
-        <Login />
-      </Route>
-
-      <Route path="/registro/">
-        <Registro/>
-      </Route>
-
-      <Route path="/articulos">
-        <Articulos />
-      </Route>
-
-      <Route path="/estilos">
-        <Estilos />
-      </Route>
-
-      {/* Se llama al component={DetalleArticulo} para utilizar dentro de él [props.location] */}
-      <Route path="/detallearticulo/:articuloCodigo" component={DetalleArticulo} />
-
-      <Route path="/carrito">
-        <Carrito />
-      </Route>
-
+      
       <Route path="/ajustes">
         <Ajustes />
       </Route>
@@ -67,24 +42,61 @@ function App()
         <InformacionPersonal/>
       </Route>
 
-      <Route path="/metodos_pago">
-        < MetodosPago/>
+      <Route path="/login">
+        <Login />
       </Route>
 
-      <Route path="/pago_tarjeta_credito">
-        < PagoTarjetaCredito/>
+      <Route path="/registro/">
+        <Registro/>
+      </Route>
+
+      <Route path="/restaurar">
+        <RestaurarClave/>
+      </Route>
+
+
+
+      <Route path="/articulos">
+        <Articulos />
+      </Route>
+
+      <Route path="/carrito">
+        <Carrito />
+      </Route>
+
+      {/* Se llama al component={DetalleArticulo} para utilizar dentro de él [props.location] */}
+      <Route path="/detallearticulo/:articuloCodigo" component={DetalleArticulo} />
+
+      <Route path="/estilos">
+        <Estilos />
+      </Route>
+
+      <Route exact path="/">
+        <Menu />
+      </Route>
+      
+
+
+      <Route path="/metodos_pago">
+        < MetodosPago/>
       </Route>
 
       <Route path="/pago_pse">
         < PagoPSE/>
       </Route>
 
-      <Route path="/pedidos">
-        <Pedidos />
+      <Route path="/pago_tarjeta_credito">
+        < PagoTarjetaCredito/>
       </Route>
 
       <Route path="/transaccion">
         <Transaccion />
+      </Route>
+
+
+
+      <Route path="/pedidos">
+        <Pedidos />
       </Route>
 
     </Switch>

@@ -79,14 +79,14 @@ const registrarPedido = async (cliente) =>
       {
         secuencia: i++,
         codArticulo: articulo.codigo.concat(articulo.talla),
-        codPromo: null,
-        umedida: null,
+        codPromo: "",
+        umedida: null, //TODO:preguntar de donde sacarlo
         cantidad: articulo.cantidad,
-        bonificacion: null,
+        bonificacion: 0,
         precioVenta: articulo.precio,
-        porcDescuento: null,
-        ice: null,
-        iva: 19,
+        porcDescuento: 0,
+        ice: 0,
+        iva: 19,//TODO:preguntar de donde sacarlo
         detalle: articulo.nombre
       }
 
@@ -100,11 +100,11 @@ const registrarPedido = async (cliente) =>
       nroPedido: null,
       fecha: fechaActual,
       hora: fechaActual.getHours(),
-      fechaEnvio: null,
-      horaEnvio: null,
-      cliente: cliente.cedula,
+      fechaEnvio: fechaActual,
+      horaEnvio: "",
+      cliente: 500,
       sucursal: 1,
-      ruc: null,
+      ruc: cliente.cedula,
       nombre: cliente.nombres,
       direccion: cliente.direccion,
       correo: cliente.correo,
@@ -114,12 +114,12 @@ const registrarPedido = async (cliente) =>
       direccionEntrega: cliente.direccion,
       telefonoEntrega: cliente.telefono,
       codProvinciaEntrega: cliente.codProvincia,
-      codCiudad_entrega: cliente.codCiudad,
+      codCiudadEntrega: cliente.codCiudad,
       diasPlazo: 3,
       detalle: "WEB",
-      estado: ESTADO_PEDIDO_PENDIENTE,
+      estado: 1,
       vendedor: "WEB",
-      fechaDespacho: null,
+      fechaDespacho: fechaActual,
       lstPedidoDetalle
     };
 

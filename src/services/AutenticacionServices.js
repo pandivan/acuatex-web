@@ -129,6 +129,26 @@ const validarToken = async () =>
 
 
 
+/**
+ * Función que permite restaurar la clave del cliente
+ * @param correo al que se enviará las instrucciones para restaurar la clave del cliente
+ */
+ const restaurarClave = async (correo) => 
+ {
+   try
+   {
+     let respuesta = await axios.post(`${Constantes.BACKEND_URL}/restaurar`, correo);
+ 
+     return { status: respuesta.status };
+   }
+   catch(error)
+   {
+     return { status: error.request.status };
+   }
+ }
+
+
+
 export default 
 {
   signup,
@@ -137,5 +157,6 @@ export default
   getToken,
   setTokenLocalStorage,
   validarToken,
-  removerToken
+  removerToken,
+  restaurarClave
 };

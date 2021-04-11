@@ -124,7 +124,7 @@ function MetodosPago()
 
       <div className="container d-flex flex-column pt-4 bgg-info">
        
-        {/* <h3 className="font-weight-boldR" stye={{fontFamily:"Titillium Web, sans-serif"}} >ELIGE UN MÉTODO DE PAGO</h3> */}
+        {/* <h3 className="font-weight-bold" stye={{fontFamily:"Titillium Web, sans-serif"}} >ELIGE UN MÉTODO DE PAGO</h3> */}
         <h3 className="font-weight-bolder" >ELIGE UN MÉTODO DE PAGO</h3>
        
         <div className="my-5 bgg-warning" style={{height:450}}>

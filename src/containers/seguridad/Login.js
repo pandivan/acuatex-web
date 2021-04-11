@@ -42,6 +42,7 @@ function Login()
       switch (status) 
       {
         case Constantes.STATUS_OK:
+          //Validar si es clave temporal, si si... redireccionar a DATOS ACCESO sino history.goBack();
           history.goBack();
           break;
 
@@ -98,7 +99,9 @@ function Login()
               </div>
             </div>
             <div className="form-group py-2">
+              <Link to="/restaurar" className="text-dark p-0">
                 ¿Has olvidado tu contraseña?
+              </Link>
             </div>
             <button type="submit" className="btn btn-lg btn-block mt-4 btn-dark">INICIAR SESIÓN</button>
           </form>
@@ -107,7 +110,7 @@ function Login()
         <div className="container ml-4 bgg-warning" style={{width:"32%"}}>
           <h2 className="pb-4">REGÍSTRATE</h2>
           <p className="pb-3">
-            Si todavía no tienes una cuenta de usuario de acuatex.com utiliza esta opción para acceder al formulario de registro.
+            Si todavía no tienes una cuenta de usuario de acuatex.com.ec utiliza esta opción para acceder al formulario de registro.
             Te solicitaremos la información imprescindible para agilizar el proceso de compra.
           </p>
           <Link to="/registro" className="nav-link p-0">
