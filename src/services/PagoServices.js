@@ -1,7 +1,7 @@
 import pedidoServices from "../services/PedidoServices"; 
 
 
-const ESTADO_PEDIDO_PENDIENTE = 100;
+// const ESTADO_PEDIDO_PENDIENTE = 100;
 
 
 
@@ -78,15 +78,15 @@ const registrarPedido = async (cliente) =>
       let pedidoDetalle = 
       {
         secuencia: i++,
-        codArticulo: articulo.codigo.concat(articulo.talla),
+        codArticulo: articulo.codigoTalla,
         codPromo: "",
-        umedida: null, //TODO:preguntar de donde sacarlo
+        umedida: articulo.umedida,
         cantidad: articulo.cantidad,
         bonificacion: 0,
         precioVenta: articulo.precio,
         porcDescuento: 0,
         ice: 0,
-        iva: 19,//TODO:preguntar de donde sacarlo
+        iva: articulo.iva,
         detalle: articulo.nombre
       }
 
@@ -118,7 +118,7 @@ const registrarPedido = async (cliente) =>
       diasPlazo: 3,
       detalle: "WEB",
       estado: 1,
-      vendedor: "WEB",
+      vendedor: "98",
       fechaDespacho: fechaActual,
       lstPedidoDetalle
     };

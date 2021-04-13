@@ -66,7 +66,7 @@ function Carrito()
     {
       try
       {
-        mapArticulosPedido.set(articulo.codigo, articulo);
+        mapArticulosPedido.set(articulo.codigoTalla, articulo);
 
         localStorage.setItem("@articulosPedido", JSON.stringify(Array.from(mapArticulosPedido)));
         
@@ -92,7 +92,7 @@ function Carrito()
   {
     try
     {
-      mapArticulosPedido.delete(articulo.codigo);
+      mapArticulosPedido.delete(articulo.codigoTalla);
       
       localStorage.setItem("@articulosPedido", JSON.stringify(Array.from(mapArticulosPedido)));
 
@@ -202,7 +202,7 @@ function Carrito()
             {
               Array.from(mapArticulosPedido.values()).map(articulo =>
               (
-                <div key={articulo.codigo} className="d-flex justify-content-center align-items-center bgg-secondary mb-4">
+                <div key={articulo.codigoTalla} className="d-flex justify-content-center align-items-center bgg-secondary mb-4">
                 <div className="p-2 bgg-info">
                   <img src={require("../../assets/" + articulo.codigo + ".png")} alt={articulo.nombre} style={{height:146, width:146}}/>
                 </div>

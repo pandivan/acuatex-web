@@ -22,7 +22,7 @@ function DetalleArticulo()
   const [mensajePopup, setMensajePopup] = useState("");
 
   //Hook de react-router-dom maneja los parametros que se pasan por url, el nombre del parametro {articuloCodigo} debe ser igual al que esta en App.js
-  let { articuloCodigo } = useParams();
+  let { articuloCodigo: articuloCodigoSinTalla } = useParams();
 
 
 
@@ -31,9 +31,9 @@ function DetalleArticulo()
   {
     let lstArticulos = JSON.parse(localStorage.getItem("@articulos"));
     
-    setArticulo(lstArticulos.find(articulo => articulo.codigo === articuloCodigo));
+    setArticulo(lstArticulos.find(articulo => articulo.codigo === articuloCodigoSinTalla));
 
-  }, [articuloCodigo]); //Solo si cambia el articuloCodigo vuelve a renderizar
+  }, [articuloCodigoSinTalla]); //Solo si cambia el articuloCodigo vuelve a renderizar
 
   
 
@@ -90,23 +90,23 @@ function DetalleArticulo()
       let mapArticulosPedido = new Map(JSON.parse(localStorage.getItem("@articulosPedido")));
 
       let articuloPedido = null;
+      let codigoTalla = articulo.codigo.concat(talla);
 
       //Se busca el articulo en la lista de articulos seleccionados por el cliente
-      if(mapArticulosPedido.has(articulo.codigo))
+      if(mapArticulosPedido.has(codigoTalla))
       {
-        articuloPedido = mapArticulosPedido.get(articulo.codigo);
+        articuloPedido = mapArticulosPedido.get(codigoTalla);
 
         articuloPedido.cantidad += articulo.cantidad;
       }
       else
       {
         articuloPedido = {...articulo};
+        articuloPedido.codigoTalla = codigoTalla;
+        articuloPedido.talla = talla;
       }
 
-      //TODO: Se debe ajustar para recibir distintas tallas (lista) y en la pantalla de carrtio hacer un for para pintar el producto segun las tallas escogidas
-      articuloPedido.talla = talla;
-
-      mapArticulosPedido.set(articuloPedido.codigo, articuloPedido);
+      mapArticulosPedido.set(articuloPedido.codigoTalla, articuloPedido);
       localStorage.setItem("@articulosPedido", JSON.stringify(Array.from(mapArticulosPedido)));
 
 
