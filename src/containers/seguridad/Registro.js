@@ -25,7 +25,7 @@ function Registro()
   const [dia, setDia] = useState("");
   const [mes, setMes] = useState("");
   const [año, setAño] = useState("");
-  const [sexo, setSexo] = useState("M");
+  const [sexo, setSexo] = useState("");
   const [politicas, setPoliticas] = useState(true);
   const [pais, setPais] = useState("EC");
   const [codProvincia, setCodProvincia] = useState("01");
@@ -38,6 +38,7 @@ function Registro()
   const [lstDias] = useState([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]);
   const [lstMeses] = useState([1,2,3,4,5,6,7,8,9,10,11,12]);
   const [lstAños, setLstAños] = useState([]);
+  const [isClaveInValida, setClaveInValida] = useState(false);
 
 
   //Hook de react-router-dom maneja el historial de navegación
@@ -120,6 +121,29 @@ function Registro()
   }
 
 
+
+  /**
+   * Función que permite el tamaño maximo de un campo
+   * @param e evento generado por teclear en un input
+   */
+  const validarTamañoMaximoClave = (e) => 
+  {
+    let clave = e.target.value;
+
+    if (clave.length > 20) 
+    {
+      setClaveInValida(true);
+    }
+    else
+    {
+      setClave(clave);
+      setClaveInValida(false);
+    } 
+  }
+
+     
+
+
   /**
    * Función que permite validar y registrar un cliente
    * @param e Evento generado por el boton del formulario
@@ -134,7 +158,7 @@ function Registro()
       //Capturando los datos digitados por el cleinte
       let cliente =
       {
-        cedula, nombres, codProvincia, codCiudad: codCiudad.split("-")[1], direccion, correo, telefono, clave, fecha:new Date(año,mes-1,dia), direccionEntrega:direccion, estado:1
+        cedula, nombres, codProvincia, codCiudad: codCiudad.split("-")[1], direccion, correo, telefono, clave, fecha:new Date(), direccionEntrega:direccion, estado:1, sexo, fechaNacimiento:new Date(año,mes-1,dia)
       }
 
       
@@ -213,9 +237,12 @@ function Registro()
             </div>
             <div className="col mt-5 ml-4">
               <label htmlFor="txtClave">Contraseña:</label>
-              <input type="password" className="form-control" id="txtClave" placeholderr="Contraseña" maxLength="10" required value={clave} onChange={e => setClave(e.target.value)} />
+              <input type="text" className="form-control" id="txtClave" placeholderr="Contraseña" minLength="5" required value={clave} onChange={validarTamañoMaximoClave} />
               <div className="invalid-feedback">
                 Este campo es obligatorio.
+              </div>
+              <div className={isClaveInValida ? "invalid-feedback d-block": "invalid-feedback"}>
+                Utiliza 5 caracteres como mínimo y 20 como máximo, con una combinación de letras, números y símbolos
               </div>
             </div>
           </div>

@@ -157,7 +157,7 @@ function Pedidos()
                     {
                       pedido.lstPedidoDetalle.map(pedidoDetalle => 
                       (
-                        <div key={pedidoDetalle.codArticulo} className="container d-flex align-items-center bgg-warning mb-4">
+                        <div key={pedidoDetalle.codArticulo.concat(pedidoDetalle.talla)} className="container d-flex align-items-center bgg-warning mb-4">
                           <div className="p-2 bgg-info">
                             <img src={require("../../assets/" + pedidoDetalle.codArticulo + ".png")} alt={pedidoDetalle.detalle} style={{height:100, width:100}}/>
                           </div>

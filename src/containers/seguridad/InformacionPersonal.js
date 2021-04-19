@@ -74,14 +74,14 @@ function InformacionPersonal()
     
             setLstAños(lstAñosPredefinida);
 
-            let fechaNacimiento = new Date(clienteBD.fecha);
+            let fechaNacimiento = new Date(clienteBD.fechaNacimiento);
 
             setCorreo(clienteBD.correo);
             setNombres(clienteBD.nombres);
             setCedula(clienteBD.cedula);
             setTelefono(clienteBD.telefono);
             setDireccion(clienteBD.direccion);
-            setSexo("F");
+            setSexo(clienteBD.sexo);
             setPais("EC");
             //El valor devuelto por getDay() es un entero correspondiente al día de la semana; siendo 0 (Domingo) el primer día, 1 (Lunes) el segundo
             setDia(fechaNacimiento.getDate());
@@ -156,9 +156,10 @@ function InformacionPersonal()
         direccion,
         correo,
         telefono,
-        fecha: new Date(año,mes-1,dia), //El valor devuelto por getMonth() es un entero entre 0 y 11, donde 0 corresponde a Enero, 1 a Febrero y así sucesivamente
         direccionEntrega: direccion,
-        estado: 1
+        estado: 1,
+        sexo,
+        fechaNacimiento: new Date(año,mes-1,dia), //El valor devuelto por getMonth() es un entero entre 0 y 11, donde 0 corresponde a Enero, 1 a Febrero y así sucesivamente
       };
 
       

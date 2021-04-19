@@ -18,7 +18,7 @@ const registrarPagoTC = async (transaccion) =>
 
   try
   {
-    console.log("registrarPagoTC >>> " + transaccion);
+    console.log("registrarPagoTC");
 
     /**
      * Se llama a la pasarela de pago STRIPE
@@ -86,7 +86,7 @@ const registrarPedido = async (cliente) =>
         precioVenta: articulo.precio,
         porcDescuento: 0,
         ice: 0,
-        iva: articulo.iva,
+        iva: (articulo.cantidad * articulo.precio * articulo.iva),
         detalle: articulo.nombre
       }
 
