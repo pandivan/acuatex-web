@@ -15,8 +15,8 @@ const STATUS_SERVICE_UNAVAILABLE = 503;
 /**
  * Constantes para el manejo de URL API-REST
  */
-const BACKEND_URL = "http://192.168.1.8:7788/v1";
-// const BACKEND_URL = "https://acuatex-api-rest.herokuapp.com/v1";
+// const BACKEND_URL = "http://192.168.1.8:7788/v1";
+const BACKEND_URL = "https://acuatex-api-rest.herokuapp.com/v1";
 
 
 
