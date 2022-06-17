@@ -18,6 +18,9 @@ const STATUS_SERVICE_UNAVAILABLE = 503;
 // const BACKEND_URL = "http://192.168.1.8:7788/v1";
 const BACKEND_URL = "https://acuatex-api-rest.herokuapp.com/v1";
 
+const BACKEND_QLIK_URL = "https://83n21dw79d3imcg.us.qlikcloud.com/api/v1/users/me";
+
+const WEBINTEGRATIONID = "uOc5HfBzK4KyF5--fxWe8tVufT-LxWtf";
 
 
 export default 
@@ -29,5 +32,7 @@ export default
   STATUS_UNAUTHORIZED,
   STATUS_NO_CONTENT,
   STATUS_ACCESO_DENEGADO,
-  STATUS_SERVICE_UNAVAILABLE
+  STATUS_SERVICE_UNAVAILABLE,
+  BACKEND_QLIK_URL,
+  WEBINTEGRATIONID
 };

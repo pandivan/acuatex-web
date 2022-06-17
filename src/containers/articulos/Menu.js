@@ -1,17 +1,58 @@
-import * as React from "react";
+import React, { useEffect } from "react";
+// import { Link, useNavigation } from "react-router-dom";
 
 import Header from "../../components/Header";
+import Constantes from "../../Constantes";
+import loginServices from "../../services/LoginServices";
+
+
 
 function Menu() 
 {
 
+  // const [isLoggedInQlik, setLoggedInQlik] = useState(false);
+ 
+  // const navigate = useNavigation();
+
+  useEffect(() => 
+  {
+    console.log("useEffect Menu");
+
+    /**
+     * Metodo que permite cargar los articulos desde el API-REST
+     */
+    const loguinQlik = async () => 
+    {
+      try 
+      {
+        let {status} = await loginServices.loguinQlik();
+
+        switch (status) 
+        {
+          case Constantes.STATUS_OK:
+            console.log("loguinQlikloguinQlikloguinQlikloguinQlik");
+            // navigate( , { replace: true });
+            // setLoggedInQlik(true);
+            break;
+          
+          default:
+            break;
+        }
+      } 
+      catch (error) 
+      {
+        //TODO: Guardar log del error en BD 
+      }
+    };
+
+    loguinQlik();
+  }, []);
+
+
   return (
     <div>
       <Header height={"none"} fondo={""} titulo={""}/>
-      <h1>Menuuuu</h1>
-
-      <iframe src="https://public.domo.com/cards/W6m2W" width="900" height="600" marginheight="0" marginwidth="0" frameborder="0"></iframe>
-      {/* <iframe src="https://83n21dw79d3imcg.us.qlikcloud.com/single/?appid=81505c41-8e9e-436d-b179-014d26f0c651&obj=RpXDxu&opt=ctxmenu,currsel&select=$::dimensiones,Productos&select=$::categoria,Grupo&select=$::periodicidad,Mes&select=$::unidad,Cantidad&select=$::a%C3%B1o,2022" style="border:none;width:100%;height:100%;"></iframe> */}
+      <h1>Men</h1>
     </div>
   );
 }

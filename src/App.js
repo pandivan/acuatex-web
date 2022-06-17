@@ -99,8 +99,21 @@ function App()
         <Pedidos />
       </Route>
 
+      
+      <Route path="/about">
+        <About />
+      </Route>
+
     </Switch>
   );
+}
+
+function About() {
+  // 👇️ redirect to external URL
+  // window.location.replace('https://google.com');
+  window.location.href = "https://83n21dw79d3imcg.us.qlikcloud.com/login?qlik-web-integration-id=uOc5HfBzK4KyF5--fxWe8tVufT-LxWtf&returnto=" + window.location.href;
+
+  return null;
 }
 
 export default App;
