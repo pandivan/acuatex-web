@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 // import { Link, useNavigation } from "react-router-dom";
 
 import Header from "../../components/Header";
@@ -10,7 +10,7 @@ import loginServices from "../../services/LoginServices";
 function Menu() 
 {
 
-  // const [isLoggedInQlik, setLoggedInQlik] = useState(false);
+  const [isLoggedInQlik, setLoggedInQlik] = useState("");
  
   // const navigate = useNavigation();
 
@@ -32,10 +32,11 @@ function Menu()
           case Constantes.STATUS_OK:
             console.log("loguinQlikloguinQlikloguinQlikloguinQlik");
             // navigate( , { replace: true });
-            // setLoggedInQlik(true);
+            setLoggedInQlik(status);
             break;
           
           default:
+            setLoggedInQlik(status);
             break;
         }
       } 
@@ -53,6 +54,7 @@ function Menu()
     <div>
       <Header height={"none"} fondo={""} titulo={""}/>
       <h1>Men</h1>
+      <h1>{isLoggedInQlik}</h1>
     </div>
   );
 }

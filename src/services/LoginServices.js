@@ -20,7 +20,7 @@ const loguinQlik = async () =>
 	catch(error)
   {
     //TODO: Guardar log en BD
-    console.log(`Error al registrar>>>>>>>>>>>>> ${error}`);
+    console.log(`Error al registrar>>>>>>>>>>>>> ${error.request.status}`);
     return { status: error.request.status };
   }
 }
